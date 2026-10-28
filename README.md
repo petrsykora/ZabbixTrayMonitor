@@ -35,11 +35,39 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 
 ## Installation
 
+### MSI installer (recommended)
+
+Download `ZabbixTrayMonitor-<version>-win-x64.msi` from the releases and run it. The installer:
+
+- installs the application for all users to `C:\Program Files\ZabbixTrayMonitor` (administrator rights required)
+- adds a Start menu shortcut and starts the application automatically when a user signs in
+- replaces older versions automatically on update and closes a running instance first
+- keeps the user's settings (`config.json`) and the API token in the Credential Manager on uninstall
+
+Silent installation, for example for scripts or Intune:
+
+```powershell
+msiexec /i ZabbixTrayMonitor-v1.3.1-win-x64.msi /qn
+```
+
+Without autostart:
+
+```powershell
+msiexec /i ZabbixTrayMonitor-v1.3.1-win-x64.msi /qn AUTOSTART=0
+```
+
+Deployment via Group Policy: put the MSI on a network share that the computer accounts can read and assign it under **Computer Configuration → Policies → Software Settings → Software installation → New → Package** (choose **Assigned**). It is installed on the next restart. For a new version, add the new MSI to the same GPO and set it to upgrade the existing package.
+
+### ZIP (portable)
+
 1. Download and extract the latest release ZIP.
 2. Start `ZabbixTrayMonitor.exe`.
-3. On first start the **Settings** window opens.
-4. Enter the **Zabbix URL** and the **API token**.
-5. Check the connection with **Test**, then click **Save**.
+
+### First start
+
+1. On first start the **Settings** window opens.
+2. Enter the **Zabbix URL** and the **API token**.
+3. Check the connection with **Test**, then click **Save**.
 
 ## Screenshots
 
@@ -195,7 +223,7 @@ In the repository under **Settings → Secrets and variables → Actions → New
 - `SIGNING_CERT_PFX_BASE64`: content of the `.pfx.base64.txt` file
 - `SIGNING_CERT_PASSWORD`: the password from step 1
 
-The release workflow then signs `ZabbixTrayMonitor.exe`, `ZabbixTrayMonitor.dll` and the language files automatically, with a timestamp so the signature stays valid after the certificate expires. Without the secrets the build stays unsigned as before.
+The release workflow then signs `ZabbixTrayMonitor.exe`, `ZabbixTrayMonitor.dll`, the language files and the MSI installer automatically, with a timestamp so the signature stays valid after the certificate expires. Without the secrets the build stays unsigned as before.
 
 ### 3. Distribute the certificate via GPO
 
@@ -218,7 +246,7 @@ Check: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` must show `Status: Va
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a ZIP downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded ZIP before extracting it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.0-win-x64.zip
+Unblock-File .\ZabbixTrayMonitor-v1.3.1-win-x64.zip
 ```
 
 ## Libraries

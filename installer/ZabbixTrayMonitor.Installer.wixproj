@@ -1,0 +1,23 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+
+	<!--
+		MSI-Installer für ZabbixTrayMonitor (WiX Toolset v5, baut nur unter Windows)
+
+		Erwartet die veröffentlichte Anwendung in PublishDir, zB.:
+		  dotnet publish ..\ZabbixTrayMonitor.csproj -c Release -r win-x64 -self-contained true -o ..\publish
+		  dotnet build ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.1
+	-->
+
+	<PropertyGroup>
+		<OutputName>ZabbixTrayMonitor</OutputName>
+		<InstallerPlatform>x64</InstallerPlatform>
+		<ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+		<PublishDir Condition="'$(PublishDir)' == ''">$(MSBuildProjectDirectory)\..\publish</PublishDir>
+		<DefineConstants>ProductVersion=$(ProductVersion);PublishDir=$(PublishDir);AssetsDir=$(MSBuildProjectDirectory)\..\Assets</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+	</ItemGroup>
+
+</Project>

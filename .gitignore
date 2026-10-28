@@ -10,3 +10,4 @@ release/
 signing/
 *.pfx
 *.pfx.base64.txt
+publish/

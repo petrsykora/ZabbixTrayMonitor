@@ -1,7 +1,8 @@
 name: Release
 
-# Baut die Windows-Version und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.2.2)
+# Baut die Windows-Version (ZIP + MSI) und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.3.1)
 # oder manuell über "Run workflow" mit Angabe des Tags (Tag wird dann vom Release auf dem gewählten Branch angelegt)
+# Mit "dry_run" wird nur gebaut und das Ergebnis als Workflow-Artefakt hochgeladen, ohne Release
 on:
   push:
     tags:
@@ -9,8 +10,12 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag, e.g. v1.2.2"
+        description: "Release tag, e.g. v1.3.1"
         required: true
+      dry_run:
+        description: "Only build and upload as workflow artifact, no release"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -22,6 +27,7 @@ jobs:
     env:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
       SIGNING_CERT_PFX_BASE64: ${{ secrets.SIGNING_CERT_PFX_BASE64 }}
+      SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,52 +36,67 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
+      - name: Read version
+        id: version
+        shell: pwsh
+        run: |
+          $version = ([xml](Get-Content ZabbixTrayMonitor.csproj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1
+          if (-not $version) { throw "Version not found in ZabbixTrayMonitor.csproj" }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Version $version, tag $env:RELEASE_TAG"
+
       - name: Publish
         run: dotnet publish ZabbixTrayMonitor.csproj -c Release -r win-x64 --self-contained true -o publish
 
-      # Signieren mit eigenem Code-Signing-Zertifikat (siehe README "Code-Signierung")
+      # Signieren mit eigenem Code-Signing-Zertifikat (siehe README "Code signing")
       # Läuft nur, wenn die Secrets SIGNING_CERT_PFX_BASE64 und SIGNING_CERT_PASSWORD gesetzt sind
       # Signiert werden nur die eigenen Dateien, die .NET-Runtime-Dateien sind bereits von Microsoft signiert
-      - name: Sign
+      - name: Sign application
         if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
         shell: pwsh
-        env:
-          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
         run: |
-          $pfxPath = Join-Path $env:RUNNER_TEMP "signing.pfx"
-          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:SIGNING_CERT_PFX_BASE64))
+          $files = @("publish\ZabbixTrayMonitor.exe", "publish\ZabbixTrayMonitor.dll") +
+            @(Get-ChildItem publish -Recurse -Filter ZabbixTrayMonitor.resources.dll | ForEach-Object FullName)
+          .\tools\Sign-Files.ps1 -Path $files
 
-          try {
-            $signtool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
-              Sort-Object FullName |
-              Select-Object -Last 1 -ExpandProperty FullName
-
-            $files = @(Get-Item publish\ZabbixTrayMonitor.exe, publish\ZabbixTrayMonitor.dll) +
-              @(Get-ChildItem publish -Recurse -Filter ZabbixTrayMonitor.resources.dll)
-
-            & $signtool sign /fd SHA256 /f $pfxPath /p $env:SIGNING_CERT_PASSWORD /tr http://timestamp.digicert.com /td SHA256 $files.FullName
-            if ($LASTEXITCODE -ne 0) { throw "signtool failed ($LASTEXITCODE)" }
-
-            # Eigenes Zertifikat ist auf dem Runner nicht vertrauenswürdig, deshalb nur prüfen dass eine Signatur vorhanden ist
-            foreach ($file in $files) {
-              $signature = Get-AuthenticodeSignature $file.FullName
-              if ($null -eq $signature.SignerCertificate) { throw "No signature: $($file.FullName)" }
-              Write-Host "$($file.Name): $($signature.SignerCertificate.Subject) ($($signature.SignerCertificate.Thumbprint))"
-            }
-          }
-          finally {
-            Remove-Item $pfxPath -Force -ErrorAction SilentlyContinue
-          }
-
-      - name: Package
+      # MSI aus den (ggf. signierten) Dateien im publish-Ordner bauen
+      - name: Build MSI
         shell: pwsh
-        run: Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip"
+        run: |
+          dotnet build installer\ZabbixTrayMonitor.Installer.wixproj -c Release `
+            -p:ProductVersion=${{ steps.version.outputs.version }} `
+            -p:PublishDir="$PWD\publish"
+          if ($LASTEXITCODE -ne 0) { throw "MSI build failed" }
+          $msi = Get-ChildItem installer\bin -Recurse -Filter ZabbixTrayMonitor.msi | Select-Object -First 1
+          if (-not $msi) { throw "ZabbixTrayMonitor.msi not found" }
+          Copy-Item $msi.FullName "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
+
+      - name: Sign MSI
+        if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
+        shell: pwsh
+        run: .\tools\Sign-Files.ps1 -Path "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
+
+      - name: Package ZIP
+        shell: pwsh
+        run: Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.zip"
+
+      - name: Upload artifact (dry run)
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}
+          path: |
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.msi
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
 
       - name: Create release
+        if: ${{ !inputs.dry_run }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
           target_commitish: ${{ github.sha }}
           name: ZabbixTrayMonitor ${{ env.RELEASE_TAG }}
           generate_release_notes: true
-          files: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
+          files: |
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.msi
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
