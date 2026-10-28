@@ -1,5 +1,7 @@
 ﻿// Repräsentiert die gespeicherte Zabbix-Konfiguration
 
+using ZabbixTrayMonitor.Services;
+
 namespace ZabbixTrayMonitor.Models
 {
     public class ZabbixConfig
@@ -13,8 +15,8 @@ namespace ZabbixTrayMonitor.Models
         public bool IgnoreCertificateErrors { get; set; } = false; // Ignoriert SSL Fehler zB. bei self-signed Zertifikaten
         public bool UseDarkMode { get; set; } = true;
 
-        // Sprache der Oberfläche: "" = Systemsprache, sonst "en", "de" oder "cs"
-        public string Language { get; set; } = "";
+        // Sprache der Oberfläche: "en" (Standard), "de", "cs" oder "" = Systemsprache
+        public string Language { get; set; } = LocalizationService.DefaultLanguage;
 
         // Alarmbearbeitung
         public const string LegacyAcknowledgeMessage = "Acknowledged via ZabbixTrayMonitor";

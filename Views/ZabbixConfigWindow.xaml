@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZabbixTrayMonitor"
         mc:Ignorable="d"
-        Title="Zabbix Einstellungen - ZabbixTrayMonitor"
+        Title="Settings - ZabbixTrayMonitor"
         SizeToContent="Height"
         Width="440"
         WindowStartupLocation="CenterScreen"
@@ -54,7 +54,7 @@
                         Margin="0,0,0,8">
 
                     <TextBlock x:Name="HeaderTitle"
-                               Text="Zabbix Einstellungen"
+                               Text="Settings"
                                Foreground="{DynamicResource PrimaryTextBrush}"
                                FontWeight="Bold"
                                Margin="6,0,0,8"

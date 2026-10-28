@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release-Tag, zB. v1.2.2"
+        description: "Release tag, e.g. v1.2.2"
         required: true
 
 permissions:
@@ -54,12 +54,12 @@ jobs:
               @(Get-ChildItem publish -Recurse -Filter ZabbixTrayMonitor.resources.dll)
 
             & $signtool sign /fd SHA256 /f $pfxPath /p $env:SIGNING_CERT_PASSWORD /tr http://timestamp.digicert.com /td SHA256 $files.FullName
-            if ($LASTEXITCODE -ne 0) { throw "signtool fehlgeschlagen ($LASTEXITCODE)" }
+            if ($LASTEXITCODE -ne 0) { throw "signtool failed ($LASTEXITCODE)" }
 
             # Eigenes Zertifikat ist auf dem Runner nicht vertrauenswürdig, deshalb nur prüfen dass eine Signatur vorhanden ist
             foreach ($file in $files) {
               $signature = Get-AuthenticodeSignature $file.FullName
-              if ($null -eq $signature.SignerCertificate) { throw "Keine Signatur: $($file.FullName)" }
+              if ($null -eq $signature.SignerCertificate) { throw "No signature: $($file.FullName)" }
               Write-Host "$($file.Name): $($signature.SignerCertificate.Subject) ($($signature.SignerCertificate.Thumbprint))"
             }
           }

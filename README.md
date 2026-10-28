@@ -1,77 +1,77 @@
 # Zabbix Tray Monitor
 
-Kleiner Windows Tray Client für Zabbix.
+Small Windows tray client for Zabbix.
 
-Die Anwendung läuft im Windows System Tray und zeigt den aktuellen Zabbix-Status über ein farbiges Tray-Icon, einen Tooltip und ein kleines Problemfenster an.
+The application runs in the Windows system tray and shows the current Zabbix status through a colored tray icon, a tooltip and a small problems window.
 
-Je nach Zustand zeigt das Tray-Icon direkt an, ob alles fehlerfrei ist, Warnungen vorhanden sind oder Fehler vorliegen. Tooltip und Problemfenster listen die aktuellen relevanten Zabbix-Probleme auf.
+The tray icon shows at a glance whether everything is fine, there are warnings or there are errors. The tooltip and the problems window list the current relevant Zabbix problems.
 
-## Funktionen
+## Features
 
-- Tray-Status für OK, Warnung, Fehler und unbekannten Zustand
-- Automatische Aktualisierung über konfigurierbares Abfrageintervall
-- Kompakter Tooltip mit den wichtigsten aktuellen Problemen
-- Einstellbare Verzögerung bis zum Öffnen des Tray-Tooltips
-- Problemfenster mit Host, Zeit, Meldung und überwachtem Objekt
-- Dark- und Light-Mode
-- Oberfläche auf Deutsch, Englisch und Tschechisch (Systemsprache oder fest in den Einstellungen wählbar)
-- API-Token im Windows Credential Manager
-- Alarmbearbeitung direkt im Problemfenster:
-  - Nur bestätigen
-  - Für 5 Minuten unterdrücken
-  - Für 15 Minuten unterdrücken
-  - Für 1 Stunde unterdrücken
-  - Für 3 Stunden unterdrücken
-  - Für 1 Tag unterdrücken
-  - Unterdrücken bis zu einem frei wählbaren Datum/Zeitpunkt
-- Konfigurierbare Standardnachricht für Bestätigungen/Unterdrückungen
-- Nachricht kann pro Aktion direkt im Kontextmenü überschrieben werden
-- Unterdrückte Probleme können wahlweise weiterhin angezeigt werden
-- Optionaler automatischer Refresh nach einer Alarmaktion inklusive verzögertem Folge-Refresh
+- Tray status for OK, warning, error and unknown state
+- Automatic refresh with a configurable poll interval
+- Compact tooltip with the most important current problems
+- Configurable delay before the tray tooltip opens
+- Problems window with host, time, message and monitored object
+- Dark and light mode
+- User interface in English (default), German and Czech; selectable in the settings, or follow the system language
+- API token stored in the Windows Credential Manager
+- Alarm handling directly in the problems window:
+  - Acknowledge only
+  - Suppress for 5 minutes
+  - Suppress for 15 minutes
+  - Suppress for 1 hour
+  - Suppress for 3 hours
+  - Suppress for 1 day
+  - Suppress until a freely chosen date/time
+- Configurable default message for acknowledgements/suppressions
+- The message can be overridden per action directly in the context menu
+- Suppressed problems can optionally still be shown
+- Optional automatic refresh after an alarm action, including a delayed follow-up refresh
 
 ## Download
 
-[![Download](https://img.shields.io/badge/Download-Releases-blue)](https://github.com/Darano94/ZabbixTrayMonitor/releases)
+[![Download](https://img.shields.io/badge/Download-Releases-blue)](https://github.com/petrsykora/ZabbixTrayMonitor/releases)
 
 ## Installation
 
-1. Aktuelle Release-ZIP herunterladen und entpacken.
-2. `ZabbixTrayMonitor.exe` starten.
-3. Beim ersten Start die **Einstellungen** öffnen.
-4. **Zabbix URL** und **API Token** eintragen.
-5. Mit **Testen** die Verbindung prüfen und anschließend **Speichern**.
+1. Download and extract the latest release ZIP.
+2. Start `ZabbixTrayMonitor.exe`.
+3. On first start the **Settings** window opens.
+4. Enter the **Zabbix URL** and the **API token**.
+5. Check the connection with **Test**, then click **Save**.
 
 ## Screenshots
 
-### Tray Tooltip ohne Probleme
+### Tray tooltip without problems
 
-<img src="Assets/README/tray-tooltip-ok.png" alt="Tray Tooltip ohne Probleme">
+<img src="Assets/README/tray-tooltip-ok.png" alt="Tray tooltip without problems">
 
-### Tray Tooltip mit Problemen
+### Tray tooltip with problems
 
-<img src="Assets/README/tray-tooltip-problem.png" alt="Tray Tooltip mit Problemen">
+<img src="Assets/README/tray-tooltip-problem.png" alt="Tray tooltip with problems">
 
-### Problemfenster
+### Problems window
 
-<img src="Assets/README/problems-window.png" alt="Problemfenster" width="290">
+<img src="Assets/README/problems-window.png" alt="Problems window" width="290">
 
-### Alarmbearbeitung
+### Alarm handling
 
-<img src="Assets/README/alarm-editing.png" alt="Alarmbearbeitung" width="420">
+<img src="Assets/README/alarm-editing.png" alt="Alarm handling" width="420">
 
-### Einstellungen
+### Settings
 
-<img src="Assets/README/settings-window.png" alt="Einstellungen" width="420">
+<img src="Assets/README/settings-window.png" alt="Settings" width="420">
 
 ## Config
 
-Die Konfiguration liegt unter:
+The configuration is stored in:
 
 ```text
 %AppData%\ZabbixTrayMonitor\config.json
 ```
 
-Beispiel:
+Example:
 
 ```json
 {
@@ -82,10 +82,10 @@ Beispiel:
   "TrayToolTipDelayMilliseconds": 250,
   "IgnoreCertificateErrors": false,
   "UseDarkMode": true,
-  "Language": "",
+  "Language": "en",
   "ShowSuppressedProblems": false,
   "RefreshAfterProblemAction": true,
-  "AcknowledgeMessage": "Bestätigt von max.mustermann",
+  "AcknowledgeMessage": "Acknowledged by john.doe",
   "AppName": "ZabbixTrayMonitor",
   "WarningSeverityThreshold": 2,
   "ErrorSeverityThreshold": 4,
@@ -97,15 +97,15 @@ Beispiel:
 }
 ```
 
-## Sprachen
+## Languages
 
-Die Oberfläche ist auf Deutsch, Englisch und Tschechisch verfügbar. Unter **Einstellungen → Optionen → Sprache** kann die Systemsprache oder eine feste Sprache gewählt werden (`Language` in der config.json: `""` = System, `"en"`, `"de"`, `"cs"`). Die Änderung gilt sofort nach dem Speichern. Bei einer nicht unterstützten Systemsprache wird Englisch verwendet.
+The user interface is available in English, German and Czech. English is the default. Under **Settings → Options → Language** you can choose a fixed language or follow the Windows display language (`Language` in config.json: `"en"`, `"de"`, `"cs"` or `""` for the system language). The change takes effect right after saving. If the system language is not supported, English is used.
 
-Die Texte liegen in `Resources/Strings.resx` (Englisch), `Resources/Strings.de.resx` und `Resources/Strings.cs.resx`. Für eine weitere Sprache eine weitere `Strings.<code>.resx` anlegen und den Code in `LocalizationService.SupportedLanguages` sowie die Auswahl im Einstellungsfenster ergänzen.
+The texts are stored in `Resources/Strings.resx` (English), `Resources/Strings.de.resx` and `Resources/Strings.cs.resx`. To add another language, add a `Strings.<code>.resx` file and add the code to `LocalizationService.SupportedLanguages` and to the language selection in the settings window.
 
-## Severity Mapping
+## Severity mapping
 
-Die Zabbix API liefert Severity-Werte zwischen 0 und 5:
+The Zabbix API returns severity values between 0 and 5:
 
 ```text
 0 = Not classified
@@ -116,43 +116,43 @@ Die Zabbix API liefert Severity-Werte zwischen 0 und 5:
 5 = Disaster
 ```
 
-`WarningSeverityThreshold` bestimmt, ab welchem Severity-Wert ein Problem als Warnung gewertet wird.
+`WarningSeverityThreshold` defines from which severity a problem counts as a warning.
 
-`ErrorSeverityThreshold` bestimmt, ab welchem Severity-Wert ein Problem als Fehler gewertet wird.
+`ErrorSeverityThreshold` defines from which severity a problem counts as an error.
 
-Standardmäßig:
+Defaults:
 
 ```text
-Severity 0-1 -> ignoriert
-Severity 2-3 -> Warnung
-Severity 4-5 -> Fehler
+Severity 0-1 -> ignored
+Severity 2-3 -> warning
+Severity 4-5 -> error
 ```
 
-## Alarmbearbeitung
+## Alarm handling
 
-Ein Rechtsklick auf ein Problem öffnet das Menü `Alarm bearbeiten`.
+Right-clicking a problem opens the `Edit alarm` menu.
 
-`Nur bestätigen...` führt in Zabbix `event.acknowledge` mit Bestätigung und Nachricht aus.
+`Acknowledge only...` runs `event.acknowledge` in Zabbix with an acknowledgement and a message.
 
-Die zeitlich begrenzten Unterdrückungen bestätigen das Event, fügen die Nachricht hinzu und setzen eine Unterdrückung bis zum gewählten Zeitpunkt.
+The time-limited suppressions acknowledge the event, add the message and suppress the problem until the selected time.
 
-Wenn `ShowSuppressedProblems` auf `false` steht, werden unterdrückte Probleme aus Tray-Status, Tooltip und Problemfenster ausgeblendet.
+If `ShowSuppressedProblems` is `false`, suppressed problems are hidden from the tray status, the tooltip and the problems window.
 
 ## API
 
-Die Anwendung nutzt die Zabbix JSON-RPC API.
+The application uses the Zabbix JSON-RPC API.
 
-Standard API-Pfad:
+Default API path:
 
 ```text
 /api_jsonrpc.php
 ```
 
-Authentifizierung erfolgt über Bearer Token.
+Authentication uses a bearer token.
 
-Für die Problemliste werden die aktuellen Probleme gesammelt abgefragt und mit Hostnamen sowie Trigger-/Item-Informationen angereichert. Es wird nicht pro Problem ein einzelner API-Request ausgeführt.
+For the problem list, the current problems are queried in bulk and enriched with host names and trigger/item information. No separate API request is made per problem.
 
-Genutzte Zabbix API-Methoden:
+Zabbix API methods used:
 
 ```text
 problem.get
@@ -162,71 +162,71 @@ event.acknowledge
 apiinfo.version
 ```
 
-Der Benutzer hinter dem API-Token muss über die benötigten Zabbix-Berechtigungen verfügen. Für die Alarmbearbeitung muss das Bestätigen bzw. Unterdrücken der betreffenden Events erlaubt sein.
+The user behind the API token needs the required Zabbix permissions. For alarm handling, acknowledging and suppressing the affected events must be allowed.
 
-### Sicherheitshinweise
+### Security notes
 
-- Der API Token wird bei jedem Request mitgeschickt. Den Zabbix-Server deshalb über **https://** ansprechen; bei http:// fragt die Anwendung beim Speichern nach.
-- `IgnoreCertificateErrors` schaltet die Zertifikatsprüfung komplett ab. Ein Angreifer im Netzwerk kann sich dann als Zabbix-Server ausgeben und den Token abgreifen. Bei self-signed Zertifikaten besser das Zertifikat bzw. die eigene CA in Windows als vertrauenswürdig importieren.
-- Für den Token einen eigenen Zabbix-Benutzer mit möglichst wenigen Rechten verwenden (Lesen der relevanten Hostgruppen, ggf. Bestätigen/Unterdrücken).
+- The API token is sent with every request. Connect to the Zabbix server via **https://**; for http:// the application asks for confirmation when saving.
+- `IgnoreCertificateErrors` disables certificate validation completely. An attacker on the network could then impersonate the Zabbix server and steal the token. For self-signed certificates, import the certificate or your own CA as trusted in Windows instead.
+- Use a dedicated Zabbix user with as few permissions as possible for the token (read access to the relevant host groups, and acknowledge/suppress if needed).
 
-## Code-Signierung
+## Code signing
 
-Damit Windows die Anwendung als Programm eines bekannten Herausgebers behandelt, kann sie mit einem eigenen Code-Signing-Zertifikat signiert werden. Das Zertifikat wird per Gruppenrichtlinie (GPO) auf die verwalteten Rechner verteilt. Auf Rechnern ohne diese GPO gilt die Signatur als nicht vertrauenswürdig, die Anwendung verhält sich dort wie eine unsignierte.
+To make Windows treat the application as coming from a known publisher, it can be signed with your own code signing certificate. The certificate is distributed to the managed computers via Group Policy (GPO). On computers without this GPO the signature is not trusted and the application behaves like an unsigned one.
 
-### 1. Zertifikat erstellen (einmalig)
+### 1. Create the certificate (once)
 
-Auf einem Windows-Rechner in PowerShell:
+On a Windows computer in PowerShell:
 
 ```powershell
-.\tools\New-CodeSigningCertificate.ps1 -Subject "CN=Meine Firma Code Signing" -OutputFolder C:\Signing
+.\tools\New-CodeSigningCertificate.ps1 -Subject "CN=My Company Code Signing" -OutputFolder C:\Signing
 ```
 
-Das Skript fragt nach einem Passwort und erzeugt:
+The script asks for a password and creates:
 
-- `ZabbixTrayMonitor-CodeSigning.pfx`: privater Schlüssel, sicher aufbewahren und nie ins Repository legen
-- `ZabbixTrayMonitor-CodeSigning.cer`: öffentliches Zertifikat für die GPO
-- `ZabbixTrayMonitor-CodeSigning.pfx.base64.txt`: Inhalt für das GitHub Secret, danach löschen
+- `ZabbixTrayMonitor-CodeSigning.pfx`: private key, keep it safe and never commit it to the repository
+- `ZabbixTrayMonitor-CodeSigning.cer`: public certificate for the GPO
+- `ZabbixTrayMonitor-CodeSigning.pfx.base64.txt`: value for the GitHub secret, delete it afterwards
 
-### 2. GitHub Secrets setzen
+### 2. Set the GitHub secrets
 
-Im Repository unter **Settings → Secrets and variables → Actions → New repository secret**:
+In the repository under **Settings → Secrets and variables → Actions → New repository secret**:
 
-- `SIGNING_CERT_PFX_BASE64`: Inhalt der Datei `.pfx.base64.txt`
-- `SIGNING_CERT_PASSWORD`: das Passwort aus Schritt 1
+- `SIGNING_CERT_PFX_BASE64`: content of the `.pfx.base64.txt` file
+- `SIGNING_CERT_PASSWORD`: the password from step 1
 
-Der Release-Workflow signiert dann `ZabbixTrayMonitor.exe`, `ZabbixTrayMonitor.dll` und die Sprachdateien automatisch (mit Zeitstempel, damit die Signatur auch nach Ablauf des Zertifikats gültig bleibt). Ohne Secrets wird wie bisher unsigniert gebaut.
+The release workflow then signs `ZabbixTrayMonitor.exe`, `ZabbixTrayMonitor.dll` and the language files automatically, with a timestamp so the signature stays valid after the certificate expires. Without the secrets the build stays unsigned as before.
 
-### 3. Zertifikat per GPO verteilen
+### 3. Distribute the certificate via GPO
 
-In der Gruppenrichtlinienverwaltung ein GPO für die betroffenen Computer anlegen und die `.cer`-Datei an **zwei** Stellen importieren:
+In Group Policy Management, create a GPO for the affected computers and import the `.cer` file in **two** places:
 
-- **Computerkonfiguration → Richtlinien → Windows-Einstellungen → Sicherheitseinstellungen → Richtlinien für öffentliche Schlüssel → Vertrauenswürdige Stammzertifizierungsstellen**
-- **… → Richtlinien für öffentliche Schlüssel → Vertrauenswürdige Herausgeber**
+- **Computer Configuration → Policies → Windows Settings → Security Settings → Public Key Policies → Trusted Root Certification Authorities**
+- **… → Public Key Policies → Trusted Publishers**
 
-Ohne GPO (zB. zum Testen) auf einem einzelnen Rechner als Administrator:
+Without a GPO (for example for testing), on a single computer as administrator:
 
 ```powershell
 Import-Certificate -FilePath .\ZabbixTrayMonitor-CodeSigning.cer -CertStoreLocation Cert:\LocalMachine\Root
 Import-Certificate -FilePath .\ZabbixTrayMonitor-CodeSigning.cer -CertStoreLocation Cert:\LocalMachine\TrustedPublisher
 ```
 
-Prüfen: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` muss `Status: Valid` zeigen.
+Check: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` must show `Status: Valid`.
 
-### Hinweis zu SmartScreen
+### Note on SmartScreen
 
-SmartScreen prüft vor allem Dateien, die per Browser aus dem Internet geladen wurden (Mark of the Web). Ein eigenes Zertifikat hat bei Microsoft keine Reputation, deshalb kann ein direkt von GitHub geladenes ZIP trotzdem eine Warnung auslösen. Für eine Verteilung ohne Warnung die Anwendung intern ausrollen (GPO-Softwareverteilung, Intune, Netzwerkfreigabe im Intranet) oder ein heruntergeladenes ZIP vor dem Entpacken freigeben:
+SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a ZIP downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded ZIP before extracting it:
 
 ```powershell
 Unblock-File .\ZabbixTrayMonitor-v1.2.2-win-x64.zip
 ```
 
-## Bibliotheken
+## Libraries
 
 ### Hardcodet.NotifyIcon.Wpf
 
-WPF-Unterstützung für Windows System Tray Icons.
+WPF support for Windows system tray icons.
 
 ### CredentialManagement
 
-Zugriff auf den Windows Credential Manager.
+Access to the Windows Credential Manager.

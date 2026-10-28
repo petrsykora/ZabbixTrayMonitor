@@ -1,18 +1,18 @@
 <#
 .SYNOPSIS
-    Erstellt ein eigenes Code-Signing-Zertifikat für ZabbixTrayMonitor.
+    Creates your own code signing certificate for ZabbixTrayMonitor.
 
 .DESCRIPTION
-    Erzeugt ein selbstsigniertes Code-Signing-Zertifikat und exportiert:
-      - <Name>.pfx               privater Schlüssel, nur für das Signieren (geheim halten!)
-      - <Name>.cer               öffentliches Zertifikat, wird per GPO auf die Clients verteilt
-      - <Name>.pfx.base64.txt    Inhalt für das GitHub Secret SIGNING_CERT_PFX_BASE64
+    Creates a self-signed code signing certificate and exports:
+      - <Name>.pfx               private key, only used for signing (keep it secret!)
+      - <Name>.cer               public certificate, distributed to the clients via GPO
+      - <Name>.pfx.base64.txt    value for the GitHub secret SIGNING_CERT_PFX_BASE64
 
-    Das Zertifikat wird danach wieder aus dem eigenen Zertifikatsspeicher entfernt,
-    damit der private Schlüssel nur noch in der PFX-Datei existiert.
+    Afterwards the certificate is removed from your certificate store again,
+    so the private key only exists in the PFX file.
 
 .EXAMPLE
-    .\New-CodeSigningCertificate.ps1 -Subject "CN=Meine Firma Code Signing" -OutputFolder C:\Signing
+    .\New-CodeSigningCertificate.ps1 -Subject "CN=My Company Code Signing" -OutputFolder C:\Signing
 #>
 param(
     [string] $Subject = "CN=ZabbixTrayMonitor Code Signing",
@@ -25,7 +25,7 @@ $ErrorActionPreference = "Stop"
 
 New-Item -ItemType Directory -Force -Path $OutputFolder | Out-Null
 
-$password = Read-Host -AsSecureString "Passwort für die PFX-Datei (wird auch als GitHub Secret SIGNING_CERT_PASSWORD gebraucht)"
+$password = Read-Host -AsSecureString "Password for the PFX file (also needed as GitHub secret SIGNING_CERT_PASSWORD)"
 
 $cert = New-SelfSignedCertificate `
     -Type CodeSigningCert `
@@ -47,16 +47,16 @@ try {
     [Convert]::ToBase64String([IO.File]::ReadAllBytes($pfxPath)) | Set-Content -NoNewline -Path $base64Path
 
     Write-Host ""
-    Write-Host "Zertifikat erstellt:" -ForegroundColor Green
+    Write-Host "Certificate created:" -ForegroundColor Green
     Write-Host "  Subject:    $($cert.Subject)"
     Write-Host "  Thumbprint: $($cert.Thumbprint)"
-    Write-Host "  Gültig bis: $($cert.NotAfter)"
+    Write-Host "  Valid until: $($cert.NotAfter)"
     Write-Host ""
-    Write-Host "  $pfxPath  -> geheim halten, nicht ins Repository"
-    Write-Host "  $cerPath  -> per GPO verteilen (Vertrauenswürdige Stammzertifizierungsstellen + Vertrauenswürdige Herausgeber)"
-    Write-Host "  $base64Path  -> Inhalt als GitHub Secret SIGNING_CERT_PFX_BASE64 eintragen, danach Datei löschen"
+    Write-Host "  $pfxPath  -> keep secret, never commit to the repository"
+    Write-Host "  $cerPath  -> distribute via GPO (Trusted Root Certification Authorities + Trusted Publishers)"
+    Write-Host "  $base64Path  -> paste as GitHub secret SIGNING_CERT_PFX_BASE64, then delete the file"
 }
 finally {
-    # privaten Schlüssel nicht im Benutzerzertifikatsspeicher liegen lassen
+    # do not leave the private key in the user certificate store
     Remove-Item -Path "Cert:\CurrentUser\My\$($cert.Thumbprint)" -DeleteKey -ErrorAction SilentlyContinue
 }
