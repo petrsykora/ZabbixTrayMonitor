@@ -1,10 +1,16 @@
 name: Release
 
 # Baut die Windows-Version und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.2.2)
+# oder manuell über "Run workflow" mit Angabe des Tags (Tag wird dann vom Release auf dem gewählten Branch angelegt)
 on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release-Tag, zB. v1.2.2"
+        required: true
 
 permissions:
   contents: write
@@ -12,6 +18,9 @@ permissions:
 jobs:
   release:
     runs-on: windows-latest
+
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
     steps:
       - uses: actions/checkout@v4
@@ -25,11 +34,13 @@ jobs:
 
       - name: Package
         shell: pwsh
-        run: Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-${{ github.ref_name }}-win-x64.zip"
+        run: Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip"
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          name: ZabbixTrayMonitor ${{ github.ref_name }}
+          tag_name: ${{ env.RELEASE_TAG }}
+          target_commitish: ${{ github.sha }}
+          name: ZabbixTrayMonitor ${{ env.RELEASE_TAG }}
           generate_release_notes: true
-          files: ZabbixTrayMonitor-${{ github.ref_name }}-win-x64.zip
+          files: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
