@@ -31,6 +31,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- Übersetzungen: Strings.resx = Englisch (Fallback), Strings.de.resx = Deutsch, Strings.cs.resx = Tschechisch
+		     Strings.Designer.cs wird von Visual Studio beim Speichern von Strings.resx neu generiert -->
+		<EmbeddedResource Update="Resources\Strings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="Resources\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CredentialManagement" Version="1.0.2" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
 	</ItemGroup>

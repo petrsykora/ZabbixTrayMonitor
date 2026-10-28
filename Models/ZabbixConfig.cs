@@ -13,9 +13,13 @@ namespace ZabbixTrayMonitor.Models
         public bool IgnoreCertificateErrors { get; set; } = false; // Ignoriert SSL Fehler zB. bei self-signed Zertifikaten
         public bool UseDarkMode { get; set; } = true;
 
+        // Sprache der Oberfläche: "" = Systemsprache, sonst "en", "de" oder "cs"
+        public string Language { get; set; } = "";
+
         // Alarmbearbeitung
         public const string LegacyAcknowledgeMessage = "Acknowledged via ZabbixTrayMonitor";
-        public static string DefaultAcknowledgeMessage => $"Bestätigt von {System.Environment.UserName}";
+        public static string DefaultAcknowledgeMessage =>
+            string.Format(ZabbixTrayMonitor.Resources.Strings.Acknowledge_DefaultMessage, System.Environment.UserName);
 
         public static string ResolveAcknowledgeMessage(string? configuredMessage)
         {

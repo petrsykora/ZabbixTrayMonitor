@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using ZabbixTrayMonitor.Models;
+using ZabbixTrayMonitor.Resources;
 
 // Kommunikation mit der Zabbix API
 // Zabbix API nutzt JSONRPC
@@ -423,7 +424,7 @@ namespace ZabbixTrayMonitor.Services
                 throw new ArgumentException("Nachricht darf nicht leer sein", nameof(message));
 
             if (suppressUntil.HasValue && suppressUntil.Value <= DateTime.Now)
-                throw new ArgumentException("Unterdrückungszeitpunkt muss in der Zukunft liegen", nameof(suppressUntil));
+                throw new ArgumentException(Strings.Api_SuppressUntilNotInFuture, nameof(suppressUntil));
 
             var apiUrl = BuildApiUrl(zabbixUrl, zabbixApiEndpoint);
             var client = GetClient(ignoreCertificateErrors);
@@ -472,7 +473,7 @@ namespace ZabbixTrayMonitor.Services
             ThrowIfJsonRpcError(document.RootElement);
 
             if (!document.RootElement.TryGetProperty("result", out _))
-                throw new Exception("Keine gültige Antwort vom Server erhalten");
+                throw new Exception(Strings.Api_InvalidResponse);
         }
 
         public async Task<string> GetVersionAsync(string zabbixUrl, string zabbixApiEndpoint, bool ignoreCertificateErrors)
@@ -510,7 +511,7 @@ namespace ZabbixTrayMonitor.Services
             if (document.RootElement.TryGetProperty("result", out var result))
                 return result.GetString() ?? "";
 
-            throw new Exception("Keine gültige Antwort vom Server erhalten");
+            throw new Exception(Strings.Api_InvalidResponse);
         }
 
         private static bool IsApiFlagSet(JsonElement element)
@@ -597,9 +598,9 @@ namespace ZabbixTrayMonitor.Services
                 : null;
 
             if (!string.IsNullOrWhiteSpace(data))
-                throw new Exception($"Zabbix API Fehler: {message} - {data}");
+                throw new Exception(string.Format(Strings.Api_Error, $"{message} - {data}"));
 
-            throw new Exception($"Zabbix API Fehler: {message ?? "Unbekannter Fehler"}");
+            throw new Exception(string.Format(Strings.Api_Error, message ?? Strings.Api_UnknownError));
         }
     }
 }

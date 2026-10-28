@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ZabbixTrayMonitor.Models;
 using ZabbixTrayMonitor.Services;
+using ZabbixTrayMonitor.Resources;
 
 namespace ZabbixTrayMonitor.Views
 {
@@ -15,6 +16,7 @@ namespace ZabbixTrayMonitor.Views
         private bool _isRefreshing = false; // verhindert mehrfaches paralleles Aktualisieren
         private bool _isProblemActionRunning = false; // verhindert doppelte Bestätigen-/Unterdrücken-Aktionen
         private bool _keepOpenOnDeactivate = false; // z. B. während "Unterdrücken bis..."-Dialog geöffnet ist
+        private bool _allowClose = false; // nur über CloseWindow() wirklich schließen, sonst nur verstecken
         private static readonly TimeSpan ProblemActionFollowUpRefreshDelay = TimeSpan.FromSeconds(4);
 
         private readonly Func<Task<List<ZabbixProblem>>> _refreshAction; // Funktion, die von extern übergeben wird damit Logik nicht in der View liegt
@@ -82,8 +84,8 @@ namespace ZabbixTrayMonitor.Views
 
             ProblemsItemsControl.ItemsSource = viewModels;
 
-            Title = $"{cfg.AppName} - Aktuelle Zabbix Probleme - {viewModels.Count}";
-            LastUpdatedTextBlock.Text = $"Zuletzt aktualisiert: {DateTime.Now:HH:mm:ss}";
+            Title = string.Format(Strings.Problems_TitleWithCount, cfg.AppName, viewModels.Count);
+            LastUpdatedTextBlock.Text = string.Format(Strings.Problems_LastUpdated, DateTime.Now);
 
             EmptyTextBlock.Visibility = viewModels.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             ProblemsScrollViewer.Visibility = viewModels.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
@@ -146,8 +148,8 @@ namespace ZabbixTrayMonitor.Views
             {
                 MessageBox.Show(
                     this,
-                    $"Aktualisierung fehlgeschlagen:{Environment.NewLine}{Environment.NewLine}{ex.Message}",
-                    "Zabbix Probleme aktualisieren",
+                    $"{Strings.Problems_RefreshFailed}{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    Strings.Problems_RefreshCaption,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -398,8 +400,8 @@ namespace ZabbixTrayMonitor.Views
             {
                 MessageBox.Show(
                     this,
-                    $"Alarm konnte nicht bearbeitet werden:{Environment.NewLine}{Environment.NewLine}{ex.Message}",
-                    "Alarm bearbeiten",
+                    $"{Strings.Problems_ActionFailed}{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    Strings.Problems_EditAlarm,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -431,8 +433,18 @@ namespace ZabbixTrayMonitor.Views
             }
         }
 
+        // Fenster wirklich schließen (zB. nach Sprachwechsel), normales Schließen versteckt es nur
+        public void CloseWindow()
+        {
+            _allowClose = true;
+            Close();
+        }
+
         private void Window_Closing(object? sender, CancelEventArgs e)
         {
+            if (_allowClose)
+                return;
+
             e.Cancel = true;
             Hide();
         }

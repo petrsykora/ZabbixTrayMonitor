@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ZabbixTrayMonitor.Models;
+using ZabbixTrayMonitor.Resources;
 
 // Mapped ZabbixProbleme in ProblemListItems fürs ProblemsWindow zum Rendern
 // dadurch keine Logik in ProblemsWindow.xaml.cs
@@ -61,7 +62,7 @@ namespace ZabbixTrayMonitor.Services
             var operationalData = CleanText(problem.OperationalData);
 
             if (string.IsNullOrWhiteSpace(problemName) && string.IsNullOrWhiteSpace(monitoredObject))
-                return ("(kein Text)", operationalData);
+                return (Strings.Common_NoText, operationalData);
 
             // Beispiel:
             // ProblemName: "Paperless Web nicht erreichbar"

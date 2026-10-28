@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Chyba</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="Common_Required" xml:space="preserve">
+    <value>Povinné pole</value>
+  </data>
+  <data name="Common_Unknown" xml:space="preserve">
+    <value>neznámá</value>
+  </data>
+  <data name="Common_NoText" xml:space="preserve">
+    <value>(bez textu)</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="Tray_ShowProblems" xml:space="preserve">
+    <value>Zobrazit problémy</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
+  <data name="Tray_Info" xml:space="preserve">
+    <value>O aplikaci</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Ukončit</value>
+  </data>
+  <data name="Tray_Initializing" xml:space="preserve">
+    <value>Inicializace...</value>
+  </data>
+  <data name="Tooltip_NoProblems" xml:space="preserve">
+    <value>Žádné problémy</value>
+  </data>
+  <data name="Tooltip_Errors" xml:space="preserve">
+    <value>Chyby</value>
+  </data>
+  <data name="Tooltip_Warnings" xml:space="preserve">
+    <value>Varování</value>
+  </data>
+  <data name="Tooltip_ErrorLine" xml:space="preserve">
+    <value>CHYBA: {0}</value>
+  </data>
+  <data name="Tooltip_Server" xml:space="preserve">
+    <value>Zabbix server: {0}</value>
+  </data>
+  <data name="Tooltip_Updated" xml:space="preserve">
+    <value>Aktualizováno: {0:d. M. yyyy HH:mm:ss}</value>
+  </data>
+  <data name="Error_NoZabbixUrl" xml:space="preserve">
+    <value>Není nastavena URL Zabbixu</value>
+  </data>
+  <data name="Error_NoApiToken" xml:space="preserve">
+    <value>Není uložen žádný API token</value>
+  </data>
+  <data name="Info_Title" xml:space="preserve">
+    <value>{0} - O aplikaci</value>
+  </data>
+  <data name="Info_Version" xml:space="preserve">
+    <value>Verze: {0}</value>
+  </data>
+  <data name="Info_Program" xml:space="preserve">
+    <value>Program: {0}</value>
+  </data>
+  <data name="Info_Config" xml:space="preserve">
+    <value>Konfigurace: {0}</value>
+  </data>
+  <data name="Problems_WindowTitle" xml:space="preserve">
+    <value>Aktuální problémy Zabbixu</value>
+  </data>
+  <data name="Problems_TitleWithCount" xml:space="preserve">
+    <value>{0} - Aktuální problémy Zabbixu - {1}</value>
+  </data>
+  <data name="Problems_LastUpdated" xml:space="preserve">
+    <value>Naposledy aktualizováno: {0:HH:mm:ss}</value>
+  </data>
+  <data name="Problems_Loading" xml:space="preserve">
+    <value>Aktualizuji...</value>
+  </data>
+  <data name="Problems_OpenDashboard" xml:space="preserve">
+    <value>Otevřít dashboard</value>
+  </data>
+  <data name="Problems_Empty" xml:space="preserve">
+    <value>Nebyly nalezeny žádné problémy</value>
+  </data>
+  <data name="Problems_EditAlarm" xml:space="preserve">
+    <value>Upravit alarm</value>
+  </data>
+  <data name="Problems_MessageLabel" xml:space="preserve">
+    <value>Zpráva</value>
+  </data>
+  <data name="Problems_AcknowledgeOnly" xml:space="preserve">
+    <value>Pouze potvrdit...</value>
+  </data>
+  <data name="Problems_Suppress5Minutes" xml:space="preserve">
+    <value>Potlačit na 5 minut...</value>
+  </data>
+  <data name="Problems_Suppress15Minutes" xml:space="preserve">
+    <value>Potlačit na 15 minut...</value>
+  </data>
+  <data name="Problems_Suppress1Hour" xml:space="preserve">
+    <value>Potlačit na 1 hodinu...</value>
+  </data>
+  <data name="Problems_Suppress3Hours" xml:space="preserve">
+    <value>Potlačit na 3 hodiny...</value>
+  </data>
+  <data name="Problems_Suppress1Day" xml:space="preserve">
+    <value>Potlačit na 1 den...</value>
+  </data>
+  <data name="Problems_SuppressUntil" xml:space="preserve">
+    <value>Potlačit do...</value>
+  </data>
+  <data name="Problems_RefreshFailed" xml:space="preserve">
+    <value>Obnovení selhalo:</value>
+  </data>
+  <data name="Problems_RefreshCaption" xml:space="preserve">
+    <value>Obnovit problémy Zabbixu</value>
+  </data>
+  <data name="Problems_ActionFailed" xml:space="preserve">
+    <value>Alarm se nepodařilo upravit:</value>
+  </data>
+  <data name="Suppress_Title" xml:space="preserve">
+    <value>Potlačit do</value>
+  </data>
+  <data name="Suppress_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Suppress_Time" xml:space="preserve">
+    <value>Čas</value>
+  </data>
+  <data name="Suppress_TimeFormat" xml:space="preserve">
+    <value>Formát: HH:mm</value>
+  </data>
+  <data name="Suppress_Button" xml:space="preserve">
+    <value>Potlačit</value>
+  </data>
+  <data name="Suppress_InvalidDate" xml:space="preserve">
+    <value>Zadejte platné datum ve formátu {0}.</value>
+  </data>
+  <data name="Suppress_InvalidTime" xml:space="preserve">
+    <value>Zadejte platný čas ve formátu HH:mm, např. 22:30.</value>
+  </data>
+  <data name="Suppress_NotInFuture" xml:space="preserve">
+    <value>Čas musí být v budoucnosti.</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>{0} - Nastavení</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Obecné</value>
+  </data>
+  <data name="Settings_AppName" xml:space="preserve">
+    <value>Název aplikace</value>
+  </data>
+  <data name="Settings_ZabbixUrl" xml:space="preserve">
+    <value>URL Zabbixu</value>
+  </data>
+  <data name="Settings_ApiPath" xml:space="preserve">
+    <value>Cesta k API (JSON-RPC)</value>
+  </data>
+  <data name="Settings_DashboardUrl" xml:space="preserve">
+    <value>URL dashboardu</value>
+  </data>
+  <data name="Settings_ApiToken" xml:space="preserve">
+    <value>API token</value>
+  </data>
+  <data name="Settings_Options" xml:space="preserve">
+    <value>Možnosti</value>
+  </data>
+  <data name="Settings_IgnoreCertificateErrors" xml:space="preserve">
+    <value>Ignorovat chyby SSL certifikátu</value>
+  </data>
+  <data name="Settings_DarkMode" xml:space="preserve">
+    <value>Zapnout tmavý režim</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="Settings_LanguageSystem" xml:space="preserve">
+    <value>Systémový</value>
+  </data>
+  <data name="Settings_PollInterval" xml:space="preserve">
+    <value>Interval dotazování (s)</value>
+  </data>
+  <data name="Settings_TooltipDelay" xml:space="preserve">
+    <value>Zpoždění tooltipu (ms)</value>
+  </data>
+  <data name="Settings_Thresholds" xml:space="preserve">
+    <value>Prahové hodnoty</value>
+  </data>
+  <data name="Settings_WarningThreshold" xml:space="preserve">
+    <value>Práh varování</value>
+  </data>
+  <data name="Settings_ErrorThreshold" xml:space="preserve">
+    <value>Práh chyby</value>
+  </data>
+  <data name="Settings_Colors" xml:space="preserve">
+    <value>Barvy</value>
+  </data>
+  <data name="Settings_ColorError" xml:space="preserve">
+    <value>Barva chyby (hex)</value>
+  </data>
+  <data name="Settings_ColorWarning" xml:space="preserve">
+    <value>Barva varování (hex)</value>
+  </data>
+  <data name="Settings_ColorInfo" xml:space="preserve">
+    <value>Barva informace (hex)</value>
+  </data>
+  <data name="Settings_AlarmHandling" xml:space="preserve">
+    <value>Zpracování alarmů</value>
+  </data>
+  <data name="Settings_ShowSuppressedProblems" xml:space="preserve">
+    <value>Zobrazovat i potlačené problémy</value>
+  </data>
+  <data name="Settings_RefreshAfterProblemAction" xml:space="preserve">
+    <value>Po potvrzení/potlačení automaticky obnovit</value>
+  </data>
+  <data name="Settings_DefaultMessage" xml:space="preserve">
+    <value>Výchozí zpráva</value>
+  </data>
+  <data name="Settings_CredentialTarget" xml:space="preserve">
+    <value>Credential target</value>
+  </data>
+  <data name="Settings_CredentialUsername" xml:space="preserve">
+    <value>Credential username</value>
+  </data>
+  <data name="Settings_Test" xml:space="preserve">
+    <value>Otestovat</value>
+  </data>
+  <data name="Settings_Save" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="Settings_TestConnectionCaption" xml:space="preserve">
+    <value>Test připojení</value>
+  </data>
+  <data name="Settings_TestConnectionSuccess" xml:space="preserve">
+    <value>Připojení bylo úspěšné!
+
+Verze Zabbixu: {0}</value>
+  </data>
+  <data name="Settings_TestConnectionFailed" xml:space="preserve">
+    <value>Připojení selhalo:
+
+{0}</value>
+  </data>
+  <data name="Settings_EnterUrlFirst" xml:space="preserve">
+    <value>Nejprve zadejte URL Zabbix serveru</value>
+  </data>
+  <data name="Settings_EnterApiPath" xml:space="preserve">
+    <value>Zadejte cestu k API (JSON-RPC)</value>
+  </data>
+  <data name="Settings_EnterAppName" xml:space="preserve">
+    <value>Zadejte název aplikace</value>
+  </data>
+  <data name="Settings_EnterUrl" xml:space="preserve">
+    <value>Zadejte URL Zabbix serveru</value>
+  </data>
+  <data name="Settings_EnterApiToken" xml:space="preserve">
+    <value>Zadejte API token</value>
+  </data>
+  <data name="Settings_EnterCredentialSuffix" xml:space="preserve">
+    <value>Zadejte příponu credential targetu</value>
+  </data>
+  <data name="Settings_EnterCredentialUsername" xml:space="preserve">
+    <value>Zadejte credential username</value>
+  </data>
+  <data name="Settings_UrlInvalid" xml:space="preserve">
+    <value>URL Zabbix serveru musí začínat https:// (nebo http://)</value>
+  </data>
+  <data name="Settings_HttpWarning" xml:space="preserve">
+    <value>Připojení k Zabbix serveru není šifrované (http://).
+
+API token se posílá jako prostý text a v síti ho lze odposlechnout.
+
+Přesto uložit?</value>
+  </data>
+  <data name="Settings_HttpWarningCaption" xml:space="preserve">
+    <value>Nezabezpečené připojení</value>
+  </data>
+  <data name="Settings_CertificateWarning" xml:space="preserve">
+    <value>Při ignorování chyb certifikátu se už neověřuje identita Zabbix serveru.
+
+Útočník v síti by se pak mohl vydávat za server a získat API token.
+
+Lepší řešení: importujte certifikát nebo vlastní CA do Windows jako důvěryhodné.
+
+Přesto ignorovat chyby certifikátu?</value>
+  </data>
+  <data name="Settings_CertificateWarningCaption" xml:space="preserve">
+    <value>Vypnout ověřování certifikátu</value>
+  </data>
+  <data name="Settings_NoTokenInCredentialManager" xml:space="preserve">
+    <value>V Credential Manageru není žádný token, zadejte token znovu</value>
+  </data>
+  <data name="Settings_ExistingTokenNotFound" xml:space="preserve">
+    <value>Stávající API token nebyl v Credential Manageru nalezen, zadejte API token znovu</value>
+  </data>
+  <data name="Settings_CredentialsSaveFailed" xml:space="preserve">
+    <value>Přihlašovací údaje se nepodařilo uložit:
+
+{0}</value>
+  </data>
+  <data name="Settings_PollIntervalInvalid" xml:space="preserve">
+    <value>Zadejte platné číslo pro interval dotazování</value>
+  </data>
+  <data name="Settings_PollIntervalTooShort" xml:space="preserve">
+    <value>Interval dotazování musí být alespoň 10 sekund</value>
+  </data>
+  <data name="Settings_TooltipDelayInvalid" xml:space="preserve">
+    <value>Zadejte platné číslo pro zpoždění tooltipu</value>
+  </data>
+  <data name="Settings_TooltipDelayRange" xml:space="preserve">
+    <value>Zpoždění tooltipu musí být mezi 0 a 10000 ms</value>
+  </data>
+  <data name="Settings_WarningThresholdInvalid" xml:space="preserve">
+    <value>Zadejte platné číslo pro práh varování</value>
+  </data>
+  <data name="Settings_WarningThresholdRange" xml:space="preserve">
+    <value>Práh varování musí být mezi 0 a 5</value>
+  </data>
+  <data name="Settings_ErrorThresholdInvalid" xml:space="preserve">
+    <value>Zadejte platné číslo pro práh chyby</value>
+  </data>
+  <data name="Settings_ErrorThresholdRange" xml:space="preserve">
+    <value>Práh chyby musí být mezi 0 a 5</value>
+  </data>
+  <data name="Settings_ErrorThresholdNotGreater" xml:space="preserve">
+    <value>Práh chyby musí být vyšší než práh varování</value>
+  </data>
+  <data name="Api_InvalidResponse" xml:space="preserve">
+    <value>Ze serveru nepřišla platná odpověď</value>
+  </data>
+  <data name="Api_Error" xml:space="preserve">
+    <value>Chyba Zabbix API: {0}</value>
+  </data>
+  <data name="Api_UnknownError" xml:space="preserve">
+    <value>Neznámá chyba</value>
+  </data>
+  <data name="Api_SuppressUntilNotInFuture" xml:space="preserve">
+    <value>Čas potlačení musí být v budoucnosti</value>
+  </data>
+  <data name="Acknowledge_DefaultMessage" xml:space="preserve">
+    <value>Potvrzeno uživatelem {0}</value>
+  </data>
+</root>

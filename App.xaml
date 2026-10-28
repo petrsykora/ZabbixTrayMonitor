@@ -87,5 +87,9 @@
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        </Style>
     </Application.Resources>
 </Application>

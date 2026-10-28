@@ -1,10 +1,11 @@
 ﻿<Window x:Class="ZabbixTrayMonitor.Views.ProblemsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:ZabbixTrayMonitor.Resources"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Aktuelle Zabbix Probleme"
+        Title="{x:Static res:Strings.Problems_WindowTitle}"
         Height="460"
         Width="300"
         WindowStartupLocation="Manual"
@@ -240,7 +241,7 @@
                                    FontStyle="Italic"
                                    Margin="0,0,8,0"
                                    VerticalAlignment="Center"
-                                   Text="Aktualisiere..." />
+                                   Text="{x:Static res:Strings.Problems_Loading}" />
 
                         <TextBlock x:Name="LastUpdatedTextBlock"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
@@ -259,7 +260,7 @@
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Padding="0"
-                                ToolTip="Aktualisieren"
+                                ToolTip="{x:Static res:Strings.Common_Refresh}"
                                 Click="Refresh_Click" />
 
                         <Button Content="⌂"
@@ -269,7 +270,7 @@
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Padding="0"
-                                ToolTip="Dashboard öffnen"
+                                ToolTip="{x:Static res:Strings.Problems_OpenDashboard}"
                                 Click="Dashboard_Click" />
                     </StackPanel>
                 </Grid>
@@ -282,7 +283,7 @@
                                FontStyle="Italic"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Text="Keine Probleme gefunden" />
+                               Text="{x:Static res:Strings.Problems_Empty}" />
 
                     <ScrollViewer x:Name="ProblemsScrollViewer"
                                   Padding="0"
@@ -307,7 +308,7 @@
                                         <Border.ContextMenu>
                                             <ContextMenu Opened="ProblemContextMenu_Opened"
                                                          Style="{StaticResource ProblemContextMenuStyle}">
-                                                <MenuItem Header="Alarm bearbeiten"
+                                                <MenuItem Header="{x:Static res:Strings.Problems_EditAlarm}"
                                                           Style="{StaticResource ProblemMenuItemStyle}">
                                                     <!-- Die Standardnachricht wird beim Öffnen automatisch geladen.
                                                          Sie kann bei Bedarf direkt für die aktuelle Aktion überschrieben werden. -->
@@ -316,7 +317,7 @@
                                                               StaysOpenOnClick="True">
                                                         <MenuItem.Header>
                                                             <StackPanel Width="230" Margin="0,1">
-                                                                <TextBlock Text="Text"
+                                                                <TextBlock Text="{x:Static res:Strings.Problems_MessageLabel}"
                                                                            FontSize="10"
                                                                            Foreground="{DynamicResource SecondaryTextBrush}"
                                                                            Margin="0,0,0,3" />
@@ -330,25 +331,25 @@
                                                         </MenuItem.Header>
                                                     </MenuItem>
                                                     <Separator Style="{StaticResource ProblemMenuSeparatorStyle}" />
-                                                    <MenuItem Header="Nur bestätigen..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_AcknowledgeOnly}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="AcknowledgeProblem_Click" />
-                                                    <MenuItem Header="Für 5 Minuten unterdrücken..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress5Minutes}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="Suppress5Minutes_Click" />
-                                                    <MenuItem Header="Für 15 Minuten unterdrücken..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress15Minutes}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="Suppress15Minutes_Click" />
-                                                    <MenuItem Header="Für 1 Stunde unterdrücken..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress1Hour}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="Suppress1Hour_Click" />
-                                                    <MenuItem Header="Für 3 Stunden unterdrücken..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress3Hours}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="Suppress3Hours_Click" />
-                                                    <MenuItem Header="Für 1 Tag unterdrücken..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress1Day}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="Suppress1Day_Click" />
-                                                    <MenuItem Header="Unterdrücken bis..."
+                                                    <MenuItem Header="{x:Static res:Strings.Problems_SuppressUntil}"
                                                               Style="{StaticResource ProblemMenuItemStyle}"
                                                               Click="SuppressUntil_Click" />
                                                 </MenuItem>

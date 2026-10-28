@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using ZabbixTrayMonitor.Models;
+using ZabbixTrayMonitor.Resources;
 using ZabbixTrayMonitor.Services;
 
 // Einstellungs-WPF-Fenster
@@ -17,6 +18,15 @@ namespace ZabbixTrayMonitor
         private readonly ZabbixClient _zabbixClient = new();
         private const string TokenPlaceholder = "***********************";
 
+        // Severity-Namen wie in Zabbix, deshalb nicht übersetzt
+        private const string SeverityLegend =
+            "0 = Not classified\n" +
+            "1 = Information\n" +
+            "2 = Warning\n" +
+            "3 = Average\n" +
+            "4 = High\n" +
+            "5 = Disaster";
+
         private async void TestConnection_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -27,8 +37,8 @@ namespace ZabbixTrayMonitor
                 if (string.IsNullOrWhiteSpace(url))
                 {
                     MessageBox.Show(
-                        "Vorher die URL des Zabbix-Servers angeben",
-                        "Fehler",
+                        Strings.Settings_EnterUrlFirst,
+                        Strings.Common_Error,
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
                     );
@@ -39,8 +49,8 @@ namespace ZabbixTrayMonitor
                 if (string.IsNullOrWhiteSpace(endpointText))
                 {
                     MessageBox.Show(
-                        "API-Pfad (JSON-RPC) angeben",
-                        "Fehler",
+                        Strings.Settings_EnterApiPath,
+                        Strings.Common_Error,
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
                     );
@@ -52,9 +62,8 @@ namespace ZabbixTrayMonitor
                 var version = await _zabbixClient.GetVersionAsync(url, endpoint, IgnoreCertificateErrorsCheckBox.IsChecked == true);
 
                 MessageBox.Show(
-                    $"Verbindung erfolgreich!" +
-                    $"\n\nZabbix Version: {version}",
-                    "Verbindung testen",
+                    string.Format(Strings.Settings_TestConnectionSuccess, version),
+                    Strings.Settings_TestConnectionCaption,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
                 );
@@ -62,9 +71,8 @@ namespace ZabbixTrayMonitor
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Verbindung fehlgeschlagen:" +
-                    $"\n\n{ex.Message}",
-                    "Verbindung testen",
+                    string.Format(Strings.Settings_TestConnectionFailed, ex.Message),
+                    Strings.Settings_TestConnectionCaption,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -83,8 +91,8 @@ namespace ZabbixTrayMonitor
             var credentialSuffix = NormalizeCredentialSuffix(config.CredentialTargetSuffix);
             var credentialUsername = NormalizeCredentialUsername(config.CredentialUsername);
 
-            this.Title = $"{appName} - Einstellungen";
-            HeaderTitle.Text = $"{appName} - Einstellungen";
+            this.Title = string.Format(Strings.Settings_Title, appName);
+            HeaderTitle.Text = this.Title;
             AppNameTextBoxHeader.Text = appName;
 
             // Appname on the fly ändern
@@ -92,6 +100,7 @@ namespace ZabbixTrayMonitor
 
             IgnoreCertificateErrorsCheckBox.IsChecked = config.IgnoreCertificateErrors;
             DarkModeCheckBox.IsChecked = config.UseDarkMode;
+            SetSelectedLanguage(config.Language);
             PollIntervalSecondsTextBox.Text = config.PollIntervalSeconds.ToString();
             TrayToolTipDelayMillisecondsTextBox.Text = config.TrayToolTipDelayMilliseconds.ToString();
 
@@ -157,8 +166,8 @@ namespace ZabbixTrayMonitor
             var appName = NormalizeAppName(AppNameTextBoxHeader.Text);
 
             CredentialTargetPrefixTextBox.Text = appName + ".";
-            this.Title = $"{appName} - Einstellungen";
-            HeaderTitle.Text = $"{appName} - Einstellungen";
+            this.Title = string.Format(Strings.Settings_Title, appName);
+            HeaderTitle.Text = this.Title;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -216,6 +225,7 @@ namespace ZabbixTrayMonitor
             existingConfig.TrayToolTipDelayMilliseconds = trayToolTipDelayMilliseconds;
             existingConfig.IgnoreCertificateErrors = ignoreCertificateErrors;
             existingConfig.UseDarkMode = DarkModeCheckBox.IsChecked == true;
+            existingConfig.Language = GetSelectedLanguage();
             existingConfig.WarningSeverityThreshold = warningThreshold;
             existingConfig.ErrorSeverityThreshold = errorThreshold;
             existingConfig.CredentialTargetSuffix = credentialSuffix;
@@ -234,6 +244,7 @@ namespace ZabbixTrayMonitor
             _configService.Save(existingConfig);
 
             ZabbixTrayMonitor.Services.ThemeService.ApplyTheme(existingConfig.UseDarkMode);
+            LocalizationService.ApplyLanguage(existingConfig.Language);
 
             DialogResult = true;
             Close();
@@ -241,22 +252,22 @@ namespace ZabbixTrayMonitor
 
         private bool ValidateRequiredFields()
         {
-            if (!ValidateRequiredTextBox(AppNameTextBoxHeader, "App-Namen angeben"))
+            if (!ValidateRequiredTextBox(AppNameTextBoxHeader, Strings.Settings_EnterAppName))
                 return false;
 
-            if (!ValidateRequiredTextBox(ZabbixUrlTextBox, "URL des Zabbix-Servers angeben"))
+            if (!ValidateRequiredTextBox(ZabbixUrlTextBox, Strings.Settings_EnterUrl))
                 return false;
 
-            if (!ValidateRequiredTextBox(ZabbixApiEndpointTextBox, "API-Pfad (JSON-RPC) angeben"))
+            if (!ValidateRequiredTextBox(ZabbixApiEndpointTextBox, Strings.Settings_EnterApiPath))
                 return false;
 
-            if (!ValidateRequiredPasswordBox(ApiTokenTextBox, "API Token angeben"))
+            if (!ValidateRequiredPasswordBox(ApiTokenTextBox, Strings.Settings_EnterApiToken))
                 return false;
 
-            if (!ValidateRequiredTextBox(CredentialTargetSuffixTextBox, "Credential Target Suffix angeben"))
+            if (!ValidateRequiredTextBox(CredentialTargetSuffixTextBox, Strings.Settings_EnterCredentialSuffix))
                 return false;
 
-            if (!ValidateRequiredTextBox(CredentialUsernameTextBox, "Credential Username angeben"))
+            if (!ValidateRequiredTextBox(CredentialUsernameTextBox, Strings.Settings_EnterCredentialUsername))
                 return false;
 
             return true;
@@ -269,7 +280,7 @@ namespace ZabbixTrayMonitor
             if (!Uri.TryCreate(zabbixUrl, UriKind.Absolute, out var uri) ||
                 (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
             {
-                ShowValidationError("Die URL des Zabbix-Servers muss mit https:// (oder http://) beginnen");
+                ShowValidationError(Strings.Settings_UrlInvalid);
                 ZabbixUrlTextBox.Focus();
                 ZabbixUrlTextBox.SelectAll();
                 return false;
@@ -280,10 +291,8 @@ namespace ZabbixTrayMonitor
                 return true;
 
             var result = MessageBox.Show(
-                "Die Verbindung zum Zabbix-Server ist nicht verschlüsselt (http://).\n\n" +
-                "Der API Token wird dabei im Klartext übertragen und kann im Netzwerk mitgelesen werden.\n\n" +
-                "Trotzdem speichern?",
-                "Unsichere Verbindung",
+                Strings.Settings_HttpWarning,
+                Strings.Settings_HttpWarningCaption,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning,
                 MessageBoxResult.No
@@ -303,11 +312,8 @@ namespace ZabbixTrayMonitor
                 return true;
 
             var result = MessageBox.Show(
-                "Wenn Zertifikatsfehler ignoriert werden, wird die Identität des Zabbix-Servers nicht mehr geprüft.\n\n" +
-                "Ein Angreifer im Netzwerk könnte sich dann als Server ausgeben und den API Token abgreifen.\n\n" +
-                "Besser: das Zertifikat bzw. die eigene CA in Windows als vertrauenswürdig importieren.\n\n" +
-                "Zertifikatsfehler trotzdem ignorieren?",
-                "Zertifikatsprüfung deaktivieren",
+                Strings.Settings_CertificateWarning,
+                Strings.Settings_CertificateWarningCaption,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning,
                 MessageBoxResult.No
@@ -326,7 +332,7 @@ namespace ZabbixTrayMonitor
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                ShowValidationError("Den API Token angeben");
+                ShowValidationError(Strings.Settings_EnterApiToken);
                 ApiTokenTextBox.Focus();
                 return false;
             }
@@ -342,8 +348,8 @@ namespace ZabbixTrayMonitor
                 catch { }
 
                 MessageBox.Show(
-                    "Im Credential Manager ist kein Token, den Token neu eingeben",
-                    "Fehler",
+                    Strings.Settings_NoTokenInCredentialManager,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -376,8 +382,8 @@ namespace ZabbixTrayMonitor
                     if (!updated)
                     {
                         MessageBox.Show(
-                            "Der vorhandene API Token wurde nicht im Credential Manager gefunden, API Token neu eingeben",
-                            "Fehler",
+                            Strings.Settings_ExistingTokenNotFound,
+                            Strings.Common_Error,
                             MessageBoxButton.OK,
                             MessageBoxImage.Error
                         );
@@ -393,7 +399,7 @@ namespace ZabbixTrayMonitor
 
                 if (string.IsNullOrWhiteSpace(token))
                 {
-                    ShowValidationError("API Token angeben");
+                    ShowValidationError(Strings.Settings_EnterApiToken);
                     ApiTokenTextBox.Focus();
                     return false;
                 }
@@ -411,9 +417,8 @@ namespace ZabbixTrayMonitor
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Credentials konnten nicht gespeichert werden:" +
-                    $"\n\n{ex.Message}",
-                    "Fehler",
+                    string.Format(Strings.Settings_CredentialsSaveFailed, ex.Message),
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -427,8 +432,8 @@ namespace ZabbixTrayMonitor
             if (!int.TryParse(PollIntervalSecondsTextBox.Text.Trim(), out pollIntervalSeconds))
             {
                 MessageBox.Show(
-                    "Beim Abfrageintervall eine gültige Zahl eingeben",
-                    "Fehler",
+                    Strings.Settings_PollIntervalInvalid,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -442,8 +447,8 @@ namespace ZabbixTrayMonitor
             if (pollIntervalSeconds < 10)
             {
                 MessageBox.Show(
-                    "Das Abfrageintervall sollte mindestens 10 Sekunden betragen",
-                    "Fehler",
+                    Strings.Settings_PollIntervalTooShort,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -462,8 +467,8 @@ namespace ZabbixTrayMonitor
             if (!int.TryParse(TrayToolTipDelayMillisecondsTextBox.Text.Trim(), out delayMilliseconds))
             {
                 MessageBox.Show(
-                    "Bei der Tooltip-Verzögerung eine gültige Zahl eingeben",
-                    "Fehler",
+                    Strings.Settings_TooltipDelayInvalid,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -477,8 +482,8 @@ namespace ZabbixTrayMonitor
             if (delayMilliseconds < 0 || delayMilliseconds > 10000)
             {
                 MessageBox.Show(
-                    "Die Tooltip-Verzögerung muss zwischen 0 und 10000 ms liegen",
-                    "Fehler",
+                    Strings.Settings_TooltipDelayRange,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -500,8 +505,8 @@ namespace ZabbixTrayMonitor
             if (!int.TryParse(WarningSeverityTextBox.Text.Trim(), out warningThreshold))
             {
                 MessageBox.Show(
-                    "Eine gültige Zahl für die Warn-Schwelle eingeben",
-                    "Fehler",
+                    Strings.Settings_WarningThresholdInvalid,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -515,14 +520,8 @@ namespace ZabbixTrayMonitor
             if (warningThreshold < 0 || warningThreshold > 5)
             {
                 MessageBox.Show(
-                    "Die Warn-Schwelle muss zwischen 0 und 5 liegen\n\n" +
-                    "0 = Not classified\n" +
-                    "1 = Information\n" +
-                    "2 = Warning\n" +
-                    "3 = Average\n" +
-                    "4 = High\n" +
-                    "5 = Disaster",
-                    "Fehler",
+                    Strings.Settings_WarningThresholdRange + "\n\n" + SeverityLegend,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -536,8 +535,8 @@ namespace ZabbixTrayMonitor
             if (!int.TryParse(ErrorSeverityTextBox.Text.Trim(), out errorThreshold))
             {
                 MessageBox.Show(
-                    "Eine gültige Zahl für die Error-Schwelle eingeben",
-                    "Fehler",
+                    Strings.Settings_ErrorThresholdInvalid,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -551,14 +550,8 @@ namespace ZabbixTrayMonitor
             if (errorThreshold < 0 || errorThreshold > 5)
             {
                 MessageBox.Show(
-                    "Die Error-Schwelle muss zwischen 0 und 5 liegen\n\n" +
-                    "0 = Not classified\n" +
-                    "1 = Information\n" +
-                    "2 = Warning\n" +
-                    "3 = Average\n" +
-                    "4 = High\n" +
-                    "5 = Disaster",
-                    "Fehler",
+                    Strings.Settings_ErrorThresholdRange + "\n\n" + SeverityLegend,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -572,8 +565,8 @@ namespace ZabbixTrayMonitor
             if (errorThreshold <= warningThreshold)
             {
                 MessageBox.Show(
-                    "Die Error-Schwelle muss größer als die Warn-Schwelle sein\n\n",
-                    "Fehler",
+                    Strings.Settings_ErrorThresholdNotGreater,
+                    Strings.Common_Error,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
@@ -585,6 +578,39 @@ namespace ZabbixTrayMonitor
             }
 
             return true;
+        }
+
+        private void SetSelectedLanguage(string language)
+        {
+            switch (LocalizationService.NormalizeLanguage(language))
+            {
+                case "en":
+                    LanguageEnglishRadioButton.IsChecked = true;
+                    break;
+                case "de":
+                    LanguageGermanRadioButton.IsChecked = true;
+                    break;
+                case "cs":
+                    LanguageCzechRadioButton.IsChecked = true;
+                    break;
+                default:
+                    LanguageSystemRadioButton.IsChecked = true;
+                    break;
+            }
+        }
+
+        private string GetSelectedLanguage()
+        {
+            if (LanguageEnglishRadioButton.IsChecked == true)
+                return "en";
+
+            if (LanguageGermanRadioButton.IsChecked == true)
+                return "de";
+
+            if (LanguageCzechRadioButton.IsChecked == true)
+                return "cs";
+
+            return LocalizationService.SystemLanguage;
         }
 
         private static bool ValidateRequiredTextBox(TextBox textBox, string errorMessage)
@@ -616,7 +642,7 @@ namespace ZabbixTrayMonitor
         {
             MessageBox.Show(
                 errorMessage,
-                "Fehler",
+                Strings.Common_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error
             );

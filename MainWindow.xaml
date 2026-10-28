@@ -98,7 +98,7 @@
                         CornerRadius="4"
                         Padding="10,8">
                     <TextBlock x:Name="TrayToolTipTextBlock"
-                               Text="Zabbix Tray Monitor&#x0a;---------&#x0a;Initialisiere..."
+                               Text="Zabbix Tray Monitor"
                                Foreground="White"
                                FontFamily="Segoe UI"
                                FontSize="12"
@@ -109,21 +109,22 @@
 
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu Style="{StaticResource TrayContextMenuStyle}">
-                    <MenuItem Header="Aktualisieren"
+                    <!-- Header der Menüeinträge werden in MainWindow.ApplyLocalizedTexts gesetzt, damit ein Sprachwechsel sofort greift -->
+                    <MenuItem x:Name="TrayRefreshMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Refresh_Click" />
-                    <MenuItem Header="Probleme anzeigen"
+                    <MenuItem x:Name="TrayShowProblemsMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_ShowProblems_Click" />
                     <Separator Style="{StaticResource TrayMenuSeparatorStyle}" />
-                    <MenuItem Header="Einstellungen"
+                    <MenuItem x:Name="TraySettingsMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Settings_Click" />
-                    <MenuItem Header="Info"
+                    <MenuItem x:Name="TrayInfoMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Info_Click" />
                     <Separator Style="{StaticResource TrayMenuSeparatorStyle}" />
-                    <MenuItem Header="Beenden"
+                    <MenuItem x:Name="TrayExitMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Exit_Click" />
                 </ContextMenu>

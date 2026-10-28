@@ -14,6 +14,7 @@ Je nach Zustand zeigt das Tray-Icon direkt an, ob alles fehlerfrei ist, Warnunge
 - Einstellbare Verzögerung bis zum Öffnen des Tray-Tooltips
 - Problemfenster mit Host, Zeit, Meldung und überwachtem Objekt
 - Dark- und Light-Mode
+- Oberfläche auf Deutsch, Englisch und Tschechisch (Systemsprache oder fest in den Einstellungen wählbar)
 - API-Token im Windows Credential Manager
 - Alarmbearbeitung direkt im Problemfenster:
   - Nur bestätigen
@@ -81,6 +82,7 @@ Beispiel:
   "TrayToolTipDelayMilliseconds": 250,
   "IgnoreCertificateErrors": false,
   "UseDarkMode": true,
+  "Language": "",
   "ShowSuppressedProblems": false,
   "RefreshAfterProblemAction": true,
   "AcknowledgeMessage": "Bestätigt von max.mustermann",
@@ -94,6 +96,12 @@ Beispiel:
   "CredentialUsername": "api-token"
 }
 ```
+
+## Sprachen
+
+Die Oberfläche ist auf Deutsch, Englisch und Tschechisch verfügbar. Unter **Einstellungen → Optionen → Sprache** kann die Systemsprache oder eine feste Sprache gewählt werden (`Language` in der config.json: `""` = System, `"en"`, `"de"`, `"cs"`). Die Änderung gilt sofort nach dem Speichern. Bei einer nicht unterstützten Systemsprache wird Englisch verwendet.
+
+Die Texte liegen in `Resources/Strings.resx` (Englisch), `Resources/Strings.de.resx` und `Resources/Strings.cs.resx`. Für eine weitere Sprache eine weitere `Strings.<code>.resx` anlegen und den Code in `LocalizationService.SupportedLanguages` sowie die Auswahl im Einstellungsfenster ergänzen.
 
 ## Severity Mapping
 

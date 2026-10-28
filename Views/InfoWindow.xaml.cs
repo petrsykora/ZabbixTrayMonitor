@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using ZabbixTrayMonitor.Services;
+using ZabbixTrayMonitor.Resources;
 
 namespace ZabbixTrayMonitor.Views
 {
@@ -22,28 +23,28 @@ namespace ZabbixTrayMonitor.Views
                     : config.AppName;
 
                 var assembly = Assembly.GetEntryAssembly(); // Assembly ist die gebaute exe
-                var assemblyVersion = assembly?.GetName().Version?.ToString() ?? "unbekannt";
+                var assemblyVersion = assembly?.GetName().Version?.ToString() ?? Strings.Common_Unknown;
                 var location = Environment.ProcessPath ?? AppContext.BaseDirectory;
                 var fileVersion = GetFileVersion(location, assemblyVersion);
                 var configPath = configService.GetConfigPath();
 
-                Title = $"{appName} - Info";
-                HeaderTitleInfo.Text = $"{appName} - Info";
+                Title = string.Format(Strings.Info_Title, appName);
+                HeaderTitleInfo.Text = Title;
 
                 AppNameText.Text = appName;
-                VersionText.Text = $"Version: {fileVersion}";
+                VersionText.Text = string.Format(Strings.Info_Version, fileVersion);
                 ProgramText.Text = string.IsNullOrWhiteSpace(location)
                     ? string.Empty
-                    : $"Programm: {location}";
+                    : string.Format(Strings.Info_Program, location);
 
                 ConfigText.Text = string.IsNullOrWhiteSpace(configPath)
                     ? string.Empty
-                    : $"Config: {configPath}";
+                    : string.Format(Strings.Info_Config, configPath);
             }
             catch
             {
                 AppNameText.Text = "ZabbixTrayMonitor";
-                VersionText.Text = "Version: unbekannt";
+                VersionText.Text = string.Format(Strings.Info_Version, Strings.Common_Unknown);
                 ProgramText.Text = string.Empty;
                 ConfigText.Text = string.Empty;
             }

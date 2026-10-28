@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ZabbixTrayMonitor.Resources;
 
 namespace ZabbixTrayMonitor.Views
 {
@@ -38,14 +39,14 @@ namespace ZabbixTrayMonitor.Views
         {
             if (!TryGetDate(out var date))
             {
-                ShowValidationError($"Bitte ein gültiges Datum im Format {CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern} eingeben.");
+                ShowValidationError(string.Format(Strings.Suppress_InvalidDate, CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern));
                 DatePicker.Focus();
                 return;
             }
 
             if (!TryGetTime(out var time))
             {
-                ShowValidationError("Bitte eine gültige Uhrzeit im Format HH:mm eingeben, z. B. 22:30.");
+                ShowValidationError(Strings.Suppress_InvalidTime);
                 TimeTextBox.Focus();
                 TimeTextBox.SelectAll();
                 return;
@@ -63,7 +64,7 @@ namespace ZabbixTrayMonitor.Views
 
             if (selected <= DateTime.Now)
             {
-                ShowValidationError("Der Zeitpunkt muss in der Zukunft liegen.");
+                ShowValidationError(Strings.Suppress_NotInFuture);
                 return;
             }
 
@@ -206,7 +207,7 @@ namespace ZabbixTrayMonitor.Views
             MessageBox.Show(
                 this,
                 message,
-                "Unterdrücken bis",
+                Strings.Suppress_Title,
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning
             );

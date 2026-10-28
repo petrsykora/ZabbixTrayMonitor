@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Common_Required" xml:space="preserve">
+    <value>Pflichtfeld</value>
+  </data>
+  <data name="Common_Unknown" xml:space="preserve">
+    <value>unbekannt</value>
+  </data>
+  <data name="Common_NoText" xml:space="preserve">
+    <value>(kein Text)</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Tray_ShowProblems" xml:space="preserve">
+    <value>Probleme anzeigen</value>
+  </data>
+  <data name="Tray_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Tray_Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="Tray_Initializing" xml:space="preserve">
+    <value>Initialisiere...</value>
+  </data>
+  <data name="Tooltip_NoProblems" xml:space="preserve">
+    <value>Keine Probleme</value>
+  </data>
+  <data name="Tooltip_Errors" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Tooltip_Warnings" xml:space="preserve">
+    <value>Warnungen</value>
+  </data>
+  <data name="Tooltip_ErrorLine" xml:space="preserve">
+    <value>FEHLER: {0}</value>
+  </data>
+  <data name="Tooltip_Server" xml:space="preserve">
+    <value>Zabbix-Server: {0}</value>
+  </data>
+  <data name="Tooltip_Updated" xml:space="preserve">
+    <value>Aktualisiert am: {0:dd.MM.yyyy HH:mm:ss} Uhr</value>
+  </data>
+  <data name="Error_NoZabbixUrl" xml:space="preserve">
+    <value>Keine Zabbix URL konfiguriert</value>
+  </data>
+  <data name="Error_NoApiToken" xml:space="preserve">
+    <value>Kein API Token gespeichert</value>
+  </data>
+  <data name="Info_Title" xml:space="preserve">
+    <value>{0} - Info</value>
+  </data>
+  <data name="Info_Version" xml:space="preserve">
+    <value>Version: {0}</value>
+  </data>
+  <data name="Info_Program" xml:space="preserve">
+    <value>Programm: {0}</value>
+  </data>
+  <data name="Info_Config" xml:space="preserve">
+    <value>Config: {0}</value>
+  </data>
+  <data name="Problems_WindowTitle" xml:space="preserve">
+    <value>Aktuelle Zabbix Probleme</value>
+  </data>
+  <data name="Problems_TitleWithCount" xml:space="preserve">
+    <value>{0} - Aktuelle Zabbix Probleme - {1}</value>
+  </data>
+  <data name="Problems_LastUpdated" xml:space="preserve">
+    <value>Zuletzt aktualisiert: {0:HH:mm:ss}</value>
+  </data>
+  <data name="Problems_Loading" xml:space="preserve">
+    <value>Aktualisiere...</value>
+  </data>
+  <data name="Problems_OpenDashboard" xml:space="preserve">
+    <value>Dashboard öffnen</value>
+  </data>
+  <data name="Problems_Empty" xml:space="preserve">
+    <value>Keine Probleme gefunden</value>
+  </data>
+  <data name="Problems_EditAlarm" xml:space="preserve">
+    <value>Alarm bearbeiten</value>
+  </data>
+  <data name="Problems_MessageLabel" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Problems_AcknowledgeOnly" xml:space="preserve">
+    <value>Nur bestätigen...</value>
+  </data>
+  <data name="Problems_Suppress5Minutes" xml:space="preserve">
+    <value>Für 5 Minuten unterdrücken...</value>
+  </data>
+  <data name="Problems_Suppress15Minutes" xml:space="preserve">
+    <value>Für 15 Minuten unterdrücken...</value>
+  </data>
+  <data name="Problems_Suppress1Hour" xml:space="preserve">
+    <value>Für 1 Stunde unterdrücken...</value>
+  </data>
+  <data name="Problems_Suppress3Hours" xml:space="preserve">
+    <value>Für 3 Stunden unterdrücken...</value>
+  </data>
+  <data name="Problems_Suppress1Day" xml:space="preserve">
+    <value>Für 1 Tag unterdrücken...</value>
+  </data>
+  <data name="Problems_SuppressUntil" xml:space="preserve">
+    <value>Unterdrücken bis...</value>
+  </data>
+  <data name="Problems_RefreshFailed" xml:space="preserve">
+    <value>Aktualisierung fehlgeschlagen:</value>
+  </data>
+  <data name="Problems_RefreshCaption" xml:space="preserve">
+    <value>Zabbix Probleme aktualisieren</value>
+  </data>
+  <data name="Problems_ActionFailed" xml:space="preserve">
+    <value>Alarm konnte nicht bearbeitet werden:</value>
+  </data>
+  <data name="Suppress_Title" xml:space="preserve">
+    <value>Unterdrücken bis</value>
+  </data>
+  <data name="Suppress_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Suppress_Time" xml:space="preserve">
+    <value>Uhrzeit</value>
+  </data>
+  <data name="Suppress_TimeFormat" xml:space="preserve">
+    <value>Format: HH:mm</value>
+  </data>
+  <data name="Suppress_Button" xml:space="preserve">
+    <value>Unterdrücken</value>
+  </data>
+  <data name="Suppress_InvalidDate" xml:space="preserve">
+    <value>Bitte ein gültiges Datum im Format {0} eingeben.</value>
+  </data>
+  <data name="Suppress_InvalidTime" xml:space="preserve">
+    <value>Bitte eine gültige Uhrzeit im Format HH:mm eingeben, z. B. 22:30.</value>
+  </data>
+  <data name="Suppress_NotInFuture" xml:space="preserve">
+    <value>Der Zeitpunkt muss in der Zukunft liegen.</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>{0} - Einstellungen</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="Settings_AppName" xml:space="preserve">
+    <value>App-Name</value>
+  </data>
+  <data name="Settings_ZabbixUrl" xml:space="preserve">
+    <value>Zabbix URL</value>
+  </data>
+  <data name="Settings_ApiPath" xml:space="preserve">
+    <value>API-Pfad (JSON-RPC)</value>
+  </data>
+  <data name="Settings_DashboardUrl" xml:space="preserve">
+    <value>Dashboard URL</value>
+  </data>
+  <data name="Settings_ApiToken" xml:space="preserve">
+    <value>API Token</value>
+  </data>
+  <data name="Settings_Options" xml:space="preserve">
+    <value>Optionen</value>
+  </data>
+  <data name="Settings_IgnoreCertificateErrors" xml:space="preserve">
+    <value>SSL-Zertifikatsfehler ignorieren</value>
+  </data>
+  <data name="Settings_DarkMode" xml:space="preserve">
+    <value>Dark Mode aktivieren</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Settings_LanguageSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Settings_PollInterval" xml:space="preserve">
+    <value>Abfrageintervall (s)</value>
+  </data>
+  <data name="Settings_TooltipDelay" xml:space="preserve">
+    <value>Tooltip-Delay (ms)</value>
+  </data>
+  <data name="Settings_Thresholds" xml:space="preserve">
+    <value>Schwellenwerte</value>
+  </data>
+  <data name="Settings_WarningThreshold" xml:space="preserve">
+    <value>Warn-Schwelle</value>
+  </data>
+  <data name="Settings_ErrorThreshold" xml:space="preserve">
+    <value>Error-Schwelle</value>
+  </data>
+  <data name="Settings_Colors" xml:space="preserve">
+    <value>Farbwerte</value>
+  </data>
+  <data name="Settings_ColorError" xml:space="preserve">
+    <value>Farbe Fehler (Hex)</value>
+  </data>
+  <data name="Settings_ColorWarning" xml:space="preserve">
+    <value>Farbe Warnung (Hex)</value>
+  </data>
+  <data name="Settings_ColorInfo" xml:space="preserve">
+    <value>Farbe Info (Hex)</value>
+  </data>
+  <data name="Settings_AlarmHandling" xml:space="preserve">
+    <value>Alarmbearbeitung</value>
+  </data>
+  <data name="Settings_ShowSuppressedProblems" xml:space="preserve">
+    <value>Unterdrückte Probleme weiterhin anzeigen</value>
+  </data>
+  <data name="Settings_RefreshAfterProblemAction" xml:space="preserve">
+    <value>Nach Bestätigung/Unterdrückung automatisch aktualisieren</value>
+  </data>
+  <data name="Settings_DefaultMessage" xml:space="preserve">
+    <value>Standardnachricht</value>
+  </data>
+  <data name="Settings_CredentialTarget" xml:space="preserve">
+    <value>Credential Target</value>
+  </data>
+  <data name="Settings_CredentialUsername" xml:space="preserve">
+    <value>Credential Username</value>
+  </data>
+  <data name="Settings_Test" xml:space="preserve">
+    <value>Testen</value>
+  </data>
+  <data name="Settings_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Settings_TestConnectionCaption" xml:space="preserve">
+    <value>Verbindung testen</value>
+  </data>
+  <data name="Settings_TestConnectionSuccess" xml:space="preserve">
+    <value>Verbindung erfolgreich!
+
+Zabbix Version: {0}</value>
+  </data>
+  <data name="Settings_TestConnectionFailed" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen:
+
+{0}</value>
+  </data>
+  <data name="Settings_EnterUrlFirst" xml:space="preserve">
+    <value>Vorher die URL des Zabbix-Servers angeben</value>
+  </data>
+  <data name="Settings_EnterApiPath" xml:space="preserve">
+    <value>API-Pfad (JSON-RPC) angeben</value>
+  </data>
+  <data name="Settings_EnterAppName" xml:space="preserve">
+    <value>App-Namen angeben</value>
+  </data>
+  <data name="Settings_EnterUrl" xml:space="preserve">
+    <value>URL des Zabbix-Servers angeben</value>
+  </data>
+  <data name="Settings_EnterApiToken" xml:space="preserve">
+    <value>API Token angeben</value>
+  </data>
+  <data name="Settings_EnterCredentialSuffix" xml:space="preserve">
+    <value>Credential Target Suffix angeben</value>
+  </data>
+  <data name="Settings_EnterCredentialUsername" xml:space="preserve">
+    <value>Credential Username angeben</value>
+  </data>
+  <data name="Settings_UrlInvalid" xml:space="preserve">
+    <value>Die URL des Zabbix-Servers muss mit https:// (oder http://) beginnen</value>
+  </data>
+  <data name="Settings_HttpWarning" xml:space="preserve">
+    <value>Die Verbindung zum Zabbix-Server ist nicht verschlüsselt (http://).
+
+Der API Token wird dabei im Klartext übertragen und kann im Netzwerk mitgelesen werden.
+
+Trotzdem speichern?</value>
+  </data>
+  <data name="Settings_HttpWarningCaption" xml:space="preserve">
+    <value>Unsichere Verbindung</value>
+  </data>
+  <data name="Settings_CertificateWarning" xml:space="preserve">
+    <value>Wenn Zertifikatsfehler ignoriert werden, wird die Identität des Zabbix-Servers nicht mehr geprüft.
+
+Ein Angreifer im Netzwerk könnte sich dann als Server ausgeben und den API Token abgreifen.
+
+Besser: das Zertifikat bzw. die eigene CA in Windows als vertrauenswürdig importieren.
+
+Zertifikatsfehler trotzdem ignorieren?</value>
+  </data>
+  <data name="Settings_CertificateWarningCaption" xml:space="preserve">
+    <value>Zertifikatsprüfung deaktivieren</value>
+  </data>
+  <data name="Settings_NoTokenInCredentialManager" xml:space="preserve">
+    <value>Im Credential Manager ist kein Token, den Token neu eingeben</value>
+  </data>
+  <data name="Settings_ExistingTokenNotFound" xml:space="preserve">
+    <value>Der vorhandene API Token wurde nicht im Credential Manager gefunden, API Token neu eingeben</value>
+  </data>
+  <data name="Settings_CredentialsSaveFailed" xml:space="preserve">
+    <value>Credentials konnten nicht gespeichert werden:
+
+{0}</value>
+  </data>
+  <data name="Settings_PollIntervalInvalid" xml:space="preserve">
+    <value>Beim Abfrageintervall eine gültige Zahl eingeben</value>
+  </data>
+  <data name="Settings_PollIntervalTooShort" xml:space="preserve">
+    <value>Das Abfrageintervall sollte mindestens 10 Sekunden betragen</value>
+  </data>
+  <data name="Settings_TooltipDelayInvalid" xml:space="preserve">
+    <value>Bei der Tooltip-Verzögerung eine gültige Zahl eingeben</value>
+  </data>
+  <data name="Settings_TooltipDelayRange" xml:space="preserve">
+    <value>Die Tooltip-Verzögerung muss zwischen 0 und 10000 ms liegen</value>
+  </data>
+  <data name="Settings_WarningThresholdInvalid" xml:space="preserve">
+    <value>Eine gültige Zahl für die Warn-Schwelle eingeben</value>
+  </data>
+  <data name="Settings_WarningThresholdRange" xml:space="preserve">
+    <value>Die Warn-Schwelle muss zwischen 0 und 5 liegen</value>
+  </data>
+  <data name="Settings_ErrorThresholdInvalid" xml:space="preserve">
+    <value>Eine gültige Zahl für die Error-Schwelle eingeben</value>
+  </data>
+  <data name="Settings_ErrorThresholdRange" xml:space="preserve">
+    <value>Die Error-Schwelle muss zwischen 0 und 5 liegen</value>
+  </data>
+  <data name="Settings_ErrorThresholdNotGreater" xml:space="preserve">
+    <value>Die Error-Schwelle muss größer als die Warn-Schwelle sein</value>
+  </data>
+  <data name="Api_InvalidResponse" xml:space="preserve">
+    <value>Keine gültige Antwort vom Server erhalten</value>
+  </data>
+  <data name="Api_Error" xml:space="preserve">
+    <value>Zabbix API Fehler: {0}</value>
+  </data>
+  <data name="Api_UnknownError" xml:space="preserve">
+    <value>Unbekannter Fehler</value>
+  </data>
+  <data name="Api_SuppressUntilNotInFuture" xml:space="preserve">
+    <value>Unterdrückungszeitpunkt muss in der Zukunft liegen</value>
+  </data>
+  <data name="Acknowledge_DefaultMessage" xml:space="preserve">
+    <value>Bestätigt von {0}</value>
+  </data>
+</root>

@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ZabbixTrayMonitor.ZabbixConfigWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:ZabbixTrayMonitor.Resources"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZabbixTrayMonitor"
@@ -116,7 +117,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Allgemein"
+                        <TextBlock Text="{x:Static res:Strings.Settings_General}"
                                    Style="{StaticResource SectionHeaderTextStyle}" />
 
                         <Border Grid.Column="1"
@@ -129,11 +130,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center">
-                        <Run Text="App-Name" />
+                        <Run Text="{x:Static res:Strings.Settings_AppName}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="AppNameTextBoxHeader"
@@ -151,11 +152,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center">
-                        <Run Text="Zabbix URL" />
+                        <Run Text="{x:Static res:Strings.Settings_ZabbixUrl}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="ZabbixUrlTextBox"
@@ -173,11 +174,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center">
-                        <Run Text="API-Pfad (JSON-RPC)" />
+                        <Run Text="{x:Static res:Strings.Settings_ApiPath}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="ZabbixApiEndpointTextBox"
@@ -192,7 +193,7 @@
                     <!-- Dashboard URL -->
                     <TextBlock Grid.Row="4"
                                Grid.Column="0"
-                               Text="Dashboard URL"
+                               Text="{x:Static res:Strings.Settings_DashboardUrl}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center" />
@@ -212,11 +213,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center">
-                        <Run Text="API Token" />
+                        <Run Text="{x:Static res:Strings.Settings_ApiToken}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <PasswordBox x:Name="ApiTokenTextBox"
@@ -231,7 +232,7 @@
                     <!-- Optionen -->
                     <TextBlock Grid.Row="6"
                                Grid.Column="0"
-                               Text="Optionen"
+                               Text="{x:Static res:Strings.Settings_Options}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Top" />
@@ -243,14 +244,37 @@
                                 VerticalAlignment="Top">
 
                         <CheckBox x:Name="IgnoreCertificateErrorsCheckBox"
-                                  Content="SSL-Zertifikatsfehler ignorieren"
+                                  Content="{x:Static res:Strings.Settings_IgnoreCertificateErrors}"
                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                   Margin="0,0,0,2" />
 
                         <CheckBox x:Name="DarkModeCheckBox"
-                                  Content="Dark Mode aktivieren"
+                                  Content="{x:Static res:Strings.Settings_DarkMode}"
                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                   Margin="0,2,0,0" />
+
+                        <!-- Sprache: Sprachnamen bewusst in der jeweiligen Sprache und nicht übersetzt -->
+                        <WrapPanel Margin="0,6,0,0">
+                            <TextBlock Text="{x:Static res:Strings.Settings_Language}"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,8,0"
+                                       VerticalAlignment="Center" />
+                            <RadioButton x:Name="LanguageSystemRadioButton"
+                                         GroupName="Language"
+                                         Content="{x:Static res:Strings.Settings_LanguageSystem}"
+                                         Margin="0,0,8,0" />
+                            <RadioButton x:Name="LanguageEnglishRadioButton"
+                                         GroupName="Language"
+                                         Content="English"
+                                         Margin="0,0,8,0" />
+                            <RadioButton x:Name="LanguageGermanRadioButton"
+                                         GroupName="Language"
+                                         Content="Deutsch"
+                                         Margin="0,0,8,0" />
+                            <RadioButton x:Name="LanguageCzechRadioButton"
+                                         GroupName="Language"
+                                         Content="Čeština" />
+                        </WrapPanel>
                     </StackPanel>
 
                     <!-- Abfrageintervall -->
@@ -259,11 +283,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,0"
                                VerticalAlignment="Center">
-                        <Run Text="Abfrageintervall (s)" />
+                        <Run Text="{x:Static res:Strings.Settings_PollInterval}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="PollIntervalSecondsTextBox"
@@ -282,11 +306,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,0"
                                VerticalAlignment="Center">
-                        <Run Text="Tooltip-Delay (ms)" />
+                        <Run Text="{x:Static res:Strings.Settings_TooltipDelay}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="TrayToolTipDelayMillisecondsTextBox"
@@ -308,7 +332,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Schwellenwerte"
+                        <TextBlock Text="{x:Static res:Strings.Settings_Thresholds}"
                                    Style="{StaticResource SectionHeaderTextStyle}" />
 
                         <Border Grid.Column="1"
@@ -321,11 +345,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center">
-                        <Run Text="Warn-Schwelle" />
+                        <Run Text="{x:Static res:Strings.Settings_WarningThreshold}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="WarningSeverityTextBox"
@@ -343,11 +367,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,0"
                                VerticalAlignment="Center">
-                        <Run Text="Error-Schwelle" />
+                        <Run Text="{x:Static res:Strings.Settings_ErrorThreshold}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="ErrorSeverityTextBox"
@@ -368,7 +392,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Farbwerte"
+                        <TextBlock Text="{x:Static res:Strings.Settings_Colors}"
                                    Style="{StaticResource SectionHeaderTextStyle}" />
 
                         <Border Grid.Column="1"
@@ -378,7 +402,7 @@
                     <!-- Farbe Fehler -->
                     <TextBlock Grid.Row="13"
                                Grid.Column="0"
-                               Text="Farbe Fehler (Hex)"
+                               Text="{x:Static res:Strings.Settings_ColorError}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center" />
@@ -395,7 +419,7 @@
                     <!-- Farbe Warnung -->
                     <TextBlock Grid.Row="14"
                                Grid.Column="0"
-                               Text="Farbe Warnung (Hex)"
+                               Text="{x:Static res:Strings.Settings_ColorWarning}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center" />
@@ -412,7 +436,7 @@
                     <!-- Farbe Info -->
                     <TextBlock Grid.Row="15"
                                Grid.Column="0"
-                               Text="Farbe Info (Hex)"
+                               Text="{x:Static res:Strings.Settings_ColorInfo}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,0"
                                VerticalAlignment="Center" />
@@ -435,7 +459,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Alarmbearbeitung"
+                        <TextBlock Text="{x:Static res:Strings.Settings_AlarmHandling}"
                                    Style="{StaticResource SectionHeaderTextStyle}" />
 
                         <Border Grid.Column="1"
@@ -446,7 +470,7 @@
                               Grid.Row="17"
                               Grid.Column="0"
                               Grid.ColumnSpan="2"
-                              Content="Unterdrückte Probleme weiterhin anzeigen"
+                              Content="{x:Static res:Strings.Settings_ShowSuppressedProblems}"
                               Margin="0,0,0,8"
                               VerticalAlignment="Center" />
 
@@ -454,13 +478,13 @@
                               Grid.Row="18"
                               Grid.Column="0"
                               Grid.ColumnSpan="2"
-                              Content="Nach Bestätigung/Unterdrückung automatisch aktualisieren"
+                              Content="{x:Static res:Strings.Settings_RefreshAfterProblemAction}"
                               Margin="0,0,0,8"
                               VerticalAlignment="Center" />
 
                     <TextBlock Grid.Row="19"
                                Grid.Column="0"
-                               Text="Standardnachricht"
+                               Text="{x:Static res:Strings.Settings_DefaultMessage}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,0"
                                VerticalAlignment="Center" />
@@ -496,11 +520,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,6"
                                VerticalAlignment="Center">
-                        <Run Text="Credential Target" />
+                        <Run Text="{x:Static res:Strings.Settings_CredentialTarget}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <Grid Grid.Row="21"
@@ -534,11 +558,11 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="0,0,8,0"
                                VerticalAlignment="Center">
-                        <Run Text="Credential Username" />
+                        <Run Text="{x:Static res:Strings.Settings_CredentialUsername}" />
                         <Run Text=" *"
                              Foreground="#FF4C4C"
                              FontWeight="Bold"
-                             ToolTip="Pflichtfeld" />
+                             ToolTip="{x:Static res:Strings.Common_Required}" />
                     </TextBlock>
 
                     <TextBox x:Name="CredentialUsernameTextBox"
@@ -557,16 +581,16 @@
                                 HorizontalAlignment="Right"
                                 Margin="0,14,0,0">
 
-                        <Button Content="Testen"
+                        <Button Content="{x:Static res:Strings.Settings_Test}"
                                 Width="80"
                                 Click="TestConnection_Click" />
 
-                        <Button Content="Abbrechen"
+                        <Button Content="{x:Static res:Strings.Common_Cancel}"
                                 Width="90"
                                 Margin="8,0,0,0"
                                 Click="Cancel_Click" />
 
-                        <Button Content="Speichern"
+                        <Button Content="{x:Static res:Strings.Settings_Save}"
                                 Width="90"
                                 Margin="8,0,0,0"
                                 Click="Save_Click" />

@@ -12,13 +12,14 @@ namespace ZabbixTrayMonitor
         {
             base.OnStartup(e);
 
-            // Theme aus gespeicherter Config anwenden
+            // Theme und Sprache aus gespeicherter Config anwenden
             try
             {
                 var configService = new ConfigService();
                 if (configService.ConfigExists())
                 {
                     var cfg = configService.Load();
+                    LocalizationService.ApplyLanguage(cfg.Language);
                     ThemeService.ApplyTheme(cfg.UseDarkMode);
                 }
             }

@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ZabbixTrayMonitor.Services;
 using ZabbixTrayMonitor.Models;
+using ZabbixTrayMonitor.Resources;
 using ZabbixTrayMonitor.Views;
 
 namespace ZabbixTrayMonitor
@@ -35,7 +36,8 @@ namespace ZabbixTrayMonitor
             // Der Custom-Tooltip wird direkt vom TaskbarIcon gesteuert. Dadurch stammen
             // Öffnen und Schließen vom tatsächlichen Windows-Tray-Icon statt aus einer
             // eigenen Cursor-Abstandslogik.
-            UpdateTrayToolTip("Zabbix Tray Monitor\n---------\nInitialisiere...");
+            ApplyLocalizedTexts();
+            UpdateTrayToolTip($"Zabbix Tray Monitor\n---------\n{Strings.Tray_Initializing}");
 
             // RefreshTimer für Probleme initialisieren abhängig vom Pollintervall in den Einstellungen
             _refreshTimer.Tick += async (_, _) => await RefreshProblemsAsync();
@@ -48,6 +50,9 @@ namespace ZabbixTrayMonitor
             {
                 var configWindow = new ZabbixConfigWindow();
                 configWindow.ShowDialog();
+
+                // Beim ersten Start kann in den Einstellungen bereits eine Sprache gewählt worden sein
+                ApplyLocalizedTexts();
             }
 
             // Set main window title to include configured AppName after possible initial configuration
@@ -77,6 +82,7 @@ namespace ZabbixTrayMonitor
             }
 
             var config = _configService.Load();
+            var previousLanguage = LocalizationService.NormalizeLanguage(config.Language);
             var configWindow = new ZabbixConfigWindow();
 
             try
@@ -89,6 +95,10 @@ namespace ZabbixTrayMonitor
 
             if (result == true)
             {
+                // Sprache wurde in den Einstellungen bereits umgestellt -> Tray-Menü und Problemfenster mit neuen Texten aufbauen
+                if (LocalizationService.NormalizeLanguage(_configService.Load().Language) != previousLanguage)
+                    OnLanguageChanged();
+
                 // aktualisiert nach Speichern die Probleme sofort und startet Timer neu der Daten im Hintergrund aktualisiert
                 StartRefreshTimer();
                 _ = RefreshProblemsAsync();
@@ -102,6 +112,25 @@ namespace ZabbixTrayMonitor
                 }
                 catch { }
             }
+        }
+
+        // Texte, die nicht bei jedem Öffnen eines Fensters neu geladen werden (MainWindow lebt die ganze Laufzeit)
+        private void ApplyLocalizedTexts()
+        {
+            TrayRefreshMenuItem.Header = Strings.Common_Refresh;
+            TrayShowProblemsMenuItem.Header = Strings.Tray_ShowProblems;
+            TraySettingsMenuItem.Header = Strings.Tray_Settings;
+            TrayInfoMenuItem.Header = Strings.Tray_Info;
+            TrayExitMenuItem.Header = Strings.Tray_Exit;
+        }
+
+        private void OnLanguageChanged()
+        {
+            ApplyLocalizedTexts();
+
+            // Problemfenster wird beim nächsten Öffnen mit den neuen Texten neu erstellt
+            _problemsWindow?.CloseWindow();
+            _problemsWindow = null;
         }
 
         private async void TrayIcon_Refresh_Click(object sender, RoutedEventArgs e)
@@ -241,10 +270,10 @@ namespace ZabbixTrayMonitor
             var token = CredentialService.GetTokenForApp(config.AppName, credSuffix);
 
             if (string.IsNullOrWhiteSpace(config.ZabbixUrl))
-                throw new Exception("Keine Zabbix URL konfiguriert");
+                throw new Exception(Strings.Error_NoZabbixUrl);
 
             if (string.IsNullOrWhiteSpace(token))
-                throw new Exception("Kein API Token gespeichert");
+                throw new Exception(Strings.Error_NoApiToken);
 
             var defaultMessage =
                 ZabbixConfig.ResolveAcknowledgeMessage(config.AcknowledgeMessage);
@@ -288,11 +317,11 @@ namespace ZabbixTrayMonitor
                 var token = CredentialService.GetTokenForApp(config.AppName, credSuffix);
 
                 if (string.IsNullOrWhiteSpace(config.ZabbixUrl))
-                    throw new Exception("Keine Zabbix URL konfiguriert");
+                    throw new Exception(Strings.Error_NoZabbixUrl);
 
                 if (string.IsNullOrWhiteSpace(token))
                 {
-                    throw new Exception("Kein API Token gespeichert");
+                    throw new Exception(Strings.Error_NoApiToken);
                 }
 
                 var problems = await _zabbixClient.GetProblemsAsync(
@@ -379,10 +408,10 @@ namespace ZabbixTrayMonitor
                 {
                     string.IsNullOrWhiteSpace(cfg.AppName) ? "Zabbix Tray Monitor" : cfg.AppName,
                     "---------",
-                    $"FEHLER: {ex.Message}",
+                    string.Format(Strings.Tooltip_ErrorLine, ex.Message),
                     "---------",
-                    $"Zabbix-Server: {cfg.ZabbixUrl}",
-                    $"Aktualisiert am: {lastUpdated:dd.MM.yyyy HH:mm:ss} Uhr"
+                    string.Format(Strings.Tooltip_Server, cfg.ZabbixUrl),
+                    string.Format(Strings.Tooltip_Updated, lastUpdated)
                 };
 
                 UpdateTrayToolTip(string.Join(Environment.NewLine, lines));
@@ -419,10 +448,10 @@ namespace ZabbixTrayMonitor
 
             if (errorCount == 0 && warningCount == 0)
             {
-                lines.Add("Keine Probleme");
+                lines.Add(Strings.Tooltip_NoProblems);
                 lines.Add("---------");
-                lines.Add($"Zabbix-Server: {config.ZabbixUrl}");
-                lines.Add($"Aktualisiert am: {lastUpdated:dd.MM.yyyy HH:mm:ss} Uhr");
+                lines.Add(string.Format(Strings.Tooltip_Server, config.ZabbixUrl));
+                lines.Add(string.Format(Strings.Tooltip_Updated, lastUpdated));
                 return string.Join(Environment.NewLine, lines);
             }
 
@@ -445,24 +474,24 @@ namespace ZabbixTrayMonitor
 
             if (errorCount > 0 && warningCount > 0)
             {
-                AddProblemSection(lines, "Fehler", errorCount, errorItems, 5);
+                AddProblemSection(lines, Strings.Tooltip_Errors, errorCount, errorItems, 5);
 
                 lines.Add("---------");
 
-                AddProblemSection(lines, "Warnungen", warningCount, warningItems, 5);
+                AddProblemSection(lines, Strings.Tooltip_Warnings, warningCount, warningItems, 5);
             }
             else if (errorCount > 0)
             {
-                AddProblemSection(lines, "Fehler", errorCount, errorItems, 10);
+                AddProblemSection(lines, Strings.Tooltip_Errors, errorCount, errorItems, 10);
             }
             else if (warningCount > 0)
             {
-                AddProblemSection(lines, "Warnungen", warningCount, warningItems, 10);
+                AddProblemSection(lines, Strings.Tooltip_Warnings, warningCount, warningItems, 10);
             }
 
             lines.Add("---------");
-            lines.Add($"Zabbix-Server: {config.ZabbixUrl}");
-            lines.Add($"Aktualisiert am: {lastUpdated:dd.MM.yyyy HH:mm:ss} Uhr");
+            lines.Add(string.Format(Strings.Tooltip_Server, config.ZabbixUrl));
+            lines.Add(string.Format(Strings.Tooltip_Updated, lastUpdated));
 
             return string.Join(Environment.NewLine, lines);
         }
@@ -483,7 +512,7 @@ namespace ZabbixTrayMonitor
                     : problem.Host;
 
                 var message = string.IsNullOrWhiteSpace(problem.Name)
-                    ? "(kein Text)"
+                    ? Strings.Common_NoText
                     : problem.Name;
 
                 host = CleanToolTipLine(host);
@@ -639,7 +668,7 @@ namespace ZabbixTrayMonitor
             }
             catch
             {
-                MessageBox.Show("Version: unbekannt", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(string.Format(Strings.Info_Version, Strings.Common_Unknown), Strings.Tray_Info, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }
