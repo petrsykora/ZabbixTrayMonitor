@@ -218,7 +218,7 @@ Check: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` must show `Status: Va
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a ZIP downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded ZIP before extracting it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.2.2-win-x64.zip
+Unblock-File .\ZabbixTrayMonitor-v1.3.0-win-x64.zip
 ```
 
 ## Libraries
