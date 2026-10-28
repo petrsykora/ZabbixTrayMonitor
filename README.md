@@ -68,15 +68,19 @@ msiexec /i ZabbixTrayMonitor-v1.3.1-win-x64.msi /qn AUTOSTART=0
 
 Deployment via Group Policy: put the MSI on a network share that the computer accounts can read and assign it under **Computer Configuration → Policies → Software Settings → Software installation → New → Package** (choose **Assigned**). It is installed on the next restart. For a new version, add the new MSI to the same GPO and set it to upgrade the existing package.
 
-### winget
+### winget (local manifest)
 
-Once the package has been accepted into the Windows Package Manager catalog:
+The package is not in the official Windows Package Manager catalog yet. The manifests in `winget/manifests` can be used to install it with winget from a local copy of the repository. Local manifests have to be allowed once by an administrator:
 
 ```powershell
-winget install PetrSykora.ZabbixMonitor
+winget settings --enable LocalManifestFiles
 ```
 
-Updates are then available with `winget upgrade PetrSykora.ZabbixMonitor`.
+```powershell
+winget install --manifest winget\manifests\p\PetrSykora\ZabbixMonitor\1.3.1
+```
+
+Submitting the package to the official catalog is prepared but not done yet: the **winget** workflow submits a manifest folder to `microsoft/winget-pkgs`, and the release workflow submits every new version automatically. Both only run when the `WINGET_TOKEN` secret (classic token with the `public_repo` scope) is set.
 
 ### ZIP (portable)
 
