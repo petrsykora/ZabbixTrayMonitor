@@ -1,5 +1,14 @@
 # Zabbix Monitor
 
+[![Latest release](https://img.shields.io/github/v/release/petrsykora/ZabbixTrayMonitor?label=release)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/petrsykora/ZabbixTrayMonitor/total)](https://github.com/petrsykora/ZabbixTrayMonitor/releases)
+[![Release build](https://github.com/petrsykora/ZabbixTrayMonitor/actions/workflows/release.yml/badge.svg)](https://github.com/petrsykora/ZabbixTrayMonitor/actions/workflows/release.yml)
+[![License: MIT](https://img.shields.io/github/license/petrsykora/ZabbixTrayMonitor)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/petrsykora/ZabbixTrayMonitor)](https://github.com/petrsykora/ZabbixTrayMonitor/commits/master)
+![Platform: Windows 10/11](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D4)
+![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)
+![Languages: EN, DE, CS](https://img.shields.io/badge/languages-EN%20%7C%20DE%20%7C%20CS-informational)
+
 Small Windows tray client for Zabbix.
 
 The application runs in the Windows system tray and shows the current Zabbix status through a colored tray icon, a tooltip and a small problems window.
@@ -32,7 +41,7 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 
 ## Download
 
-[![Download](https://img.shields.io/badge/Download-Releases-blue)](https://github.com/petrsykora/ZabbixTrayMonitor/releases)
+The MSI installer and a portable ZIP are attached to every [release](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest).
 
 ## Installation
 
@@ -58,6 +67,16 @@ msiexec /i ZabbixTrayMonitor-v1.3.1-win-x64.msi /qn AUTOSTART=0
 ```
 
 Deployment via Group Policy: put the MSI on a network share that the computer accounts can read and assign it under **Computer Configuration → Policies → Software Settings → Software installation → New → Package** (choose **Assigned**). It is installed on the next restart. For a new version, add the new MSI to the same GPO and set it to upgrade the existing package.
+
+### winget
+
+Once the package has been accepted into the Windows Package Manager catalog:
+
+```powershell
+winget install PetrSykora.ZabbixMonitor
+```
+
+Updates are then available with `winget upgrade PetrSykora.ZabbixMonitor`.
 
 ### ZIP (portable)
 

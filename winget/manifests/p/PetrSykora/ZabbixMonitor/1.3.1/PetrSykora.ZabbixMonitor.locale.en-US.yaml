@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.9.0.schema.json
+
+PackageIdentifier: PetrSykora.ZabbixMonitor
+PackageVersion: 1.3.1
+PackageLocale: en-US
+Publisher: Petr Sýkora
+PublisherUrl: https://github.com/petrsykora
+PublisherSupportUrl: https://github.com/petrsykora/ZabbixTrayMonitor/issues
+Author: Petr Sýkora, Darano94
+PackageName: Zabbix Monitor
+PackageUrl: https://github.com/petrsykora/ZabbixTrayMonitor
+License: MIT
+LicenseUrl: https://github.com/petrsykora/ZabbixTrayMonitor/blob/master/LICENSE
+Copyright: Copyright (c) 2026 Darano94, Copyright (c) 2026 Petr Sýkora
+ShortDescription: Windows tray client that shows the current problems of a Zabbix server.
+Description: |-
+  Zabbix Monitor shows the state of your Zabbix server in the Windows notification area.
+  The color of the tray icon tells you at a glance whether everything is OK or whether there are warnings or errors.
+  The tooltip and the problems window list the current problems; from the problems window you can acknowledge or suppress them and open the Zabbix dashboard.
+  The API token is stored in the Windows Credential Manager. The user interface is available in English, German and Czech.
+Moniker: zabbix-monitor
+Tags:
+- monitoring
+- notification-area
+- tray
+- zabbix
+ReleaseNotesUrl: https://github.com/petrsykora/ZabbixTrayMonitor/releases/tag/v1.3.1
+ManifestType: defaultLocale
+ManifestVersion: 1.9.0

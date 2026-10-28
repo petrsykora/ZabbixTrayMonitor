@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.locale.1.9.0.schema.json
+
+PackageIdentifier: PetrSykora.ZabbixMonitor
+PackageVersion: 1.3.1
+PackageLocale: cs-CZ
+ShortDescription: Klient v oznamovací oblasti Windows, který zobrazuje aktuální problémy Zabbix serveru.
+Description: |-
+  Zabbix Monitor zobrazuje stav vašeho Zabbix serveru v oznamovací oblasti Windows.
+  Barva ikony na první pohled ukáže, jestli je vše v pořádku, nebo jestli jsou varování či chyby.
+  Tooltip a okno problémů vypisují aktuální problémy; v okně problémů je můžete potvrdit nebo potlačit a otevřít dashboard Zabbixu.
+  API token se ukládá do Správce pověření Windows. Uživatelské rozhraní je v češtině, angličtině a němčině.
+ManifestType: locale
+ManifestVersion: 1.9.0
