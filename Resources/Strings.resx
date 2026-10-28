@@ -465,7 +465,7 @@ Defaults: warning threshold 2, error threshold 4, so 0-1 ignored, 2-3 warning, 4
 • ...-win-x64.msi: larger installer with the runtime included, also for computers without internet access.
 • ZIP files: portable versions without installation and without autostart, with or without the runtime.
 
-The installers install the application for all users to C:\Program Files\ZabbixTrayMonitor, add a Start menu shortcut and start the application when a user signs in. Administrator rights are required.
+The installers install the application for all users to C:\Program Files\ZabbixTrayMonitor, add a Start menu shortcut and start the application when a user signs in. Administrator rights are required. At the end of an interactive installation you can choose to start the application right away.
 • Silent installation: msiexec /i &lt;file&gt;.msi /qn, or &lt;file&gt;-setup.exe /quiet
 • Without autostart: add AUTOSTART=0 to the msiexec command.
 • Group Policy: assign the MSI to computers under Computer Configuration &gt; Policies &gt; Software Settings &gt; Software installation. It is installed at the next restart.

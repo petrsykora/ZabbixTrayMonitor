@@ -18,8 +18,10 @@
 
 		<BootstrapperApplication>
 			<!-- zeigt die Lizenzbedingungen (MIT) im Installer an, Installation erst nach Zustimmung -->
+			<!-- LaunchTarget: nach erfolgreicher Installation Schaltfläche "Launch" zum Starten der Anwendung -->
 			<bal:WixStandardBootstrapperApplication Theme="rtfLicense"
 			                                        LicenseFile="$(var.LicenseRtf)"
+			                                        LaunchTarget="[ProgramFiles64Folder]ZabbixTrayMonitor\ZabbixTrayMonitor.exe"
 			                                        ShowVersion="yes" />
 		</BootstrapperApplication>
 

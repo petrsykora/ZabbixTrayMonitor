@@ -465,7 +465,7 @@ Standard: Warn-Schwelle 2, Error-Schwelle 4, also 0-1 ignoriert, 2-3 Warnung, 4-
 • ...-win-x64.msi: größerer Installer mit enthaltener Runtime, auch für Rechner ohne Internetzugang.
 • ZIP-Dateien: portable Versionen ohne Installation und ohne Autostart, mit oder ohne Runtime.
 
-Die Installer installieren die Anwendung für alle Benutzer nach C:\Program Files\ZabbixTrayMonitor, legen eine Startmenü-Verknüpfung an und starten die Anwendung bei der Anmeldung. Administratorrechte sind erforderlich.
+Die Installer installieren die Anwendung für alle Benutzer nach C:\Program Files\ZabbixTrayMonitor, legen eine Startmenü-Verknüpfung an und starten die Anwendung bei der Anmeldung. Administratorrechte sind erforderlich. Am Ende einer Installation mit Dialogen können Sie wählen, ob die Anwendung gleich gestartet wird.
 • Stille Installation: msiexec /i &lt;Datei&gt;.msi /qn oder &lt;Datei&gt;-setup.exe /quiet
 • Ohne Autostart: AUTOSTART=0 an den msiexec-Befehl anhängen.
 • Gruppenrichtlinie: das MSI unter Computerkonfiguration &gt; Richtlinien &gt; Softwareeinstellungen &gt; Softwareinstallation den Computern zuweisen. Es wird beim nächsten Neustart installiert.

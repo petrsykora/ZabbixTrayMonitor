@@ -465,7 +465,7 @@ Výchozí hodnoty: práh varování 2, práh chyby 4, tedy 0-1 ignorováno, 2-3 
 • ...-win-x64.msi: větší instalátor s přibaleným runtime, i pro počítače bez internetu.
 • Soubory ZIP: přenosné verze bez instalace a bez automatického spuštění, s runtime nebo bez něj.
 
-Instalátory nainstalují aplikaci pro všechny uživatele do C:\Program Files\ZabbixTrayMonitor, přidají zástupce do nabídky Start a spouštějí aplikaci po přihlášení uživatele. Vyžadují práva správce.
+Instalátory nainstalují aplikaci pro všechny uživatele do C:\Program Files\ZabbixTrayMonitor, přidají zástupce do nabídky Start a spouštějí aplikaci po přihlášení uživatele. Vyžadují práva správce. Na konci instalace s dialogy si můžete vybrat, jestli se aplikace hned spustí.
 • Tichá instalace: msiexec /i &lt;soubor&gt;.msi /qn, nebo &lt;soubor&gt;-setup.exe /quiet
 • Bez automatického spuštění: přidejte k příkazu msiexec AUTOSTART=0.
 • Zásady skupiny: přiřaďte MSI počítačům v Konfigurace počítače &gt; Zásady &gt; Nastavení softwaru &gt; Instalace softwaru. Nainstaluje se při příštím restartu.

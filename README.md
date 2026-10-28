@@ -63,6 +63,7 @@ All installers:
 
 - install the application for all users to `C:\Program Files\ZabbixTrayMonitor` (administrator rights required)
 - add a Start menu shortcut and start the application automatically when a user signs in
+- offer to start the application right away at the end of an interactive installation (checkbox in the MSI, **Launch** button in `setup.exe`); silent installations do not start it
 - replace older versions (and the other MSI variant) automatically on update and close a running instance first
 - keep the user's settings (`config.json`) and the API token in the Credential Manager on uninstall
 
