@@ -168,14 +168,8 @@
   <data name="Settings_General" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="Settings_AppName" xml:space="preserve">
-    <value>App name</value>
-  </data>
   <data name="Settings_ZabbixUrl" xml:space="preserve">
     <value>Zabbix URL</value>
-  </data>
-  <data name="Settings_ApiPath" xml:space="preserve">
-    <value>API path (JSON-RPC)</value>
   </data>
   <data name="Settings_DashboardUrl" xml:space="preserve">
     <value>Dashboard URL</value>
@@ -212,18 +206,6 @@
   </data>
   <data name="Settings_ErrorThreshold" xml:space="preserve">
     <value>Error threshold</value>
-  </data>
-  <data name="Settings_Colors" xml:space="preserve">
-    <value>Colors</value>
-  </data>
-  <data name="Settings_ColorError" xml:space="preserve">
-    <value>Error color (hex)</value>
-  </data>
-  <data name="Settings_ColorWarning" xml:space="preserve">
-    <value>Warning color (hex)</value>
-  </data>
-  <data name="Settings_ColorInfo" xml:space="preserve">
-    <value>Info color (hex)</value>
   </data>
   <data name="Settings_AlarmHandling" xml:space="preserve">
     <value>Alarm handling</value>
@@ -264,12 +246,6 @@ Zabbix version: {0}</value>
   </data>
   <data name="Settings_EnterUrlFirst" xml:space="preserve">
     <value>Enter the Zabbix server URL first</value>
-  </data>
-  <data name="Settings_EnterApiPath" xml:space="preserve">
-    <value>Enter the API path (JSON-RPC)</value>
-  </data>
-  <data name="Settings_EnterAppName" xml:space="preserve">
-    <value>Enter the app name</value>
   </data>
   <data name="Settings_EnterUrl" xml:space="preserve">
     <value>Enter the Zabbix server URL</value>

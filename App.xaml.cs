@@ -13,7 +13,7 @@ namespace ZabbixTrayMonitor
             base.OnStartup(e);
 
             // Theme und Sprache aus gespeicherter Config anwenden
-            // Ohne config.json (erster Start) gilt die Standardsprache, damit auch das erste Einstellungsfenster Englisch ist
+            // Ohne config.json (erster Start) gilt die Standardsprache
             try
             {
                 var configService = new ConfigService();

@@ -84,7 +84,7 @@ namespace ZabbixTrayMonitor.Views
 
             ProblemsItemsControl.ItemsSource = viewModels;
 
-            Title = string.Format(Strings.Problems_TitleWithCount, cfg.AppName, viewModels.Count);
+            Title = string.Format(Strings.Problems_TitleWithCount, ZabbixConfig.AppDisplayName, viewModels.Count);
             LastUpdatedTextBlock.Text = string.Format(Strings.Problems_LastUpdated, DateTime.Now);
 
             EmptyTextBlock.Visibility = viewModels.Count == 0 ? Visibility.Visible : Visibility.Collapsed;

@@ -37,7 +37,7 @@ namespace ZabbixTrayMonitor
             // Öffnen und Schließen vom tatsächlichen Windows-Tray-Icon statt aus einer
             // eigenen Cursor-Abstandslogik.
             ApplyLocalizedTexts();
-            UpdateTrayToolTip($"Zabbix Tray Monitor\n---------\n{Strings.Tray_Initializing}");
+            UpdateTrayToolTip($"{ZabbixConfig.AppDisplayName}\n---------\n{Strings.Tray_Initializing}");
 
             // RefreshTimer für Probleme initialisieren abhängig vom Pollintervall in den Einstellungen
             _refreshTimer.Tick += async (_, _) => await RefreshProblemsAsync();
@@ -55,13 +55,7 @@ namespace ZabbixTrayMonitor
                 ApplyLocalizedTexts();
             }
 
-            // Set main window title to include configured AppName after possible initial configuration
-            try
-            {
-                var cfg = _configService.Load();
-                this.Title = string.IsNullOrWhiteSpace(cfg.AppName) ? "Zabbix Tray Monitor" : $"{cfg.AppName} - Zabbix Tray Monitor";
-            }
-            catch { }
+            Title = ZabbixConfig.AppDisplayName;
 
             // RefreshTimer starten 
             StartRefreshTimer();
@@ -267,7 +261,7 @@ namespace ZabbixTrayMonitor
                 ? "ApiToken"
                 : config.CredentialTargetSuffix;
 
-            var token = CredentialService.GetTokenForApp(config.AppName, credSuffix);
+            var token = CredentialService.GetTokenForApp(ZabbixConfig.CredentialAppName, credSuffix);
 
             if (string.IsNullOrWhiteSpace(config.ZabbixUrl))
                 throw new Exception(Strings.Error_NoZabbixUrl);
@@ -284,7 +278,6 @@ namespace ZabbixTrayMonitor
 
             await _zabbixClient.AcknowledgeProblemAsync(
                 config.ZabbixUrl,
-                config.ZabbixApiEndpoint,
                 token,
                 config.IgnoreCertificateErrors,
                 eventId,
@@ -314,7 +307,7 @@ namespace ZabbixTrayMonitor
             {
                 var config = _configService.Load();
                 var credSuffix = string.IsNullOrWhiteSpace(config.CredentialTargetSuffix) ? "ApiToken" : config.CredentialTargetSuffix;
-                var token = CredentialService.GetTokenForApp(config.AppName, credSuffix);
+                var token = CredentialService.GetTokenForApp(ZabbixConfig.CredentialAppName, credSuffix);
 
                 if (string.IsNullOrWhiteSpace(config.ZabbixUrl))
                     throw new Exception(Strings.Error_NoZabbixUrl);
@@ -326,7 +319,6 @@ namespace ZabbixTrayMonitor
 
                 var problems = await _zabbixClient.GetProblemsAsync(
                     config.ZabbixUrl,
-                    config.ZabbixApiEndpoint,
                     token,
                     config.WarningSeverityThreshold,
                     config.IgnoreCertificateErrors
@@ -406,7 +398,7 @@ namespace ZabbixTrayMonitor
                 var cfg = _configService.Load();
                 var lines = new List<string>
                 {
-                    string.IsNullOrWhiteSpace(cfg.AppName) ? "Zabbix Tray Monitor" : cfg.AppName,
+                    ZabbixConfig.AppDisplayName,
                     "---------",
                     string.Format(Strings.Tooltip_ErrorLine, ex.Message),
                     "---------",
@@ -442,7 +434,7 @@ namespace ZabbixTrayMonitor
             // nur Host + wichtigste Meldung anzeigen, keine Uhrzeit pro Item und keine Detailzeile
             var lines = new List<string>
     {
-        string.IsNullOrWhiteSpace(config.AppName) ? "Zabbix Tray Monitor" : config.AppName,
+        ZabbixConfig.AppDisplayName,
         "---------"
     };
 
@@ -608,7 +600,7 @@ namespace ZabbixTrayMonitor
             try
             {
                 var tooltipText = string.IsNullOrWhiteSpace(fullText)
-                    ? "Zabbix Tray Monitor"
+                    ? ZabbixConfig.AppDisplayName
                     : fullText;
 
                 TrayToolTipTextBlock.Text = tooltipText;
@@ -621,7 +613,7 @@ namespace ZabbixTrayMonitor
                     .FirstOrDefault();
 
                 TrayIcon.ToolTipText = string.IsNullOrWhiteSpace(firstLine)
-                    ? "Zabbix Tray Monitor"
+                    ? ZabbixConfig.AppDisplayName
                     : firstLine;
             }
             catch { }

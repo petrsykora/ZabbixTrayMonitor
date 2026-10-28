@@ -1,4 +1,4 @@
-# Zabbix Tray Monitor
+# Zabbix Monitor
 
 Small Windows tray client for Zabbix.
 
@@ -14,7 +14,7 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 - Configurable delay before the tray tooltip opens
 - Problems window with host, time, message and monitored object
 - Dark and light mode
-- User interface in English (default), German and Czech; selectable in the settings, or follow the system language
+- User interface in English, German and Czech; follows the Windows display language by default (English if the system language is not supported) or can be fixed in the settings
 - API token stored in the Windows Credential Manager
 - Alarm handling directly in the problems window:
   - Acknowledge only
@@ -105,21 +105,16 @@ Example:
 {
   "ZabbixUrl": "https://zabbix.home",
   "ZabbixDashboardUrl": "https://zabbix.home/zabbix.php?action=dashboard.view&dashboardid=407",
-  "ZabbixApiEndpoint": "/api_jsonrpc.php",
   "PollIntervalSeconds": 60,
   "TrayToolTipDelayMilliseconds": 250,
   "IgnoreCertificateErrors": false,
   "UseDarkMode": true,
-  "Language": "en",
+  "Language": "",
   "ShowSuppressedProblems": false,
   "RefreshAfterProblemAction": true,
   "AcknowledgeMessage": "Acknowledged by john.doe",
-  "AppName": "ZabbixTrayMonitor",
   "WarningSeverityThreshold": 2,
   "ErrorSeverityThreshold": 4,
-  "StatusColorError": "#FF0015",
-  "StatusColorWarning": "#F3C601",
-  "StatusColorInfo": "#808080",
   "CredentialTargetSuffix": "ApiToken",
   "CredentialUsername": "api-token"
 }
@@ -127,7 +122,7 @@ Example:
 
 ## Languages
 
-The user interface is available in English, German and Czech. English is the default. Under **Settings → Options → Language** you can choose a fixed language or follow the Windows display language (`Language` in config.json: `"en"`, `"de"`, `"cs"` or `""` for the system language). The change takes effect right after saving. If the system language is not supported, English is used.
+The user interface is available in English, German and Czech. By default it follows the Windows display language; if that language is not supported, English is used. Under **Settings → Language** you can choose a fixed language instead (`Language` in config.json: `""` for the system language, `"en"`, `"de"` or `"cs"`). The change takes effect right after saving.
 
 The texts are stored in `Resources/Strings.resx` (English), `Resources/Strings.de.resx` and `Resources/Strings.cs.resx`. To add another language, add a `Strings.<code>.resx` file and add the code to `LocalizationService.SupportedLanguages` and to the language selection in the settings window.
 
@@ -170,11 +165,7 @@ If `ShowSuppressedProblems` is `false`, suppressed problems are hidden from the 
 
 The application uses the Zabbix JSON-RPC API.
 
-Default API path:
-
-```text
-/api_jsonrpc.php
-```
+The API path is fixed to `/api_jsonrpc.php` as defined by Zabbix. If Zabbix runs in a subdirectory, include it in the Zabbix URL (for example `https://zabbix.example.com/zabbix`). Older configurations with a custom API path are migrated automatically.
 
 Authentication uses a bearer token.
 

@@ -11,8 +11,8 @@ namespace ZabbixTrayMonitor.Services
     {
         public const string SystemLanguage = "";
 
-        // Standard ist Englisch, auch beim ersten Start ohne config.json
-        public const string DefaultLanguage = "en";
+        // Standard ist die Systemsprache, nicht unterstützte Systemsprachen fallen auf Englisch zurück (Strings.resx)
+        public const string DefaultLanguage = SystemLanguage;
 
         // Unterstützte Sprachen für die Auswahl in den Einstellungen
         public static readonly string[] SupportedLanguages = { "en", "de", "cs" };

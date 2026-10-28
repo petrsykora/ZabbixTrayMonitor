@@ -391,29 +391,11 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API path (JSON-RPC).
-        /// </summary>
-        public static string Settings_ApiPath {
-            get {
-                return ResourceManager.GetString("Settings_ApiPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to API token.
         /// </summary>
         public static string Settings_ApiToken {
             get {
                 return ResourceManager.GetString("Settings_ApiToken", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to App name.
-        /// </summary>
-        public static string Settings_AppName {
-            get {
-                return ResourceManager.GetString("Settings_AppName", resourceCulture);
             }
         }
         
@@ -438,42 +420,6 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Settings_CertificateWarningCaption {
             get {
                 return ResourceManager.GetString("Settings_CertificateWarningCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error color (hex).
-        /// </summary>
-        public static string Settings_ColorError {
-            get {
-                return ResourceManager.GetString("Settings_ColorError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Info color (hex).
-        /// </summary>
-        public static string Settings_ColorInfo {
-            get {
-                return ResourceManager.GetString("Settings_ColorInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Colors.
-        /// </summary>
-        public static string Settings_Colors {
-            get {
-                return ResourceManager.GetString("Settings_Colors", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning color (hex).
-        /// </summary>
-        public static string Settings_ColorWarning {
-            get {
-                return ResourceManager.GetString("Settings_ColorWarning", resourceCulture);
             }
         }
         
@@ -534,29 +480,11 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the API path (JSON-RPC).
-        /// </summary>
-        public static string Settings_EnterApiPath {
-            get {
-                return ResourceManager.GetString("Settings_EnterApiPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter the API token.
         /// </summary>
         public static string Settings_EnterApiToken {
             get {
                 return ResourceManager.GetString("Settings_EnterApiToken", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the app name.
-        /// </summary>
-        public static string Settings_EnterAppName {
-            get {
-                return ResourceManager.GetString("Settings_EnterAppName", resourceCulture);
             }
         }
         

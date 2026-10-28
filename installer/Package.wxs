@@ -10,7 +10,7 @@
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
 
 	<!-- UpgradeCode darf sich nie ändern, sonst werden alte Versionen nicht mehr ersetzt -->
-	<Package Name="Zabbix Tray Monitor"
+	<Package Name="Zabbix Monitor"
 	         Manufacturer="ZabbixTrayMonitor"
 	         Version="$(var.ProductVersion)"
 	         UpgradeCode="8C296249-5391-4A2B-95F1-7A64EBA18FCC"
@@ -47,14 +47,13 @@
 
 	<Fragment>
 		<ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
-			<!-- exe separat, damit die Startmenü-Verknüpfung darauf zeigen kann -->
+			<!-- exe separat, damit die Startmenü-Verknüpfung darauf zeigen kann (Icon kommt aus der exe) -->
 			<Component>
 				<File Id="MainExe" Source="$(var.PublishDir)\ZabbixTrayMonitor.exe" KeyPath="yes">
 					<Shortcut Id="StartMenuShortcut"
 					          Directory="ProgramMenuFolder"
-					          Name="Zabbix Tray Monitor"
+					          Name="Zabbix Monitor"
 					          WorkingDirectory="INSTALLFOLDER"
-					          Icon="AppIcon"
 					          Advertise="yes" />
 				</File>
 			</Component>

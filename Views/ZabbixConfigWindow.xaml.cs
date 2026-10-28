@@ -32,7 +32,6 @@ namespace ZabbixTrayMonitor
             try
             {
                 var url = ZabbixUrlTextBox.Text.Trim().TrimEnd('/'); //sicherstellen dass bei der URl keine doppelten Slahes sind
-                var endpointText = ZabbixApiEndpointTextBox.Text.Trim();
 
                 if (string.IsNullOrWhiteSpace(url))
                 {
@@ -46,20 +45,7 @@ namespace ZabbixTrayMonitor
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(endpointText))
-                {
-                    MessageBox.Show(
-                        Strings.Settings_EnterApiPath,
-                        Strings.Common_Error,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
-                    );
-
-                    return;
-                }
-
-                var endpoint = NormalizeZabbixApiEndpoint(endpointText);
-                var version = await _zabbixClient.GetVersionAsync(url, endpoint, IgnoreCertificateErrorsCheckBox.IsChecked == true);
+                var version = await _zabbixClient.GetVersionAsync(url, IgnoreCertificateErrorsCheckBox.IsChecked == true);
 
                 MessageBox.Show(
                     string.Format(Strings.Settings_TestConnectionSuccess, version),
@@ -87,37 +73,32 @@ namespace ZabbixTrayMonitor
 
             ZabbixTrayMonitor.Services.ThemeService.ApplyTheme(config.UseDarkMode);
 
-            var appName = NormalizeAppName(config.AppName);
             var credentialSuffix = NormalizeCredentialSuffix(config.CredentialTargetSuffix);
             var credentialUsername = NormalizeCredentialUsername(config.CredentialUsername);
 
-            this.Title = string.Format(Strings.Settings_Title, appName);
-            HeaderTitle.Text = this.Title;
-            AppNameTextBoxHeader.Text = appName;
+            this.Title = string.Format(Strings.Settings_Title, ZabbixConfig.AppDisplayName);
 
-            // Appname on the fly ändern
-            AppNameTextBoxHeader.TextChanged += AppNameTextBoxHeader_TextChanged;
+            // Fenster passt sich dem Inhalt an, aber nie höher als der Arbeitsbereich (Rest per ScrollViewer)
+            MaxHeight = SystemParameters.WorkArea.Height;
+
+            // Systemtitelleiste an Dark/Light Mode anpassen, Handle gibt es erst ab SourceInitialized
+            SourceInitialized += (_, _) => ThemeService.ApplyTitleBarTheme(this, config.UseDarkMode);
 
             IgnoreCertificateErrorsCheckBox.IsChecked = config.IgnoreCertificateErrors;
             DarkModeCheckBox.IsChecked = config.UseDarkMode;
-            SetSelectedLanguage(config.Language);
+            InitializeLanguageComboBox(config.Language);
             PollIntervalSecondsTextBox.Text = config.PollIntervalSeconds.ToString();
             TrayToolTipDelayMillisecondsTextBox.Text = config.TrayToolTipDelayMilliseconds.ToString();
 
             if (!string.IsNullOrWhiteSpace(config.ZabbixUrl))
                 ZabbixUrlTextBox.Text = config.ZabbixUrl;
 
-            ZabbixApiEndpointTextBox.Text = NormalizeZabbixApiEndpoint(config.ZabbixApiEndpoint);
-
             if (!string.IsNullOrWhiteSpace(config.ZabbixDashboardUrl))
                 ZabbixDashboardUrlTextBox.Text = config.ZabbixDashboardUrl;
 
-            // Schwellenwerte und Farben 
+            // Schwellenwerte
             WarningSeverityTextBox.Text = config.WarningSeverityThreshold.ToString();
             ErrorSeverityTextBox.Text = config.ErrorSeverityThreshold.ToString();
-            StatusColorErrorTextBox.Text = config.StatusColorError;
-            StatusColorWarningTextBox.Text = config.StatusColorWarning;
-            StatusColorInfoTextBox.Text = config.StatusColorInfo;
 
             // Alarmbearbeitung
             ShowSuppressedProblemsCheckBox.IsChecked = config.ShowSuppressedProblems;
@@ -126,12 +107,12 @@ namespace ZabbixTrayMonitor
                 ZabbixConfig.ResolveAcknowledgeMessage(config.AcknowledgeMessage);
 
             // Credential UI
-            CredentialTargetPrefixTextBox.Text = appName + ".";
+            CredentialTargetPrefixTextBox.Text = ZabbixConfig.CredentialAppName + ".";
             CredentialTargetSuffixTextBox.Text = credentialSuffix;
             CredentialUsernameTextBox.Text = credentialUsername;
 
             // Wenn fürs Target bereits ein Token existiert zeige Platzhalter und setze Username
-            var target = CredentialService.BuildTarget(appName, credentialSuffix);
+            var target = CredentialService.BuildTarget(ZabbixConfig.CredentialAppName, credentialSuffix);
 
             try
             {
@@ -148,35 +129,12 @@ namespace ZabbixTrayMonitor
             catch { }
         }
 
-        // Fenster verschieben
-        private void Header_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            try
-            {
-                if (e.ButtonState == System.Windows.Input.MouseButtonState.Pressed)
-                {
-                    this.DragMove();
-                }
-            }
-            catch { }
-        }
-
-        private void AppNameTextBoxHeader_TextChanged(object? sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            var appName = NormalizeAppName(AppNameTextBoxHeader.Text);
-
-            CredentialTargetPrefixTextBox.Text = appName + ".";
-            this.Title = string.Format(Strings.Settings_Title, appName);
-            HeaderTitle.Text = this.Title;
-        }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             var existingConfig = _configService.Load(); // lade bestehende Config und aktualisiere nur geänderte Felder
 
-            var previousAppName = NormalizeAppName(existingConfig.AppName);
             var previousSuffix = NormalizeCredentialSuffix(existingConfig.CredentialTargetSuffix);
-            var fullTargetOld = CredentialService.BuildTarget(previousAppName, previousSuffix);
+            var fullTargetOld = CredentialService.BuildTarget(ZabbixConfig.CredentialAppName, previousSuffix);
 
             if (!ValidateRequiredFields())
                 return;
@@ -200,7 +158,6 @@ namespace ZabbixTrayMonitor
             if (!ConfirmIgnoreCertificateErrors(existingConfig.IgnoreCertificateErrors, ignoreCertificateErrors))
                 return;
 
-            var zabbixApiEndpoint = NormalizeZabbixApiEndpoint(ZabbixApiEndpointTextBox.Text);
             var dashboardUrl = ZabbixDashboardUrlTextBox.Text.Trim().TrimEnd('/');
 
             if (string.IsNullOrWhiteSpace(dashboardUrl))
@@ -208,31 +165,25 @@ namespace ZabbixTrayMonitor
                 dashboardUrl = zabbixUrl; // Wenn keine Dashboard-URL angegeben ist auf die Zabbix-URL setzen
             }
 
-            var appName = NormalizeAppName(AppNameTextBoxHeader.Text);
             var credentialSuffix = NormalizeCredentialSuffix(CredentialTargetSuffixTextBox.Text);
             var credentialUsername = NormalizeCredentialUsername(CredentialUsernameTextBox.Text);
-            var fullTargetNew = CredentialService.BuildTarget(appName, credentialSuffix);
+            var fullTargetNew = CredentialService.BuildTarget(ZabbixConfig.CredentialAppName, credentialSuffix);
 
             if (!ValidateApiTokenForSave(fullTargetOld, fullTargetNew))
                 return;
 
             // Update Werte in akueller Config
-            existingConfig.AppName = appName;
             existingConfig.ZabbixUrl = zabbixUrl;
-            existingConfig.ZabbixApiEndpoint = zabbixApiEndpoint;
             existingConfig.ZabbixDashboardUrl = dashboardUrl;
             existingConfig.PollIntervalSeconds = pollIntervalSeconds;
             existingConfig.TrayToolTipDelayMilliseconds = trayToolTipDelayMilliseconds;
             existingConfig.IgnoreCertificateErrors = ignoreCertificateErrors;
             existingConfig.UseDarkMode = DarkModeCheckBox.IsChecked == true;
-            existingConfig.Language = GetSelectedLanguage();
+            existingConfig.Language = LanguageComboBox.SelectedValue as string ?? LocalizationService.DefaultLanguage;
             existingConfig.WarningSeverityThreshold = warningThreshold;
             existingConfig.ErrorSeverityThreshold = errorThreshold;
             existingConfig.CredentialTargetSuffix = credentialSuffix;
             existingConfig.CredentialUsername = credentialUsername;
-            existingConfig.StatusColorError = NormalizeHexColor(StatusColorErrorTextBox.Text, "#FF0015");
-            existingConfig.StatusColorWarning = NormalizeHexColor(StatusColorWarningTextBox.Text, "#F3C601");
-            existingConfig.StatusColorInfo = NormalizeHexColor(StatusColorInfoTextBox.Text, "#808080");
             existingConfig.ShowSuppressedProblems = ShowSuppressedProblemsCheckBox.IsChecked == true;
             existingConfig.RefreshAfterProblemAction = RefreshAfterProblemActionCheckBox.IsChecked == true;
             existingConfig.AcknowledgeMessage =
@@ -252,13 +203,7 @@ namespace ZabbixTrayMonitor
 
         private bool ValidateRequiredFields()
         {
-            if (!ValidateRequiredTextBox(AppNameTextBoxHeader, Strings.Settings_EnterAppName))
-                return false;
-
             if (!ValidateRequiredTextBox(ZabbixUrlTextBox, Strings.Settings_EnterUrl))
-                return false;
-
-            if (!ValidateRequiredTextBox(ZabbixApiEndpointTextBox, Strings.Settings_EnterApiPath))
                 return false;
 
             if (!ValidateRequiredPasswordBox(ApiTokenTextBox, Strings.Settings_EnterApiToken))
@@ -580,38 +525,21 @@ namespace ZabbixTrayMonitor
             return true;
         }
 
-        private void SetSelectedLanguage(string language)
+        // Sprachnamen bewusst in der jeweiligen Sprache und nicht übersetzt, nur "System" wird übersetzt
+        private void InitializeLanguageComboBox(string language)
         {
-            switch (LocalizationService.NormalizeLanguage(language))
+            LanguageComboBox.ItemsSource = new[]
             {
-                case "en":
-                    LanguageEnglishRadioButton.IsChecked = true;
-                    break;
-                case "de":
-                    LanguageGermanRadioButton.IsChecked = true;
-                    break;
-                case "cs":
-                    LanguageCzechRadioButton.IsChecked = true;
-                    break;
-                default:
-                    LanguageSystemRadioButton.IsChecked = true;
-                    break;
-            }
+                new LanguageOption(LocalizationService.SystemLanguage, Strings.Settings_LanguageSystem),
+                new LanguageOption("en", "English"),
+                new LanguageOption("de", "Deutsch"),
+                new LanguageOption("cs", "Čeština")
+            };
+
+            LanguageComboBox.SelectedValue = LocalizationService.NormalizeLanguage(language);
         }
 
-        private string GetSelectedLanguage()
-        {
-            if (LanguageEnglishRadioButton.IsChecked == true)
-                return "en";
-
-            if (LanguageGermanRadioButton.IsChecked == true)
-                return "de";
-
-            if (LanguageCzechRadioButton.IsChecked == true)
-                return "cs";
-
-            return LocalizationService.SystemLanguage;
-        }
+        private sealed record LanguageOption(string Code, string Name);
 
         private static bool ValidateRequiredTextBox(TextBox textBox, string errorMessage)
         {
@@ -648,23 +576,6 @@ namespace ZabbixTrayMonitor
             );
         }
 
-        private static string NormalizeAppName(string value)
-        {
-            return string.IsNullOrWhiteSpace(value)
-                ? "ZabbixTrayMonitor"
-                : value.Trim();
-        }
-
-        private static string NormalizeZabbixApiEndpoint(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return "/api_jsonrpc.php";
-
-            value = value.Trim();
-
-            return value.StartsWith("/") ? value : "/" + value;
-        }
-
         private static string NormalizeCredentialSuffix(string value)
         {
             return string.IsNullOrWhiteSpace(value)
@@ -677,36 +588,6 @@ namespace ZabbixTrayMonitor
             return string.IsNullOrWhiteSpace(value)
                 ? CredentialService.DefaultCredentialUsername
                 : value.Trim();
-        }
-
-        private static string NormalizeHexColor(string value, string fallback)
-        {
-            var color = value.Trim();
-
-            if (!IsValidHexColor(color))
-                return fallback;
-
-            return color;
-        }
-
-        private static bool IsValidHexColor(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return false;
-
-            if (value.Length != 7)
-                return false;
-
-            if (value[0] != '#')
-                return false;
-
-            for (var i = 1; i < value.Length; i++)
-            {
-                if (!Uri.IsHexDigit(value[i]))
-                    return false;
-            }
-
-            return true;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

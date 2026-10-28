@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 // Verwaltet die Farben anhand der Dark-/Lighmode Option in den Einstellungen
@@ -8,6 +10,31 @@ namespace ZabbixTrayMonitor.Services
 {
     public static class ThemeService
     {
+        // DWMWA_USE_IMMERSIVE_DARK_MODE: 20 ab Windows 10 20H1, 19 bei älteren Windows 10 Builds
+        private const int DwmUseImmersiveDarkMode = 20;
+        private const int DwmUseImmersiveDarkModeBefore20H1 = 19;
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
+
+        // Färbt die Standard-Titelleiste eines Fensters passend zum Dark/Light Mode (wird von älteren Windows-Versionen ignoriert)
+        public static void ApplyTitleBarTheme(Window window, bool darkMode)
+        {
+            try
+            {
+                var hwnd = new WindowInteropHelper(window).Handle;
+
+                if (hwnd == IntPtr.Zero)
+                    return;
+
+                var value = darkMode ? 1 : 0;
+
+                if (DwmSetWindowAttribute(hwnd, DwmUseImmersiveDarkMode, ref value, sizeof(int)) != 0)
+                    DwmSetWindowAttribute(hwnd, DwmUseImmersiveDarkModeBefore20H1, ref value, sizeof(int));
+            }
+            catch { }
+        }
+
         public static void ApplyTheme(bool darkMode)
         {
             var appResources = Application.Current.Resources; // Zugriff auf die Ressourcen von App.xaml

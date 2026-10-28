@@ -15,8 +15,6 @@ namespace ZabbixTrayMonitor.Services
 {
     public class ZabbixClient
     {
-        private const string DefaultZabbixApiEndpoint = "/api_jsonrpc.php";
-
         // Kurzer Timeout damit ein nicht antwortender Server Tray-Status und Problemfenster nicht 100 Sekunden (HttpClient-Default) blockiert
         private static readonly TimeSpan RequestTimeout = TimeSpan.FromSeconds(15);
 
@@ -54,12 +52,11 @@ namespace ZabbixTrayMonitor.Services
 
         public async Task<List<ZabbixProblem>> GetProblemsAsync(
             string zabbixUrl,
-            string zabbixApiEndpoint,
             string apiToken,
             int minimumSeverity,
             bool ignoreCertificateErrors)
         {
-            var apiUrl = BuildApiUrl(zabbixUrl, zabbixApiEndpoint);
+            var apiUrl = BuildApiUrl(zabbixUrl);
 
             var client = GetClient(ignoreCertificateErrors);
 
@@ -410,7 +407,6 @@ namespace ZabbixTrayMonitor.Services
 
         public async Task AcknowledgeProblemAsync(
             string zabbixUrl,
-            string zabbixApiEndpoint,
             string apiToken,
             bool ignoreCertificateErrors,
             string eventId,
@@ -426,7 +422,7 @@ namespace ZabbixTrayMonitor.Services
             if (suppressUntil.HasValue && suppressUntil.Value <= DateTime.Now)
                 throw new ArgumentException(Strings.Api_SuppressUntilNotInFuture, nameof(suppressUntil));
 
-            var apiUrl = BuildApiUrl(zabbixUrl, zabbixApiEndpoint);
+            var apiUrl = BuildApiUrl(zabbixUrl);
             var client = GetClient(ignoreCertificateErrors);
 
             var action = suppressUntil.HasValue
@@ -476,9 +472,9 @@ namespace ZabbixTrayMonitor.Services
                 throw new Exception(Strings.Api_InvalidResponse);
         }
 
-        public async Task<string> GetVersionAsync(string zabbixUrl, string zabbixApiEndpoint, bool ignoreCertificateErrors)
+        public async Task<string> GetVersionAsync(string zabbixUrl, bool ignoreCertificateErrors)
         {
-            var apiUrl = BuildApiUrl(zabbixUrl, zabbixApiEndpoint);
+            var apiUrl = BuildApiUrl(zabbixUrl);
 
             var client = GetClient(ignoreCertificateErrors);
 
@@ -572,16 +568,9 @@ namespace ZabbixTrayMonitor.Services
             return false;
         }
 
-        private static string BuildApiUrl(string zabbixUrl, string zabbixApiEndpoint)
+        private static string BuildApiUrl(string zabbixUrl)
         {
-            var endpoint = string.IsNullOrWhiteSpace(zabbixApiEndpoint)
-                ? DefaultZabbixApiEndpoint
-                : zabbixApiEndpoint.Trim();
-
-            if (!endpoint.StartsWith("/"))
-                endpoint = "/" + endpoint;
-
-            return zabbixUrl.TrimEnd('/') + endpoint;
+            return zabbixUrl.TrimEnd('/') + ZabbixConfig.ZabbixApiPath;
         }
 
         private static void ThrowIfJsonRpcError(JsonElement rootElement)

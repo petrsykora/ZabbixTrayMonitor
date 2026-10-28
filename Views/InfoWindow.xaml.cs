@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using ZabbixTrayMonitor.Models;
 using ZabbixTrayMonitor.Services;
 using ZabbixTrayMonitor.Resources;
 
@@ -16,11 +17,7 @@ namespace ZabbixTrayMonitor.Views
             try
             {
                 var configService = new ConfigService();
-                var config = configService.Load();
-
-                var appName = string.IsNullOrWhiteSpace(config.AppName)
-                    ? "ZabbixTrayMonitor"
-                    : config.AppName;
+                var appName = ZabbixConfig.AppDisplayName;
 
                 var assembly = Assembly.GetEntryAssembly(); // Assembly ist die gebaute exe
                 var assemblyVersion = assembly?.GetName().Version?.ToString() ?? Strings.Common_Unknown;
@@ -43,7 +40,7 @@ namespace ZabbixTrayMonitor.Views
             }
             catch
             {
-                AppNameText.Text = "ZabbixTrayMonitor";
+                AppNameText.Text = ZabbixConfig.AppDisplayName;
                 VersionText.Text = string.Format(Strings.Info_Version, Strings.Common_Unknown);
                 ProgramText.Text = string.Empty;
                 ConfigText.Text = string.Empty;

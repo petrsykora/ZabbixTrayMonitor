@@ -1,13 +1,23 @@
 ﻿// Repräsentiert die gespeicherte Zabbix-Konfiguration
 
+using System.Text.Json.Serialization;
 using ZabbixTrayMonitor.Services;
 
 namespace ZabbixTrayMonitor.Models
 {
     public class ZabbixConfig
     {
+        // Fester Anzeigename der Anwendung (Fenstertitel, Tooltip)
+        public const string AppDisplayName = "Zabbix Monitor";
+
+        // Fester Prefix der Credential-Targets im Windows Credential Manager ("ZabbixTrayMonitor.ApiToken"),
+        // bleibt bewusst beim alten Namen damit bereits gespeicherte Tokens weiter gefunden werden
+        public const string CredentialAppName = "ZabbixTrayMonitor";
+
+        // Pfad der JSON-RPC API ist in Zabbix fest vorgegeben, ein Unterverzeichnis gehört in die ZabbixUrl
+        public const string ZabbixApiPath = "/api_jsonrpc.php";
+
         public string ZabbixUrl { get; set; } = "";
-        public string ZabbixApiEndpoint { get; set; } = "/api_jsonrpc.php";
         public string ZabbixDashboardUrl { get; set; } = "";
 
         public int PollIntervalSeconds { get; set; } = 60;
@@ -15,7 +25,7 @@ namespace ZabbixTrayMonitor.Models
         public bool IgnoreCertificateErrors { get; set; } = false; // Ignoriert SSL Fehler zB. bei self-signed Zertifikaten
         public bool UseDarkMode { get; set; } = true;
 
-        // Sprache der Oberfläche: "en" (Standard), "de", "cs" oder "" = Systemsprache
+        // Sprache der Oberfläche: "" = Systemsprache (Standard), "en", "de" oder "cs"
         public string Language { get; set; } = LocalizationService.DefaultLanguage;
 
         // Alarmbearbeitung
@@ -42,7 +52,13 @@ namespace ZabbixTrayMonitor.Models
         public bool RefreshAfterProblemAction { get; set; } = true;
         public string AcknowledgeMessage { get; set; } = DefaultAcknowledgeMessage;
 
-        public string AppName { get; set; } = "ZabbixTrayMonitor";
+        // Früher konfigurierbar, wird nur noch für die Migration aus alten config.json gelesen (ConfigService.Load)
+        // und danach nicht mehr gespeichert
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? AppName { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? ZabbixApiEndpoint { get; set; }
 
         // Schwellenwerte für die von der Zabbix API zurückgegebenen Severity-Werte
         /**
@@ -56,13 +72,18 @@ namespace ZabbixTrayMonitor.Models
         public int WarningSeverityThreshold { get; set; } = 2;
         public int ErrorSeverityThreshold { get; set; } = 4;
 
-        // Default Farben für Statusanzeige und ProblemsWindow
-        public string StatusColorError { get; set; } = "#FF0015";
-        public string StatusColorWarning { get; set; } = "#F3C601";
-        public string StatusColorInfo { get; set; } = "#808080";
+        // Feste Farben für Statusanzeige und ProblemsWindow (nicht mehr konfigurierbar, werden nicht gespeichert)
+        [JsonIgnore]
+        public string StatusColorError => "#FF0015";
+
+        [JsonIgnore]
+        public string StatusColorWarning => "#F3C601";
+
+        [JsonIgnore]
+        public string StatusColorInfo => "#808080";
 
         // Default Credential Einstellungen
-        public string CredentialTargetSuffix { get; set; } = "ApiToken"; // Suffix nach {AppName}
+        public string CredentialTargetSuffix { get; set; } = "ApiToken"; // Suffix nach {CredentialAppName}
         public string CredentialUsername { get; set; } = "api-token";
     }
 }

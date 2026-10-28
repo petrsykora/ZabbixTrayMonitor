@@ -168,14 +168,8 @@
   <data name="Settings_General" xml:space="preserve">
     <value>Obecné</value>
   </data>
-  <data name="Settings_AppName" xml:space="preserve">
-    <value>Název aplikace</value>
-  </data>
   <data name="Settings_ZabbixUrl" xml:space="preserve">
     <value>URL Zabbixu</value>
-  </data>
-  <data name="Settings_ApiPath" xml:space="preserve">
-    <value>Cesta k API (JSON-RPC)</value>
   </data>
   <data name="Settings_DashboardUrl" xml:space="preserve">
     <value>URL dashboardu</value>
@@ -212,18 +206,6 @@
   </data>
   <data name="Settings_ErrorThreshold" xml:space="preserve">
     <value>Práh chyby</value>
-  </data>
-  <data name="Settings_Colors" xml:space="preserve">
-    <value>Barvy</value>
-  </data>
-  <data name="Settings_ColorError" xml:space="preserve">
-    <value>Barva chyby (hex)</value>
-  </data>
-  <data name="Settings_ColorWarning" xml:space="preserve">
-    <value>Barva varování (hex)</value>
-  </data>
-  <data name="Settings_ColorInfo" xml:space="preserve">
-    <value>Barva informace (hex)</value>
   </data>
   <data name="Settings_AlarmHandling" xml:space="preserve">
     <value>Zpracování alarmů</value>
@@ -264,12 +246,6 @@ Verze Zabbixu: {0}</value>
   </data>
   <data name="Settings_EnterUrlFirst" xml:space="preserve">
     <value>Nejprve zadejte URL Zabbix serveru</value>
-  </data>
-  <data name="Settings_EnterApiPath" xml:space="preserve">
-    <value>Zadejte cestu k API (JSON-RPC)</value>
-  </data>
-  <data name="Settings_EnterAppName" xml:space="preserve">
-    <value>Zadejte název aplikace</value>
   </data>
   <data name="Settings_EnterUrl" xml:space="preserve">
     <value>Zadejte URL Zabbix serveru</value>

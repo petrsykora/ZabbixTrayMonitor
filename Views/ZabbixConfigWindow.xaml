@@ -6,16 +6,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZabbixTrayMonitor"
         mc:Ignorable="d"
-        Title="Settings - ZabbixTrayMonitor"
-        SizeToContent="Height"
-        Width="440"
+        Title="Settings - Zabbix Monitor"
+        Icon="/Assets/tray-ok.ico"
+        SizeToContent="WidthAndHeight"
+        MinWidth="440"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        ShowInTaskbar="False"
-        Topmost="True"
-        Background="Transparent">
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
+        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}">
+    <!-- Standardfenster von Windows: Titelleiste mit Minimieren/Maximieren/Schließen, Schrift und Größe nach Systemeinstellung -->
 
     <Window.Resources>
         <Style x:Key="SectionSeparatorStyle" TargetType="Border">
@@ -28,7 +29,6 @@
 
         <Style x:Key="SectionHeaderTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-            <Setter Property="FontSize" Value="12" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0,0,12,0" />
@@ -36,567 +36,406 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="6">
-        <Border CornerRadius="8"
-                Background="{DynamicResource WindowBackgroundBrush}"
-                Padding="12,16,12,12">
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <!-- Draggable header area -->
-                <Border Grid.Row="0"
-                        Background="Transparent"
-                        MouseLeftButtonDown="Header_MouseLeftButtonDown"
-                        Margin="0,0,0,8">
-
-                    <TextBlock x:Name="HeaderTitle"
-                               Text="Settings"
-                               Foreground="{DynamicResource PrimaryTextBrush}"
-                               FontWeight="Bold"
-                               Margin="6,0,0,8"
-                               VerticalAlignment="Center"
-                               TextWrapping="Wrap" />
-                </Border>
-
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <!-- Allgemein -->
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-
-                        <RowDefinition Height="Auto" />
-
-                        <!-- Schwellenwerte -->
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-
-                        <!-- Farbwerte -->
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-
-                        <!-- Alarmbearbeitung -->
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-
-                        <!-- Windows Credential Manager -->
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-
-                        <!-- Buttons -->
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <!-- Allgemein Header -->
-                    <Grid Grid.Row="0"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{x:Static res:Strings.Settings_General}"
-                                   Style="{StaticResource SectionHeaderTextStyle}" />
-
-                        <Border Grid.Column="1"
-                                Style="{StaticResource SectionSeparatorStyle}" />
-                    </Grid>
-
-                    <!-- App-Name -->
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_AppName}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="AppNameTextBoxHeader"
-                             Grid.Row="1"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Zabbix URL -->
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_ZabbixUrl}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="ZabbixUrlTextBox"
-                             Grid.Row="2"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- API-Pfad (JSON-RPC) -->
-                    <TextBlock Grid.Row="3"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_ApiPath}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="ZabbixApiEndpointTextBox"
-                             Grid.Row="3"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Dashboard URL -->
-                    <TextBlock Grid.Row="4"
-                               Grid.Column="0"
-                               Text="{x:Static res:Strings.Settings_DashboardUrl}"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center" />
-
-                    <TextBox x:Name="ZabbixDashboardUrlTextBox"
-                             Grid.Row="4"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- API Token -->
-                    <TextBlock Grid.Row="5"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_ApiToken}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <PasswordBox x:Name="ApiTokenTextBox"
-                                 Grid.Row="5"
-                                 Grid.Column="1"
-                                 Height="30"
-                                 Padding="6"
-                                 Margin="0,0,0,6"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Center" />
-
-                    <!-- Optionen -->
-                    <TextBlock Grid.Row="6"
-                               Grid.Column="0"
-                               Text="{x:Static res:Strings.Settings_Options}"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Top" />
-
-                    <StackPanel Grid.Row="6"
-                                Grid.Column="1"
-                                Orientation="Vertical"
-                                Margin="0,0,0,6"
-                                VerticalAlignment="Top">
-
-                        <CheckBox x:Name="IgnoreCertificateErrorsCheckBox"
-                                  Content="{x:Static res:Strings.Settings_IgnoreCertificateErrors}"
-                                  Foreground="{DynamicResource PrimaryTextBrush}"
-                                  Margin="0,0,0,2" />
-
-                        <CheckBox x:Name="DarkModeCheckBox"
-                                  Content="{x:Static res:Strings.Settings_DarkMode}"
-                                  Foreground="{DynamicResource PrimaryTextBrush}"
-                                  Margin="0,2,0,0" />
-
-                        <!-- Sprache: Sprachnamen bewusst in der jeweiligen Sprache und nicht übersetzt -->
-                        <WrapPanel Margin="0,6,0,0">
-                            <TextBlock Text="{x:Static res:Strings.Settings_Language}"
-                                       Foreground="{DynamicResource SecondaryTextBrush}"
-                                       Margin="0,0,8,0"
-                                       VerticalAlignment="Center" />
-                            <RadioButton x:Name="LanguageSystemRadioButton"
-                                         GroupName="Language"
-                                         Content="{x:Static res:Strings.Settings_LanguageSystem}"
-                                         Margin="0,0,8,0" />
-                            <RadioButton x:Name="LanguageEnglishRadioButton"
-                                         GroupName="Language"
-                                         Content="English"
-                                         Margin="0,0,8,0" />
-                            <RadioButton x:Name="LanguageGermanRadioButton"
-                                         GroupName="Language"
-                                         Content="Deutsch"
-                                         Margin="0,0,8,0" />
-                            <RadioButton x:Name="LanguageCzechRadioButton"
-                                         GroupName="Language"
-                                         Content="Čeština" />
-                        </WrapPanel>
-                    </StackPanel>
-
-                    <!-- Abfrageintervall -->
-                    <TextBlock Grid.Row="7"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_PollInterval}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="PollIntervalSecondsTextBox"
-                             Grid.Row="7"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Text="60"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Tooltip-Verzögerung -->
-                    <TextBlock Grid.Row="8"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_TooltipDelay}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="TrayToolTipDelayMillisecondsTextBox"
-                             Grid.Row="8"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Text="250"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Schwellenwerte Header -->
-                    <Grid Grid.Row="9"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="0,12,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{x:Static res:Strings.Settings_Thresholds}"
-                                   Style="{StaticResource SectionHeaderTextStyle}" />
-
-                        <Border Grid.Column="1"
-                                Style="{StaticResource SectionSeparatorStyle}" />
-                    </Grid>
-
-                    <!-- Warn-Schwelle -->
-                    <TextBlock Grid.Row="10"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_WarningThreshold}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="WarningSeverityTextBox"
-                             Grid.Row="10"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Error-Schwelle -->
-                    <TextBlock Grid.Row="11"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_ErrorThreshold}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="ErrorSeverityTextBox"
-                             Grid.Row="11"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Farbwerte Header -->
-                    <Grid Grid.Row="12"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="0,12,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{x:Static res:Strings.Settings_Colors}"
-                                   Style="{StaticResource SectionHeaderTextStyle}" />
-
-                        <Border Grid.Column="1"
-                                Style="{StaticResource SectionSeparatorStyle}" />
-                    </Grid>
-
-                    <!-- Farbe Fehler -->
-                    <TextBlock Grid.Row="13"
-                               Grid.Column="0"
-                               Text="{x:Static res:Strings.Settings_ColorError}"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center" />
-
-                    <TextBox x:Name="StatusColorErrorTextBox"
-                             Grid.Row="13"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Farbe Warnung -->
-                    <TextBlock Grid.Row="14"
-                               Grid.Column="0"
-                               Text="{x:Static res:Strings.Settings_ColorWarning}"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center" />
-
-                    <TextBox x:Name="StatusColorWarningTextBox"
-                             Grid.Row="14"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             Margin="0,0,0,6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Farbe Info -->
-                    <TextBlock Grid.Row="15"
-                               Grid.Column="0"
-                               Text="{x:Static res:Strings.Settings_ColorInfo}"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center" />
-
-                    <TextBox x:Name="StatusColorInfoTextBox"
-                             Grid.Row="15"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Alarmbearbeitung Header -->
-                    <Grid Grid.Row="16"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="0,12,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{x:Static res:Strings.Settings_AlarmHandling}"
-                                   Style="{StaticResource SectionHeaderTextStyle}" />
-
-                        <Border Grid.Column="1"
-                                Style="{StaticResource SectionSeparatorStyle}" />
-                    </Grid>
-
-                    <CheckBox x:Name="ShowSuppressedProblemsCheckBox"
-                              Grid.Row="17"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="2"
-                              Content="{x:Static res:Strings.Settings_ShowSuppressedProblems}"
-                              Margin="0,0,0,8"
-                              VerticalAlignment="Center" />
-
-                    <CheckBox x:Name="RefreshAfterProblemActionCheckBox"
-                              Grid.Row="18"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="2"
-                              Content="{x:Static res:Strings.Settings_RefreshAfterProblemAction}"
-                              Margin="0,0,0,8"
-                              VerticalAlignment="Center" />
-
-                    <TextBlock Grid.Row="19"
-                               Grid.Column="0"
-                               Text="{x:Static res:Strings.Settings_DefaultMessage}"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center" />
-
-                    <TextBox x:Name="AcknowledgeMessageTextBox"
-                             Grid.Row="19"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Windows Credential Manager Header -->
-                    <Grid Grid.Row="20"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="0,12,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="Windows Credential Manager"
-                                   Style="{StaticResource SectionHeaderTextStyle}" />
-
-                        <Border Grid.Column="1"
-                                Style="{StaticResource SectionSeparatorStyle}" />
-                    </Grid>
-
-                    <!-- Credential Target -->
-                    <TextBlock Grid.Row="21"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,6"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_CredentialTarget}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <Grid Grid.Row="21"
-                          Grid.Column="1"
-                          Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="120" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBox x:Name="CredentialTargetPrefixTextBox"
-                                 Grid.Column="0"
-                                 Height="30"
-                                 Padding="6"
-                                 IsReadOnly="True"
-                                 Margin="0,0,8,0"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Center" />
-
-                        <TextBox x:Name="CredentialTargetSuffixTextBox"
-                                 Grid.Column="1"
-                                 Height="30"
-                                 Padding="6"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Center" />
-                    </Grid>
-
-                    <!-- Credential Username -->
-                    <TextBlock Grid.Row="22"
-                               Grid.Column="0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center">
-                        <Run Text="{x:Static res:Strings.Settings_CredentialUsername}" />
-                        <Run Text=" *"
-                             Foreground="#FF4C4C"
-                             FontWeight="Bold"
-                             ToolTip="{x:Static res:Strings.Common_Required}" />
-                    </TextBlock>
-
-                    <TextBox x:Name="CredentialUsernameTextBox"
-                             Grid.Row="22"
-                             Grid.Column="1"
-                             Height="30"
-                             Padding="6"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center" />
-
-                    <!-- Buttons -->
-                    <StackPanel Grid.Row="23"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Margin="0,14,0,0">
-
-                        <Button Content="{x:Static res:Strings.Settings_Test}"
-                                Width="80"
-                                Click="TestConnection_Click" />
-
-                        <Button Content="{x:Static res:Strings.Common_Cancel}"
-                                Width="90"
-                                Margin="8,0,0,0"
-                                Click="Cancel_Click" />
-
-                        <Button Content="{x:Static res:Strings.Settings_Save}"
-                                Width="90"
-                                Margin="8,0,0,0"
-                                Click="Save_Click" />
-                    </StackPanel>
-                </Grid>
+    <!-- ScrollViewer, damit bei kleinem Fenster oder großer Systemschrift alles erreichbar bleibt -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="130" />
+                <ColumnDefinition Width="*" MinWidth="260" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <!-- Allgemein -->
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <!-- Schwellenwerte -->
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <!-- Alarmbearbeitung -->
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <!-- Windows Credential Manager -->
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+                <!-- Buttons -->
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Allgemein Header -->
+            <Grid Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{x:Static res:Strings.Settings_General}"
+                           Style="{StaticResource SectionHeaderTextStyle}" />
+
+                <Border Grid.Column="1"
+                        Style="{StaticResource SectionSeparatorStyle}" />
             </Grid>
-        </Border>
-    </Grid>
+
+            <!-- Zabbix URL -->
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_ZabbixUrl}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <TextBox x:Name="ZabbixUrlTextBox"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     Padding="6"
+                     Margin="0,0,0,6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Dashboard URL -->
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="{x:Static res:Strings.Settings_DashboardUrl}"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Center" />
+
+            <TextBox x:Name="ZabbixDashboardUrlTextBox"
+                     Grid.Row="2"
+                     Grid.Column="1"
+                     Padding="6"
+                     Margin="0,0,0,6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- API Token -->
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_ApiToken}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <PasswordBox x:Name="ApiTokenTextBox"
+                         Grid.Row="3"
+                         Grid.Column="1"
+                         Padding="6"
+                         Margin="0,0,0,6"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center" />
+
+            <!-- Optionen -->
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Text="{x:Static res:Strings.Settings_Options}"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Top" />
+
+            <StackPanel Grid.Row="4"
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        Margin="0,0,0,8"
+                        VerticalAlignment="Top">
+
+                <CheckBox x:Name="IgnoreCertificateErrorsCheckBox"
+                          Content="{x:Static res:Strings.Settings_IgnoreCertificateErrors}"
+                          Foreground="{DynamicResource PrimaryTextBrush}"
+                          Margin="0,0,0,2" />
+
+                <CheckBox x:Name="DarkModeCheckBox"
+                          Content="{x:Static res:Strings.Settings_DarkMode}"
+                          Foreground="{DynamicResource PrimaryTextBrush}"
+                          Margin="0,2,0,0" />
+            </StackPanel>
+
+            <!-- Sprache: Einträge werden in ZabbixConfigWindow.xaml.cs gefüllt (Sprachnamen in der jeweiligen Sprache) -->
+            <TextBlock Grid.Row="5"
+                       Grid.Column="0"
+                       Text="{x:Static res:Strings.Settings_Language}"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Center" />
+
+            <ComboBox x:Name="LanguageComboBox"
+                      Grid.Row="5"
+                      Grid.Column="1"
+                      Margin="0,0,0,6"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Code" />
+
+            <!-- Abfrageintervall -->
+            <TextBlock Grid.Row="6"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_PollInterval}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <TextBox x:Name="PollIntervalSecondsTextBox"
+                     Grid.Row="6"
+                     Grid.Column="1"
+                     Padding="6"
+                     Text="60"
+                     Margin="0,0,0,6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Tooltip-Verzögerung -->
+            <TextBlock Grid.Row="7"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_TooltipDelay}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <TextBox x:Name="TrayToolTipDelayMillisecondsTextBox"
+                     Grid.Row="7"
+                     Grid.Column="1"
+                     Padding="6"
+                     Text="250"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Schwellenwerte Header -->
+            <Grid Grid.Row="8"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="0,12,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{x:Static res:Strings.Settings_Thresholds}"
+                           Style="{StaticResource SectionHeaderTextStyle}" />
+
+                <Border Grid.Column="1"
+                        Style="{StaticResource SectionSeparatorStyle}" />
+            </Grid>
+
+            <!-- Warn-Schwelle -->
+            <TextBlock Grid.Row="9"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_WarningThreshold}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <TextBox x:Name="WarningSeverityTextBox"
+                     Grid.Row="9"
+                     Grid.Column="1"
+                     Padding="6"
+                     Margin="0,0,0,6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Error-Schwelle -->
+            <TextBlock Grid.Row="10"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_ErrorThreshold}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <TextBox x:Name="ErrorSeverityTextBox"
+                     Grid.Row="10"
+                     Grid.Column="1"
+                     Padding="6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Alarmbearbeitung Header -->
+            <Grid Grid.Row="11"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="0,12,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{x:Static res:Strings.Settings_AlarmHandling}"
+                           Style="{StaticResource SectionHeaderTextStyle}" />
+
+                <Border Grid.Column="1"
+                        Style="{StaticResource SectionSeparatorStyle}" />
+            </Grid>
+
+            <CheckBox x:Name="ShowSuppressedProblemsCheckBox"
+                      Grid.Row="12"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Content="{x:Static res:Strings.Settings_ShowSuppressedProblems}"
+                      Margin="0,0,0,8"
+                      VerticalAlignment="Center" />
+
+            <CheckBox x:Name="RefreshAfterProblemActionCheckBox"
+                      Grid.Row="13"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Content="{x:Static res:Strings.Settings_RefreshAfterProblemAction}"
+                      Margin="0,0,0,8"
+                      VerticalAlignment="Center" />
+
+            <TextBlock Grid.Row="14"
+                       Grid.Column="0"
+                       Text="{x:Static res:Strings.Settings_DefaultMessage}"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center" />
+
+            <TextBox x:Name="AcknowledgeMessageTextBox"
+                     Grid.Row="14"
+                     Grid.Column="1"
+                     Padding="6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Windows Credential Manager Header -->
+            <Grid Grid.Row="15"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="0,12,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Windows Credential Manager"
+                           Style="{StaticResource SectionHeaderTextStyle}" />
+
+                <Border Grid.Column="1"
+                        Style="{StaticResource SectionSeparatorStyle}" />
+            </Grid>
+
+            <!-- Credential Target -->
+            <TextBlock Grid.Row="16"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,6"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_CredentialTarget}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <Grid Grid.Row="16"
+                  Grid.Column="1"
+                  Margin="0,0,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="CredentialTargetPrefixTextBox"
+                         Grid.Column="0"
+                         Padding="6"
+                         IsReadOnly="True"
+                         Margin="0,0,8,0"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center" />
+
+                <TextBox x:Name="CredentialTargetSuffixTextBox"
+                         Grid.Column="1"
+                         Padding="6"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center" />
+            </Grid>
+
+            <!-- Credential Username -->
+            <TextBlock Grid.Row="17"
+                       Grid.Column="0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center">
+                <Run Text="{x:Static res:Strings.Settings_CredentialUsername}" />
+                <Run Text=" *"
+                     Foreground="#FF4C4C"
+                     FontWeight="Bold"
+                     ToolTip="{x:Static res:Strings.Common_Required}" />
+            </TextBlock>
+
+            <TextBox x:Name="CredentialUsernameTextBox"
+                     Grid.Row="17"
+                     Grid.Column="1"
+                     Padding="6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center" />
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="18"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,14,0,0">
+
+                <Button Content="{x:Static res:Strings.Settings_Test}"
+                        MinWidth="80"
+                        Click="TestConnection_Click" />
+
+                <Button Content="{x:Static res:Strings.Common_Cancel}"
+                        MinWidth="90"
+                        Margin="8,0,0,0"
+                        Click="Cancel_Click" />
+
+                <Button Content="{x:Static res:Strings.Settings_Save}"
+                        MinWidth="90"
+                        Margin="8,0,0,0"
+                        Click="Save_Click" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>

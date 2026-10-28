@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ZabbixTrayMonitor"
         xmlns:tb="http://www.hardcodet.net/taskbar"
-        Title="Zabbix Tray Monitor" 
+        Title="Zabbix Monitor" 
         Height="450" 
         Width="800"
         ShowInTaskbar="False"
@@ -86,7 +86,7 @@
         <tb:TaskbarIcon 
             x:Name="TrayIcon" 
             IconSource="/Assets/tray-unknown.ico"
-            ToolTipText="Zabbix Tray Monitor"
+            ToolTipText="Zabbix Monitor"
             TrayLeftMouseUp="TrayIcon_ShowProblems_Click"
             TrayRightMouseDown="TrayIcon_RightMouseDown"
             PreviewTrayToolTipOpen="TrayIcon_PreviewTrayToolTipOpen"
@@ -98,7 +98,7 @@
                         CornerRadius="4"
                         Padding="10,8">
                     <TextBlock x:Name="TrayToolTipTextBlock"
-                               Text="Zabbix Tray Monitor"
+                               Text="Zabbix Monitor"
                                Foreground="White"
                                FontFamily="Segoe UI"
                                FontSize="12"

@@ -56,14 +56,22 @@ namespace ZabbixTrayMonitor.Services
                 var resolvedAcknowledgeMessage =
                     ZabbixConfig.ResolveAcknowledgeMessage(config.AcknowledgeMessage);
 
+                var changed = false;
+
                 if (!string.Equals(
                         config.AcknowledgeMessage,
                         resolvedAcknowledgeMessage,
                         StringComparison.Ordinal))
                 {
                     config.AcknowledgeMessage = resolvedAcknowledgeMessage;
-                    Save(config);
+                    changed = true;
                 }
+
+                changed |= MigrateApiEndpoint(config);
+                changed |= MigrateAppName(config);
+
+                if (changed)
+                    Save(config);
 
                 return config;
             }
@@ -73,6 +81,68 @@ namespace ZabbixTrayMonitor.Services
                 BackupCorruptConfig();
                 return new ZabbixConfig();
             }
+        }
+
+        // Früher konfigurierbarer API-Pfad: ein Unterverzeichnis (zB. "/zabbix/api_jsonrpc.php") wird an die ZabbixUrl angehängt,
+        // da der Pfad jetzt fest ZabbixConfig.ZabbixApiPath ist
+        private static bool MigrateApiEndpoint(ZabbixConfig config)
+        {
+            if (config.ZabbixApiEndpoint == null)
+                return false;
+
+            var endpoint = config.ZabbixApiEndpoint.Trim();
+
+            if (!endpoint.StartsWith("/"))
+                endpoint = "/" + endpoint;
+
+            if (endpoint.EndsWith(ZabbixConfig.ZabbixApiPath, StringComparison.OrdinalIgnoreCase))
+            {
+                var subPath = endpoint.Substring(0, endpoint.Length - ZabbixConfig.ZabbixApiPath.Length).TrimEnd('/');
+                var zabbixUrl = config.ZabbixUrl.Trim().TrimEnd('/');
+
+                if (subPath.Length > 0 &&
+                    zabbixUrl.Length > 0 &&
+                    !zabbixUrl.EndsWith(subPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    config.ZabbixUrl = zabbixUrl + subPath;
+                }
+            }
+
+            config.ZabbixApiEndpoint = null;
+            return true;
+        }
+
+        // Früher konfigurierbarer AppName war Teil des Credential-Targets ({AppName}.{Suffix}),
+        // Token deshalb einmalig auf das feste Target ZabbixConfig.CredentialAppName umziehen
+        private static bool MigrateAppName(ZabbixConfig config)
+        {
+            if (config.AppName == null)
+                return false;
+
+            var oldAppName = config.AppName.Trim();
+
+            if (oldAppName.Length > 0 &&
+                !string.Equals(oldAppName, ZabbixConfig.CredentialAppName, StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    var suffix = string.IsNullOrWhiteSpace(config.CredentialTargetSuffix) ? "ApiToken" : config.CredentialTargetSuffix;
+
+                    CredentialService.SaveOrUpdateCredential(
+                        CredentialService.BuildTarget(oldAppName, suffix),
+                        CredentialService.BuildTarget(ZabbixConfig.CredentialAppName, suffix),
+                        config.CredentialUsername,
+                        null);
+                }
+                catch
+                {
+                    // AppName behalten, damit der Umzug beim nächsten Laden erneut versucht wird
+                    return false;
+                }
+            }
+
+            config.AppName = null;
+            return true;
         }
 
         public void Save(ZabbixConfig config)
