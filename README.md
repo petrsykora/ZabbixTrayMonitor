@@ -190,6 +190,8 @@ The user behind the API token needs the required Zabbix permissions. For alarm h
 - `IgnoreCertificateErrors` disables certificate validation completely. An attacker on the network could then impersonate the Zabbix server and steal the token. For self-signed certificates, import the certificate or your own CA as trusted in Windows instead.
 - Use a dedicated Zabbix user with as few permissions as possible for the token (read access to the relevant host groups, and acknowledge/suppress if needed).
 
+To report a security vulnerability, see [SECURITY.md](SECURITY.md).
+
 ## Code signing
 
 To make Windows treat the application as coming from a known publisher, it can be signed with your own code signing certificate. The certificate is distributed to the managed computers via Group Policy (GPO). On computers without this GPO the signature is not trusted and the application behaves like an unsigned one.
