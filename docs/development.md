@@ -58,8 +58,8 @@ The license dialog needs `installer\License.rtf`, which is generated from `LICEN
 Then, after publishing as above:
 
 ```powershell
-dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.2 -p:PublishDir="$PWD\publish"
-dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.2 -p:InstallerVariant=RuntimeDependent -p:PublishDir="$PWD\publish-runtime-dependent"
+dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.3 -p:PublishDir="$PWD\publish"
+dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.3 -p:InstallerVariant=RuntimeDependent -p:PublishDir="$PWD\publish-runtime-dependent"
 ```
 
 The MSI files are written to `installer\msi\bin\Release\SelfContained\` and `installer\msi\bin\Release\RuntimeDependent\`.
