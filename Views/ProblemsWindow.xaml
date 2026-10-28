@@ -6,18 +6,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="{x:Static res:Strings.Problems_WindowTitle}"
-        Height="460"
-        Width="300"
+        Icon="/Assets/tray-ok.ico"
+        Height="500"
+        Width="380"
+        MinHeight="220"
+        MinWidth="280"
         WindowStartupLocation="Manual"
-        ResizeMode="NoResize"
-        ShowInTaskbar="False"
-        Topmost="True"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
+        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Window.Resources>
         <Style x:Key="ProblemItemBorderStyle" TargetType="Border">
@@ -206,225 +209,206 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="0"
+    <!-- Standardfenster von Windows (Titelleiste mit Minimieren/Maximieren/Schließen), Schrift nach Systemeinstellung -->
+    <Grid Margin="0,10,0,0"
           SnapsToDevicePixels="True">
 
-        <Border CornerRadius="8"
-                Background="{DynamicResource WindowBackgroundBrush}"
-                Padding="0,12,0,12"
-                Margin="8"
-                SnapsToDevicePixels="True"
-                Effect="{x:Null}">
+        <!-- Outer panel -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <!-- Outer panel -->
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  Margin="12,0,12,10">
 
-                <!-- Header -->
-                <Grid Grid.Row="0"
-                      Margin="12,0,12,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal">
 
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal">
-
-                        <TextBlock x:Name="LoadingTextBlock"
-                                   Visibility="Collapsed"
-                                   Foreground="{DynamicResource LoadingBrush}"
-                                   FontStyle="Italic"
-                                   Margin="0,0,8,0"
-                                   VerticalAlignment="Center"
-                                   Text="{x:Static res:Strings.Problems_Loading}" />
-
-                        <TextBlock x:Name="LastUpdatedTextBlock"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   FontSize="11"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal">
-
-                        <Button Content="⟳"
-                                Width="26"
-                                Height="24"
-                                MinWidth="0"
-                                Margin="0,0,6,0"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Padding="0"
-                                ToolTip="{x:Static res:Strings.Common_Refresh}"
-                                Click="Refresh_Click" />
-
-                        <Button Content="⌂"
-                                Width="26"
-                                Height="24"
-                                MinWidth="0"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Padding="0"
-                                ToolTip="{x:Static res:Strings.Problems_OpenDashboard}"
-                                Click="Dashboard_Click" />
-                    </StackPanel>
-                </Grid>
-
-                <!-- Content -->
-                <Grid Grid.Row="1">
-                    <TextBlock x:Name="EmptyTextBlock"
+                    <TextBlock x:Name="LoadingTextBlock"
                                Visibility="Collapsed"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Foreground="{DynamicResource LoadingBrush}"
                                FontStyle="Italic"
-                               HorizontalAlignment="Center"
+                               Margin="0,0,8,0"
                                VerticalAlignment="Center"
-                               Text="{x:Static res:Strings.Problems_Empty}" />
+                               Text="{x:Static res:Strings.Problems_Loading}" />
 
-                    <ScrollViewer x:Name="ProblemsScrollViewer"
-                                  Padding="0"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="LastUpdatedTextBlock"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
 
-                        <ItemsControl x:Name="ProblemsItemsControl"
-                                      HorizontalAlignment="Stretch">
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal">
 
-                            <ItemsControl.ItemContainerStyle>
-                                <Style TargetType="ContentPresenter">
-                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                </Style>
-                            </ItemsControl.ItemContainerStyle>
+                    <Button Content="⟳"
+                            MinWidth="28"
+                            Margin="0,0,6,0"
+                            FontWeight="Bold"
+                            Padding="2"
+                            ToolTip="{x:Static res:Strings.Common_Refresh}"
+                            Click="Refresh_Click" />
 
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource ProblemItemBorderStyle}"
-                                            Width="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
-                                            MouseLeftButtonUp="ProblemItem_Click">
-
-                                        <Border.ContextMenu>
-                                            <ContextMenu Opened="ProblemContextMenu_Opened"
-                                                         Style="{StaticResource ProblemContextMenuStyle}">
-                                                <MenuItem Header="{x:Static res:Strings.Problems_EditAlarm}"
-                                                          Style="{StaticResource ProblemMenuItemStyle}">
-                                                    <!-- Die Standardnachricht wird beim Öffnen automatisch geladen.
-                                                         Sie kann bei Bedarf direkt für die aktuelle Aktion überschrieben werden. -->
-                                                    <MenuItem Tag="ProblemActionMessageEditor"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              StaysOpenOnClick="True">
-                                                        <MenuItem.Header>
-                                                            <StackPanel Width="230" Margin="0,1">
-                                                                <TextBlock Text="{x:Static res:Strings.Problems_MessageLabel}"
-                                                                           FontSize="10"
-                                                                           Foreground="{DynamicResource SecondaryTextBrush}"
-                                                                           Margin="0,0,0,3" />
-                                                                <TextBox Width="230"
-                                                                         Height="28"
-                                                                         Padding="6,4"
-                                                                         VerticalContentAlignment="Center"
-                                                                         Cursor="IBeam"
-                                                                         PreviewMouseLeftButtonDown="ProblemActionMessageTextBox_PreviewMouseLeftButtonDown" />
-                                                            </StackPanel>
-                                                        </MenuItem.Header>
-                                                    </MenuItem>
-                                                    <Separator Style="{StaticResource ProblemMenuSeparatorStyle}" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_AcknowledgeOnly}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="AcknowledgeProblem_Click" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress5Minutes}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="Suppress5Minutes_Click" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress15Minutes}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="Suppress15Minutes_Click" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress1Hour}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="Suppress1Hour_Click" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress3Hours}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="Suppress3Hours_Click" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_Suppress1Day}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="Suppress1Day_Click" />
-                                                    <MenuItem Header="{x:Static res:Strings.Problems_SuppressUntil}"
-                                                              Style="{StaticResource ProblemMenuItemStyle}"
-                                                              Click="SuppressUntil_Click" />
-                                                </MenuItem>
-                                            </ContextMenu>
-                                        </Border.ContextMenu>
-
-                                        <Grid HorizontalAlignment="Stretch"
-                                              SnapsToDevicePixels="True">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="14" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-
-                                            <Border Grid.Column="0"
-                                                    Background="{Binding StatusColor}">
-                                                <TextBlock Text="{Binding StatusInitial}"
-                                                           Foreground="White"
-                                                           FontWeight="Bold"
-                                                           FontSize="11"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center" />
-                                            </Border>
-
-                                            <StackPanel Grid.Column="1"
-                                                        Margin="8,3,8,5">
-
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <TextBlock Grid.Column="0"
-                                                               Text="{Binding Host}"
-                                                               Foreground="{DynamicResource SecondaryTextBrush}"
-                                                               FontSize="11"
-                                                               TextTrimming="CharacterEllipsis" />
-
-                                                    <TextBlock Grid.Column="1"
-                                                               Text="{Binding Time}"
-                                                               Foreground="{DynamicResource SecondaryTextBrush}"
-                                                               FontSize="9"
-                                                               Margin="8,1,0,0" />
-                                                </Grid>
-
-                                                <TextBlock Text="{Binding Name}"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           Foreground="{DynamicResource PrimaryTextBrush}"
-                                                           FontWeight="Bold"
-                                                           FontSize="13" />
-
-                                                <TextBlock Text="{Binding Message}"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           Foreground="{DynamicResource PrimaryTextBrush}"
-                                                           FontSize="12">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Visibility" Value="Visible" />
-                                                            <Style.Triggers>
-                                                                <Trigger Property="Text" Value="">
-                                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Grid>
+                    <Button Content="⌂"
+                            MinWidth="28"
+                            Margin="0"
+                            FontWeight="Bold"
+                            Padding="2"
+                            ToolTip="{x:Static res:Strings.Problems_OpenDashboard}"
+                            Click="Dashboard_Click" />
+                </StackPanel>
             </Grid>
-        </Border>
+
+            <!-- Content -->
+            <Grid Grid.Row="1">
+                <TextBlock x:Name="EmptyTextBlock"
+                           Visibility="Collapsed"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           FontStyle="Italic"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{x:Static res:Strings.Problems_Empty}" />
+
+                <ScrollViewer x:Name="ProblemsScrollViewer"
+                              Padding="0"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+
+                    <ItemsControl x:Name="ProblemsItemsControl"
+                                  HorizontalAlignment="Stretch">
+
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource ProblemItemBorderStyle}"
+                                        Width="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+                                        MouseLeftButtonUp="ProblemItem_Click">
+
+                                    <Border.ContextMenu>
+                                        <ContextMenu Opened="ProblemContextMenu_Opened"
+                                                     Style="{StaticResource ProblemContextMenuStyle}">
+                                            <MenuItem Header="{x:Static res:Strings.Problems_EditAlarm}"
+                                                      Style="{StaticResource ProblemMenuItemStyle}">
+                                                <!-- Die Standardnachricht wird beim Öffnen automatisch geladen.
+                                                     Sie kann bei Bedarf direkt für die aktuelle Aktion überschrieben werden. -->
+                                                <MenuItem Tag="ProblemActionMessageEditor"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          StaysOpenOnClick="True">
+                                                    <MenuItem.Header>
+                                                        <StackPanel Width="230" Margin="0,1">
+                                                            <TextBlock Text="{x:Static res:Strings.Problems_MessageLabel}"
+                                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                       Margin="0,0,0,3" />
+                                                            <TextBox Width="230"
+                                                                     Padding="6,4"
+                                                                     VerticalContentAlignment="Center"
+                                                                     Cursor="IBeam"
+                                                                     PreviewMouseLeftButtonDown="ProblemActionMessageTextBox_PreviewMouseLeftButtonDown" />
+                                                        </StackPanel>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <Separator Style="{StaticResource ProblemMenuSeparatorStyle}" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_AcknowledgeOnly}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="AcknowledgeProblem_Click" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_Suppress5Minutes}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="Suppress5Minutes_Click" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_Suppress15Minutes}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="Suppress15Minutes_Click" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_Suppress1Hour}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="Suppress1Hour_Click" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_Suppress3Hours}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="Suppress3Hours_Click" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_Suppress1Day}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="Suppress1Day_Click" />
+                                                <MenuItem Header="{x:Static res:Strings.Problems_SuppressUntil}"
+                                                          Style="{StaticResource ProblemMenuItemStyle}"
+                                                          Click="SuppressUntil_Click" />
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+
+                                    <Grid HorizontalAlignment="Stretch"
+                                          SnapsToDevicePixels="True">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="14" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0"
+                                                Background="{Binding StatusColor}">
+                                            <TextBlock Text="{Binding StatusInitial}"
+                                                       Foreground="White"
+                                                       FontWeight="Bold"
+                                                       FontSize="11"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center" />
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="8,3,8,5">
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{Binding Host}"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextTrimming="CharacterEllipsis" />
+
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Time}"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           Margin="8,1,0,0" />
+                                            </Grid>
+
+                                            <TextBlock Text="{Binding Name}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                       FontWeight="Bold" />
+
+                                            <TextBlock Text="{Binding Message}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <Trigger Property="Text" Value="">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

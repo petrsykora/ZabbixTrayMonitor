@@ -526,20 +526,16 @@ namespace ZabbixTrayMonitor
         }
 
         // Sprachnamen bewusst in der jeweiligen Sprache und nicht übersetzt, nur "System" wird übersetzt
+        // Einträge als ComboBoxItem (Text = Name, Tag = Sprachcode), damit nur der Name angezeigt wird
         private void InitializeLanguageComboBox(string language)
         {
-            LanguageComboBox.ItemsSource = new[]
-            {
-                new LanguageOption(LocalizationService.SystemLanguage, Strings.Settings_LanguageSystem),
-                new LanguageOption("en", "English"),
-                new LanguageOption("de", "Deutsch"),
-                new LanguageOption("cs", "Čeština")
-            };
+            LanguageComboBox.Items.Add(new ComboBoxItem { Content = Strings.Settings_LanguageSystem, Tag = LocalizationService.SystemLanguage });
+            LanguageComboBox.Items.Add(new ComboBoxItem { Content = "English", Tag = "en" });
+            LanguageComboBox.Items.Add(new ComboBoxItem { Content = "Deutsch", Tag = "de" });
+            LanguageComboBox.Items.Add(new ComboBoxItem { Content = "Čeština", Tag = "cs" });
 
             LanguageComboBox.SelectedValue = LocalizationService.NormalizeLanguage(language);
         }
-
-        private sealed record LanguageOption(string Code, string Name);
 
         private static bool ValidateRequiredTextBox(TextBox textBox, string errorMessage)
         {
@@ -588,6 +584,20 @@ namespace ZabbixTrayMonitor
             return string.IsNullOrWhiteSpace(value)
                 ? CredentialService.DefaultCredentialUsername
                 : value.Trim();
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            Views.HelpWindow.ShowHelp();
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.F1)
+                return;
+
+            e.Handled = true;
+            Views.HelpWindow.ShowHelp();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

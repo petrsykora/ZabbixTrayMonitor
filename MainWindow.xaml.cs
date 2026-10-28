@@ -24,7 +24,6 @@ namespace ZabbixTrayMonitor
         private ProblemsWindow? _problemsWindow;
         private string? _lastRefreshError;
         private bool _isRefreshing = false;
-        private bool _ignoreNextTrayLeftClick = false;
         private bool _trayToolTipOpenRequested = false;
 
         public MainWindow()
@@ -103,6 +102,9 @@ namespace ZabbixTrayMonitor
                     config = _configService.Load();
                     // Theme global anwenden
                     ZabbixTrayMonitor.Services.ThemeService.ApplyTheme(config.UseDarkMode);
+
+                    if (_problemsWindow != null)
+                        ZabbixTrayMonitor.Services.ThemeService.ApplyTitleBarTheme(_problemsWindow, config.UseDarkMode);
                 }
                 catch { }
             }
@@ -114,6 +116,7 @@ namespace ZabbixTrayMonitor
             TrayRefreshMenuItem.Header = Strings.Common_Refresh;
             TrayShowProblemsMenuItem.Header = Strings.Tray_ShowProblems;
             TraySettingsMenuItem.Header = Strings.Tray_Settings;
+            TrayHelpMenuItem.Header = Strings.Tray_Help;
             TrayInfoMenuItem.Header = Strings.Tray_Info;
             TrayExitMenuItem.Header = Strings.Tray_Exit;
         }
@@ -159,14 +162,6 @@ namespace ZabbixTrayMonitor
         {
             HideTrayToolTip();
 
-            // Wenn Problemfenster offen ist wieder schließen und verhindern,
-            // dass ein anschließender Linksklick das Fenster sofort wieder öffnet
-            if (_problemsWindow?.IsVisible == true)
-            {
-                _problemsWindow.Hide();
-                _ignoreNextTrayLeftClick = true;
-            }
-
             try
             {
                 if (TrayIcon.ContextMenu is not null)
@@ -181,21 +176,12 @@ namespace ZabbixTrayMonitor
         {
             HideTrayToolTip();
 
-            // Wenn das Problemfenster gerade mit Rechtsklick geschlossen wurde verhindern dass anschließender Linksklick es sofort wieder öffnet
-            if (_ignoreNextTrayLeftClick)
-            {
-                _ignoreNextTrayLeftClick = false;
-                return;
-            }
-
             // anti spam Klick
             var now = DateTime.Now;
             if ((now - _lastTrayLeftClick).TotalMilliseconds < 800)
                 return;
 
             _lastTrayLeftClick = now;
-            var config = _configService.Load();
-
             await RefreshProblemsAsync();
 
             // Wenn der letzte Refresh fehlgeschlagen ist, keine alten Problem-Daten anzeigen
@@ -223,6 +209,8 @@ namespace ZabbixTrayMonitor
                     },
                     _configService
                 );
+
+                _problemsWindow.PlaceNearTray();
             }
 
             // Sicherstellen, dass das ProblemsWindow beim Öffnen aktuelle Daten zeigt wegen Cacheproblemen
@@ -232,15 +220,11 @@ namespace ZabbixTrayMonitor
             }
             catch { }
 
-            if (_problemsWindow.IsVisible)
-            {
-                _problemsWindow.Hide();
-                return;
-            }
+            // Klick auf das Tray-Icon holt das Fenster immer nach vorne (geschlossen wird es über die Titelleiste),
+            // ein minimiertes Fenster wird wiederhergestellt
+            if (_problemsWindow.WindowState == WindowState.Minimized)
+                _problemsWindow.WindowState = WindowState.Normal;
 
-            // Fenster unten rechts
-            _problemsWindow.Left = SystemParameters.WorkArea.Right - _problemsWindow.Width - 2;
-            _problemsWindow.Top = SystemParameters.WorkArea.Bottom - _problemsWindow.Height - 2;
             _problemsWindow.Show();
             _problemsWindow.Activate();
         }
@@ -543,8 +527,8 @@ namespace ZabbixTrayMonitor
 
         private void TrayIcon_PreviewTrayToolTipOpen(object sender, RoutedEventArgs e)
         {
-            // Während das Problemfenster sichtbar ist, keinen zusätzlichen Tray-Tooltip öffnen.
-            if (_problemsWindow?.IsVisible == true)
+            // Während das Problemfenster aktiv ist, keinen zusätzlichen Tray-Tooltip öffnen.
+            if (_problemsWindow?.IsActive == true)
             {
                 e.Handled = true;
                 return;
@@ -579,7 +563,7 @@ namespace ZabbixTrayMonitor
         {
             _trayToolTipDelayTimer.Stop();
 
-            if (!_trayToolTipOpenRequested || _problemsWindow?.IsVisible == true)
+            if (!_trayToolTipOpenRequested || _problemsWindow?.IsActive == true)
                 return;
 
             try
@@ -632,6 +616,12 @@ namespace ZabbixTrayMonitor
                 }
             }
             catch { }
+        }
+
+        private void TrayIcon_Help_Click(object sender, RoutedEventArgs e)
+        {
+            HideTrayToolTip();
+            HelpWindow.ShowHelp();
         }
 
         private void TrayIcon_Info_Click(object sender, RoutedEventArgs e)

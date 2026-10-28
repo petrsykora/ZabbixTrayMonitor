@@ -120,6 +120,9 @@
                     <MenuItem x:Name="TraySettingsMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Settings_Click" />
+                    <MenuItem x:Name="TrayHelpMenuItem"
+                              Style="{StaticResource TrayMenuItemStyle}"
+                              Click="TrayIcon_Help_Click" />
                     <MenuItem x:Name="TrayInfoMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Info_Click" />

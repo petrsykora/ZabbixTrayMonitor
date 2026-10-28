@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ZabbixTrayMonitor.Resources;
+using ZabbixTrayMonitor.Services;
 
 namespace ZabbixTrayMonitor.Views
 {
@@ -27,6 +28,9 @@ namespace ZabbixTrayMonitor.Views
             // PreviewTextInput greift nicht bei Einfügen per Zwischenablage.
             // Deshalb Paste zusätzlich prüfen, damit auch darüber kein Müll ins Feld kommt.
             DataObject.AddPastingHandler(TimeTextBox, TimeTextBox_Pasting);
+
+            // Systemtitelleiste an Dark/Light Mode anpassen, Handle gibt es erst ab SourceInitialized
+            SourceInitialized += (_, _) => ThemeService.ApplyTitleBarTheme(this, new ConfigService().Load().UseDarkMode);
 
             Loaded += (_, _) =>
             {
@@ -181,16 +185,6 @@ namespace ZabbixTrayMonitor.Views
         {
             DialogResult = false;
             Close();
-        }
-
-        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                if (e.ButtonState == MouseButtonState.Pressed)
-                    DragMove();
-            }
-            catch { }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

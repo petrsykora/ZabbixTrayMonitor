@@ -12,10 +12,8 @@ namespace ZabbixTrayMonitor.Views
 {
     public partial class ProblemsWindow : Window
     {
-        private bool _suppressLocationChanged = false; // Verhindert die Endlosschleife beim Setzen der Position im LocationChanged-Event
         private bool _isRefreshing = false; // verhindert mehrfaches paralleles Aktualisieren
         private bool _isProblemActionRunning = false; // verhindert doppelte Bestätigen-/Unterdrücken-Aktionen
-        private bool _keepOpenOnDeactivate = false; // z. B. während "Unterdrücken bis..."-Dialog geöffnet ist
         private bool _allowClose = false; // nur über CloseWindow() wirklich schließen, sonst nur verstecken
         private static readonly TimeSpan ProblemActionFollowUpRefreshDelay = TimeSpan.FromSeconds(4);
 
@@ -43,13 +41,8 @@ namespace ZabbixTrayMonitor.Views
 
             ApplyProblems(problems);
 
-            // Wenn das Fenster den Fokus verliert soll das Fenster geschlossen werden ohne den Prozess zu killen
-            Deactivated += ProblemsWindow_Deactivated;
-
-            // nicht verschieben -> wenn es verschoben wird instant resetten nach unten rechts
-            Loaded += (_, _) => MoveToBottomRight();
-            SizeChanged += (_, _) => MoveToBottomRight();
-            LocationChanged += ProblemsWindow_LocationChanged;
+            // Systemtitelleiste an Dark/Light Mode anpassen, Handle gibt es erst ab SourceInitialized
+            SourceInitialized += (_, _) => ThemeService.ApplyTitleBarTheme(this, _configService.Load().UseDarkMode);
         }
 
         public void UpdateProblems(List<ZabbixProblem> problems)
@@ -91,43 +84,13 @@ namespace ZabbixTrayMonitor.Views
             ProblemsScrollViewer.Visibility = viewModels.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void ProblemsWindow_Deactivated(object? sender, EventArgs e)
+        // Beim ersten Öffnen unten rechts über dem Tray platzieren, danach bleibt die vom Benutzer gewählte Position
+        public void PlaceNearTray()
         {
-            if (_keepOpenOnDeactivate)
-                return;
-
-            Hide();
-        }
-
-        private void ProblemsWindow_LocationChanged(object? sender, EventArgs e)
-        {
-            if (_suppressLocationChanged) // überspringen wenn Position gerade gesetzt wird damit keine Endlosschleife
-                return;
-
-            MoveToBottomRight();
-        }
-
-        private void MoveToBottomRight()
-        {
-            if (_suppressLocationChanged)
-                return;
-
-            // unten-rechts des Arbeitsbereichs mit kleinem Offset
             var work = SystemParameters.WorkArea;
 
-            var windowWidth = ActualWidth > 0 ? ActualWidth : Width;
-            var windowHeight = ActualHeight > 0 ? ActualHeight : Height;
-
-            var desiredLeft = work.Right - windowWidth - 2;
-            var desiredTop = work.Bottom - windowHeight - 2;
-
-            if (Math.Abs(Left - desiredLeft) <= 1 && Math.Abs(Top - desiredTop) <= 1)
-                return;
-
-            _suppressLocationChanged = true;
-            Left = desiredLeft;
-            Top = desiredTop;
-            _suppressLocationChanged = false;
+            Left = work.Right - Width - 8;
+            Top = work.Bottom - Height - 8;
         }
 
         // Mapping und Statuslogik wurde in ProblemsMapper ausgelagert
@@ -164,7 +127,6 @@ namespace ZabbixTrayMonitor.Views
         private void Dashboard_Click(object sender, RoutedEventArgs e)
         {
             _openDashboardAction();
-            Hide();
         }
 
         private void ProblemItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -172,7 +134,6 @@ namespace ZabbixTrayMonitor.Views
             try
             {
                 _openDashboardAction();
-                Hide();
             }
             catch { }
         }
@@ -275,19 +236,7 @@ namespace ZabbixTrayMonitor.Views
                 Owner = this
             };
 
-            bool? result;
-
-            try
-            {
-                // Der ProblemsWindow-Deactivated-Handler darf das Fenster nicht verstecken,
-                // während der modale Unterdrücken-bis-Dialog geöffnet ist.
-                _keepOpenOnDeactivate = true;
-                result = dialog.ShowDialog();
-            }
-            finally
-            {
-                _keepOpenOnDeactivate = false;
-            }
+            var result = dialog.ShowDialog();
 
             if (result != true || !dialog.SelectedDateTime.HasValue)
                 return;
@@ -438,6 +387,15 @@ namespace ZabbixTrayMonitor.Views
         {
             _allowClose = true;
             Close();
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.F1)
+                return;
+
+            e.Handled = true;
+            HelpWindow.ShowHelp();
         }
 
         private void Window_Closing(object? sender, CancelEventArgs e)

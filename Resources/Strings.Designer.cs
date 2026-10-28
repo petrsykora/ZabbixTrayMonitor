@@ -58,6 +58,78 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Based on.
+        /// </summary>
+        public static string About_BasedOn {
+            get {
+                return ResourceManager.GetString("About_BasedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} by {1}.
+        /// </summary>
+        public static string About_BasedOnValue {
+            get {
+                return ResourceManager.GetString("About_BasedOnValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes by.
+        /// </summary>
+        public static string About_ChangesBy {
+            get {
+                return ResourceManager.GetString("About_ChangesBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string About_Config {
+            get {
+                return ResourceManager.GetString("About_Config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zabbix Monitor shows the state of your Zabbix server in the Windows notification area. The color of the tray icon tells you at a glance whether everything is OK or whether there are warnings or errors. The tooltip and the problems window list the current problems; from the problems window you can acknowledge or suppress them and open the Zabbix dashboard..
+        /// </summary>
+        public static string About_Description {
+            get {
+                return ResourceManager.GetString("About_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License.
+        /// </summary>
+        public static string About_License {
+            get {
+                return ResourceManager.GetString("About_License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program.
+        /// </summary>
+        public static string About_Program {
+            get {
+                return ResourceManager.GetString("About_Program", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string About_Version {
+            get {
+                return ResourceManager.GetString("About_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acknowledged by {0}.
         /// </summary>
         public static string Acknowledge_DefaultMessage {
@@ -180,6 +252,151 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Error_NoZabbixUrl {
             get {
                 return ResourceManager.GetString("Error_NoZabbixUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Acknowledge only: marks the problem as acknowledged in Zabbix and adds your message.
+        ///• Suppress for 5 minutes to 1 day, or until a chosen time: acknowledges the problem and hides it until then.
+        ///• The message field at the top of the menu is prefilled with the default message from the settings and can be changed for each action.
+        ///• Suppressed problems are hidden unless &quot;Keep showing suppressed problems&quot; is enabled in the settings.
+        ///• The Zabbix user of the API token needs permission to acknowledge and suppres [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Help_Alarms_Text {
+            get {
+                return ResourceManager.GetString("Help_Alarms_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acknowledging and suppressing.
+        /// </summary>
+        public static string Help_Alarms_Title {
+            get {
+                return ResourceManager.GetString("Help_Alarms_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. Open Settings (right-click the tray icon &gt; Settings).
+        ///2. Enter the Zabbix URL, for example https://zabbix.example.com. If Zabbix runs in a subdirectory, include it, for example https://example.com/zabbix.
+        ///3. Enter an API token. You create it in Zabbix under User settings &gt; API tokens.
+        ///4. Click Test to check the connection, then Save..
+        /// </summary>
+        public static string Help_GettingStarted_Text {
+            get {
+                return ResourceManager.GetString("Help_GettingStarted_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting started.
+        /// </summary>
+        public static string Help_GettingStarted_Title {
+            get {
+                return ResourceManager.GetString("Help_GettingStarted_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full documentation on GitHub.
+        /// </summary>
+        public static string Help_OnlineDocumentation {
+            get {
+                return ResourceManager.GetString("Help_OnlineDocumentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Shows the current problems, sorted by severity and time. The colored bar marks errors (E) and warnings (W).
+        ///• ⟳ refreshes the list, ⌂ opens the Zabbix dashboard. Clicking a problem also opens the dashboard.
+        ///• Right-click a problem &gt; Edit alarm to acknowledge or suppress it..
+        /// </summary>
+        public static string Help_Problems_Text {
+            get {
+                return ResourceManager.GetString("Help_Problems_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problems window.
+        /// </summary>
+        public static string Help_Problems_Title {
+            get {
+                return ResourceManager.GetString("Help_Problems_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Dashboard URL: page opened by ⌂ and by clicking a problem. If empty, the Zabbix URL is used.
+        ///• Ignore SSL certificate errors: only for testing, the connection is then not protected against attackers. Better import your certificate or CA in Windows.
+        ///• Language: System uses the Windows display language (English if it is not supported).
+        ///• Poll interval: how often problems are loaded, at least 10 seconds.
+        ///• Warning and error threshold: Zabbix severity (0 Not classified to 5 Disaster) from which a problem coun [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Help_Settings_Text {
+            get {
+                return ResourceManager.GetString("Help_Settings_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Help_Settings_Title {
+            get {
+                return ResourceManager.GetString("Help_Settings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Help.
+        /// </summary>
+        public static string Help_Title {
+            get {
+                return ResourceManager.GetString("Help_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Green: no problems. Yellow: warnings. Red: errors, or the server cannot be reached. Gray: not loaded yet.
+        ///• Hover over the icon to see a summary of the current problems.
+        ///• Left-click opens the problems window.
+        ///• Right-click opens the menu with Refresh, Settings, Help, About and Exit..
+        /// </summary>
+        public static string Help_Tray_Text {
+            get {
+                return ResourceManager.GetString("Help_Tray_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tray icon.
+        /// </summary>
+        public static string Help_Tray_Title {
+            get {
+                return ResourceManager.GetString("Help_Tray_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • The tray icon is red and the tooltip shows an error: check the Zabbix URL and the API token with Test in the settings.
+        ///• &quot;Certificate&quot; or &quot;SSL&quot; error: the server certificate is not trusted by Windows. Import it, or the CA that issued it, into the trusted certificates.
+        ///• A problem from Zabbix is missing: check the warning threshold and whether the problem is suppressed. Problems of disabled triggers, hosts or items are not shown, just like in the Zabbix frontend.
+        ///• The configuration is stored in %AppData%\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Help_Troubleshooting_Text {
+            get {
+                return ResourceManager.GetString("Help_Troubleshooting_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Troubleshooting.
+        /// </summary>
+        public static string Help_Troubleshooting_Title {
+            get {
+                return ResourceManager.GetString("Help_Troubleshooting_Title", resourceCulture);
             }
         }
         
@@ -961,6 +1178,15 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Tray_Exit {
             get {
                 return ResourceManager.GetString("Tray_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Tray_Help {
+            get {
+                return ResourceManager.GetString("Tray_Help", resourceCulture);
             }
         }
         

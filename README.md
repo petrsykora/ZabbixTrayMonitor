@@ -16,6 +16,7 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 - Dark and light mode
 - User interface in English, German and Czech; follows the Windows display language by default (English if the system language is not supported) or can be fixed in the settings
 - API token stored in the Windows Credential Manager
+- Built-in help (tray menu > Help, or F1) and an About window with version, origin and license
 - Alarm handling directly in the problems window:
   - Acknowledge only
   - Suppress for 5 minutes

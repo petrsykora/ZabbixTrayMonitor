@@ -337,4 +337,93 @@ Zertifikatsfehler trotzdem ignorieren?</value>
   <data name="Acknowledge_DefaultMessage" xml:space="preserve">
     <value>Bestätigt von {0}</value>
   </data>
+  <data name="About_Description" xml:space="preserve">
+    <value>Zabbix Monitor zeigt den Zustand Ihres Zabbix-Servers im Infobereich von Windows an. Die Farbe des Tray-Icons zeigt auf einen Blick, ob alles in Ordnung ist oder ob Warnungen oder Fehler vorliegen. Tooltip und Problemfenster listen die aktuellen Probleme auf; im Problemfenster können Sie Probleme bestätigen oder unterdrücken und das Zabbix-Dashboard öffnen.</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="About_BasedOn" xml:space="preserve">
+    <value>Basiert auf</value>
+  </data>
+  <data name="About_BasedOnValue" xml:space="preserve">
+    <value>{0} von {1}</value>
+  </data>
+  <data name="About_ChangesBy" xml:space="preserve">
+    <value>Änderungen von</value>
+  </data>
+  <data name="About_License" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="About_Program" xml:space="preserve">
+    <value>Programm</value>
+  </data>
+  <data name="About_Config" xml:space="preserve">
+    <value>Konfiguration</value>
+  </data>
+  <data name="Tray_Help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>{0} - Hilfe</value>
+  </data>
+  <data name="Help_OnlineDocumentation" xml:space="preserve">
+    <value>Ausführliche Dokumentation auf GitHub</value>
+  </data>
+  <data name="Help_GettingStarted_Title" xml:space="preserve">
+    <value>Erste Schritte</value>
+  </data>
+  <data name="Help_GettingStarted_Text" xml:space="preserve">
+    <value>1. Einstellungen öffnen (Rechtsklick auf das Tray-Icon &gt; Einstellungen).
+2. Die Zabbix URL eintragen, zB. https://zabbix.example.com. Läuft Zabbix in einem Unterverzeichnis, dieses mit angeben, zB. https://example.com/zabbix.
+3. Einen API Token eintragen. Er wird in Zabbix unter Benutzereinstellungen &gt; API-Token erstellt.
+4. Mit Testen die Verbindung prüfen und dann Speichern.</value>
+  </data>
+  <data name="Help_Tray_Title" xml:space="preserve">
+    <value>Tray-Icon</value>
+  </data>
+  <data name="Help_Tray_Text" xml:space="preserve">
+    <value>• Grün: keine Probleme. Gelb: Warnungen. Rot: Fehler, oder der Server ist nicht erreichbar. Grau: noch nicht geladen.
+• Mit der Maus über dem Icon erscheint eine Zusammenfassung der aktuellen Probleme.
+• Linksklick öffnet das Problemfenster.
+• Rechtsklick öffnet das Menü mit Aktualisieren, Einstellungen, Hilfe, Info und Beenden.</value>
+  </data>
+  <data name="Help_Problems_Title" xml:space="preserve">
+    <value>Problemfenster</value>
+  </data>
+  <data name="Help_Problems_Text" xml:space="preserve">
+    <value>• Zeigt die aktuellen Probleme, sortiert nach Schweregrad und Zeit. Der farbige Balken markiert Fehler (E) und Warnungen (W).
+• ⟳ aktualisiert die Liste, ⌂ öffnet das Zabbix-Dashboard. Ein Klick auf ein Problem öffnet ebenfalls das Dashboard.
+• Rechtsklick auf ein Problem &gt; Alarm bearbeiten, um es zu bestätigen oder zu unterdrücken.</value>
+  </data>
+  <data name="Help_Alarms_Title" xml:space="preserve">
+    <value>Bestätigen und unterdrücken</value>
+  </data>
+  <data name="Help_Alarms_Text" xml:space="preserve">
+    <value>• Nur bestätigen: markiert das Problem in Zabbix als bestätigt und fügt Ihre Nachricht hinzu.
+• Für 5 Minuten bis 1 Tag oder bis zu einem gewählten Zeitpunkt unterdrücken: bestätigt das Problem und blendet es bis dahin aus.
+• Das Nachrichtenfeld oben im Menü ist mit der Standardnachricht aus den Einstellungen vorbelegt und kann pro Aktion geändert werden.
+• Unterdrückte Probleme werden ausgeblendet, außer "Unterdrückte Probleme weiterhin anzeigen" ist in den Einstellungen aktiviert.
+• Der Zabbix-Benutzer des API Tokens braucht die Berechtigung, die Events zu bestätigen und zu unterdrücken.</value>
+  </data>
+  <data name="Help_Settings_Title" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Help_Settings_Text" xml:space="preserve">
+    <value>• Dashboard URL: Seite, die ⌂ und ein Klick auf ein Problem öffnen. Ist sie leer, wird die Zabbix URL verwendet.
+• SSL-Zertifikatsfehler ignorieren: nur zum Testen, die Verbindung ist dann nicht gegen Angreifer geschützt. Besser das Zertifikat bzw. die CA in Windows importieren.
+• Sprache: System verwendet die Anzeigesprache von Windows (Englisch, falls nicht unterstützt).
+• Abfrageintervall: wie oft Probleme geladen werden, mindestens 10 Sekunden.
+• Warn- und Error-Schwelle: Zabbix-Schweregrad (0 Not classified bis 5 Disaster), ab dem ein Problem als Warnung bzw. Fehler gilt. Niedrigere Schweregrade werden ignoriert.
+• Der API Token wird im Windows Credential Manager gespeichert, nicht in der Konfigurationsdatei.</value>
+  </data>
+  <data name="Help_Troubleshooting_Title" xml:space="preserve">
+    <value>Fehlerbehebung</value>
+  </data>
+  <data name="Help_Troubleshooting_Text" xml:space="preserve">
+    <value>• Das Tray-Icon ist rot und der Tooltip zeigt einen Fehler: Zabbix URL und API Token in den Einstellungen mit Testen prüfen.
+• Fehler mit "Zertifikat" oder "SSL": Windows vertraut dem Serverzertifikat nicht. Das Zertifikat bzw. die ausstellende CA in die vertrauenswürdigen Zertifikate importieren.
+• Ein Problem aus Zabbix fehlt: Warn-Schwelle prüfen und ob das Problem unterdrückt ist. Probleme deaktivierter Trigger, Hosts oder Items werden wie im Zabbix-Frontend nicht angezeigt.
+• Die Konfiguration liegt unter %AppData%\ZabbixTrayMonitor\config.json (siehe Info).</value>
+  </data>
 </root>

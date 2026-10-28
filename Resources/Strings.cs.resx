@@ -337,4 +337,93 @@ Přesto ignorovat chyby certifikátu?</value>
   <data name="Acknowledge_DefaultMessage" xml:space="preserve">
     <value>Potvrzeno uživatelem {0}</value>
   </data>
+  <data name="About_Description" xml:space="preserve">
+    <value>Zabbix Monitor zobrazuje stav vašeho Zabbix serveru v oznamovací oblasti Windows. Barva ikony v trayi na první pohled ukáže, jestli je vše v pořádku, nebo jestli jsou varování či chyby. Tooltip a okno problémů vypisují aktuální problémy; v okně problémů je můžete potvrdit nebo potlačit a otevřít dashboard Zabbixu.</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Verze</value>
+  </data>
+  <data name="About_BasedOn" xml:space="preserve">
+    <value>Vychází z</value>
+  </data>
+  <data name="About_BasedOnValue" xml:space="preserve">
+    <value>{0} od autora {1}</value>
+  </data>
+  <data name="About_ChangesBy" xml:space="preserve">
+    <value>Úpravy</value>
+  </data>
+  <data name="About_License" xml:space="preserve">
+    <value>Licence</value>
+  </data>
+  <data name="About_Program" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="About_Config" xml:space="preserve">
+    <value>Konfigurace</value>
+  </data>
+  <data name="Tray_Help" xml:space="preserve">
+    <value>Nápověda</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>{0} - Nápověda</value>
+  </data>
+  <data name="Help_OnlineDocumentation" xml:space="preserve">
+    <value>Podrobná dokumentace na GitHubu</value>
+  </data>
+  <data name="Help_GettingStarted_Title" xml:space="preserve">
+    <value>První kroky</value>
+  </data>
+  <data name="Help_GettingStarted_Text" xml:space="preserve">
+    <value>1. Otevřete Nastavení (pravým tlačítkem na ikonu v trayi &gt; Nastavení).
+2. Zadejte URL Zabbixu, např. https://zabbix.example.com. Pokud Zabbix běží v podsložce, uveďte ji také, např. https://example.com/zabbix.
+3. Zadejte API token. Vytvoříte ho v Zabbixu v Uživatelském nastavení &gt; API tokeny.
+4. Tlačítkem Otestovat ověřte připojení a pak klikněte na Uložit.</value>
+  </data>
+  <data name="Help_Tray_Title" xml:space="preserve">
+    <value>Ikona v trayi</value>
+  </data>
+  <data name="Help_Tray_Text" xml:space="preserve">
+    <value>• Zelená: žádné problémy. Žlutá: varování. Červená: chyby, nebo je server nedostupný. Šedá: data ještě nejsou načtená.
+• Po najetí myší na ikonu se zobrazí souhrn aktuálních problémů.
+• Levé tlačítko otevře okno problémů.
+• Pravé tlačítko otevře menu s položkami Obnovit, Nastavení, Nápověda, O aplikaci a Ukončit.</value>
+  </data>
+  <data name="Help_Problems_Title" xml:space="preserve">
+    <value>Okno problémů</value>
+  </data>
+  <data name="Help_Problems_Text" xml:space="preserve">
+    <value>• Zobrazuje aktuální problémy seřazené podle závažnosti a času. Barevný pruh označuje chyby (E) a varování (W).
+• ⟳ obnoví seznam, ⌂ otevře dashboard Zabbixu. Kliknutí na problém také otevře dashboard.
+• Pravým tlačítkem na problém &gt; Upravit alarm ho můžete potvrdit nebo potlačit.</value>
+  </data>
+  <data name="Help_Alarms_Title" xml:space="preserve">
+    <value>Potvrzení a potlačení</value>
+  </data>
+  <data name="Help_Alarms_Text" xml:space="preserve">
+    <value>• Pouze potvrdit: označí problém v Zabbixu jako potvrzený a přidá vaši zprávu.
+• Potlačit na 5 minut až 1 den nebo do zvoleného času: potvrdí problém a do té doby ho skryje.
+• Pole se zprávou nahoře v menu je předvyplněné výchozí zprávou z nastavení a pro každou akci ho můžete změnit.
+• Potlačené problémy se skrývají, pokud v nastavení není zapnuté „Zobrazovat i potlačené problémy“.
+• Zabbix uživatel API tokenu musí mít oprávnění události potvrzovat a potlačovat.</value>
+  </data>
+  <data name="Help_Settings_Title" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
+  <data name="Help_Settings_Text" xml:space="preserve">
+    <value>• URL dashboardu: stránka, kterou otevře ⌂ a kliknutí na problém. Když je prázdná, použije se URL Zabbixu.
+• Ignorovat chyby SSL certifikátu: jen pro testování, připojení pak není chráněné proti útočníkům. Lepší je importovat certifikát nebo CA do Windows.
+• Jazyk: Systémový použije jazyk zobrazení Windows (angličtinu, pokud není podporovaný).
+• Interval dotazování: jak často se načítají problémy, nejméně 10 sekund.
+• Práh varování a chyby: závažnost v Zabbixu (0 Not classified až 5 Disaster), od které se problém počítá jako varování nebo chyba. Nižší závažnosti se ignorují.
+• API token se ukládá do Správce pověření Windows (Credential Manager), ne do konfiguračního souboru.</value>
+  </data>
+  <data name="Help_Troubleshooting_Title" xml:space="preserve">
+    <value>Řešení potíží</value>
+  </data>
+  <data name="Help_Troubleshooting_Text" xml:space="preserve">
+    <value>• Ikona v trayi je červená a tooltip ukazuje chybu: v nastavení ověřte tlačítkem Otestovat URL Zabbixu a API token.
+• Chyba s „certifikát“ nebo „SSL“: Windows nedůvěřují certifikátu serveru. Importujte certifikát, případně CA, která ho vydala, mezi důvěryhodné certifikáty.
+• Chybí problém, který je v Zabbixu: zkontrolujte práh varování a jestli problém není potlačený. Problémy vypnutých triggerů, hostů nebo položek se nezobrazují, stejně jako ve webovém rozhraní Zabbixu.
+• Konfigurace je uložená v %AppData%\ZabbixTrayMonitor\config.json (viz O aplikaci).</value>
+  </data>
 </root>

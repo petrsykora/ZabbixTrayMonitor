@@ -11,12 +11,13 @@
         SizeToContent="WidthAndHeight"
         MinWidth="440"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResize"
+        ResizeMode="CanMinimize"
         ShowInTaskbar="True"
+        PreviewKeyDown="Window_PreviewKeyDown"
         Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
         FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}">
-    <!-- Standardfenster von Windows: Titelleiste mit Minimieren/Maximieren/Schließen, Schrift und Größe nach Systemeinstellung -->
+    <!-- Standardfenster von Windows: Titelleiste mit Minimieren/Schließen, feste Größe nach Inhalt, Schrift nach Systemeinstellung -->
 
     <Window.Resources>
         <Style x:Key="SectionSeparatorStyle" TargetType="Border">
@@ -190,8 +191,7 @@
                       Margin="0,0,0,6"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Center"
-                      DisplayMemberPath="Name"
-                      SelectedValuePath="Code" />
+                      SelectedValuePath="Tag" />
 
             <!-- Abfrageintervall -->
             <TextBlock Grid.Row="6"
@@ -421,6 +421,11 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="0,14,0,0">
+
+                <Button Content="{x:Static res:Strings.Tray_Help}"
+                        MinWidth="80"
+                        Margin="0,0,8,0"
+                        Click="Help_Click" />
 
                 <Button Content="{x:Static res:Strings.Settings_Test}"
                         MinWidth="80"
