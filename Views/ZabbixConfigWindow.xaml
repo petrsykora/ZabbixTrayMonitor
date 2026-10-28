@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ZabbixTrayMonitor"
         mc:Ignorable="d"
         Title="Settings - Zabbix Monitor"
-        Icon="/Assets/tray-ok.ico"
+        Icon="/Assets/app.ico"
         SizeToContent="WidthAndHeight"
         MinWidth="440"
         WindowStartupLocation="CenterScreen"
@@ -16,7 +16,7 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
-        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}">
+        FontSize="{DynamicResource AppFontSize}">
     <!-- Standardfenster von Windows: Titelleiste mit Minimieren/Schließen, feste Größe nach Inhalt, Schrift nach Systemeinstellung -->
 
     <Window.Resources>

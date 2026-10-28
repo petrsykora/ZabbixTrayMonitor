@@ -14,6 +14,7 @@
         <!-- Eigenes Tray-Kontextmenü, damit es dem gewählten Dark-/Light-Theme folgt. -->
         <Style x:Key="TrayContextMenuStyle" TargetType="{x:Type ContextMenu}">
             <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}" />
             <Setter Property="BorderThickness" Value="1" />
@@ -101,7 +102,7 @@
                                Text="Zabbix Monitor"
                                Foreground="White"
                                FontFamily="Segoe UI"
-                               FontSize="12"
+                               FontSize="{DynamicResource AppFontSize}"
                                TextWrapping="Wrap"
                                MaxWidth="520" />
                 </Border>

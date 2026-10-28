@@ -10,7 +10,7 @@
         ShowInTaskbar="False"
         Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
-        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}"
+        FontSize="{DynamicResource AppFontSize}"
         KeyDown="Window_KeyDown">
 
     <!-- Standarddialog von Windows: Titelleiste mit Schließen, Schrift nach Systemeinstellung -->

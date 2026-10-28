@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:res="clr-namespace:ZabbixTrayMonitor.Resources"
         Title="About - Zabbix Monitor"
-        Icon="/Assets/tray-ok.ico"
+        Icon="/Assets/app.ico"
         SizeToContent="Height"
         Width="520"
         ResizeMode="NoResize"
@@ -11,7 +11,7 @@
         ShowInTaskbar="True"
         Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
-        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}"
+        FontSize="{DynamicResource AppFontSize}"
         KeyDown="Window_KeyDown">
 
     <!-- Standarddialog von Windows: Titelleiste mit Schließen, Schrift nach Systemeinstellung -->
@@ -27,7 +27,7 @@
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal"
                     Margin="0,0,0,8">
-            <Image Source="/Assets/tray-ok.ico"
+            <Image Source="/Assets/app.ico"
                    Width="32"
                    Height="32"
                    Margin="0,0,10,0"

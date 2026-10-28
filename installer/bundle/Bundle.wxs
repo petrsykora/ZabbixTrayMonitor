@@ -14,7 +14,7 @@
 	        Manufacturer="ZabbixTrayMonitor"
 	        Version="$(var.ProductVersion)"
 	        UpgradeCode="6F748549-FED7-41FF-AB34-B178484BFAD2"
-	        IconSourceFile="$(var.AssetsDir)\tray-ok.ico">
+	        IconSourceFile="$(var.AssetsDir)\app.ico">
 
 		<BootstrapperApplication>
 			<!-- zeigt die Lizenzbedingungen (MIT) im Installer an, Installation erst nach Zustimmung -->

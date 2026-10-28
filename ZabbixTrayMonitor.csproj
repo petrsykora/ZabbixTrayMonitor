@@ -20,11 +20,12 @@
 		<Authors>Darano94, Petr Sýkora</Authors>
 		<Copyright>Copyright © 2026 Darano94, Petr Sýkora</Copyright>
 
-		<ApplicationIcon>Assets\tray-ok.ico</ApplicationIcon>
+		<ApplicationIcon>Assets\app.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="Assets\tray-error.ico" />
+		<None Remove="Assets\app.ico" />
 		<None Remove="Assets\tray-ok.ico" />
 		<None Remove="Assets\tray-unknown.ico" />
 		<None Remove="Assets\tray-warning.ico" />
@@ -58,6 +59,9 @@
 
 	<ItemGroup>
 		<Resource Include="Assets\tray-error.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\app.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\tray-ok.ico">

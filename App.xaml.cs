@@ -12,6 +12,14 @@ namespace ZabbixTrayMonitor
         {
             base.OnStartup(e);
 
+            // Schriftgröße nach Systemschrift und Windows-Textgröße (Barrierefreiheit)
+            try
+            {
+                FontScaleService.Apply();
+                FontScaleService.StartListening();
+            }
+            catch { }
+
             // Theme und Sprache aus gespeicherter Config anwenden
             // Ohne config.json (erster Start) gilt die Standardsprache
             try

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:res="clr-namespace:ZabbixTrayMonitor.Resources"
         Title="Help - Zabbix Monitor"
-        Icon="/Assets/tray-ok.ico"
+        Icon="/Assets/app.ico"
         Width="760"
         Height="560"
         MinWidth="520"
@@ -12,7 +12,7 @@
         ShowInTaskbar="True"
         Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
-        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}"
+        FontSize="{DynamicResource AppFontSize}"
         KeyDown="Window_KeyDown">
 
     <!-- Standardfenster von Windows: links die Kapitel, rechts der Inhalt des gewählten Kapitels.
@@ -74,11 +74,14 @@
             <StackPanel>
                 <TextBlock x:Name="TopicTitleText"
                            Foreground="{DynamicResource PrimaryTextBrush}"
+                           FontSize="{DynamicResource AppFontSizeTitle}"
                            FontWeight="Bold"
                            TextWrapping="Wrap"
                            Margin="0,0,0,10" />
+                <!-- Fließtext etwas größer als die übrige Oberfläche, damit längere Texte gut lesbar sind -->
                 <TextBlock x:Name="TopicText"
                            Foreground="{DynamicResource PrimaryTextBrush}"
+                           FontSize="{DynamicResource AppFontSizeLarge}"
                            TextWrapping="Wrap" />
             </StackPanel>
         </ScrollViewer>

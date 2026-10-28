@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="{x:Static res:Strings.Problems_WindowTitle}"
-        Icon="/Assets/tray-ok.ico"
+        Icon="/Assets/app.ico"
         Height="500"
         Width="380"
         MinHeight="220"
@@ -16,7 +16,7 @@
         ShowInTaskbar="True"
         Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="{DynamicResource {x:Static SystemFonts.MessageFontFamilyKey}}"
-        FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}"
+        FontSize="{DynamicResource AppFontSize}"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
         Closing="Window_Closing"
@@ -44,6 +44,7 @@
              nicht auf das helle Windows-Standardmenü zurückfällt. -->
         <Style x:Key="ProblemContextMenuStyle" TargetType="{x:Type ContextMenu}">
             <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}" />
             <Setter Property="BorderThickness" Value="1" />
