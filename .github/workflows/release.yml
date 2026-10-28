@@ -1,6 +1,6 @@
 name: Release
 
-# Baut die Windows-Version und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.3.2)
+# Baut die Windows-Version und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.3.2).
 # oder manuell über "Run workflow" mit Angabe des Tags (Tag wird dann vom Release auf dem gewählten Branch angelegt)
 # Mit "dry_run" wird nur gebaut und das Ergebnis als Workflow-Artefakte hochgeladen, ohne Release
 #
