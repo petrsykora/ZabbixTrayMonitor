@@ -1,0 +1,52 @@
+<!--
+	setup.exe für ZabbixTrayMonitor (WiX Burn Bundle)
+
+	1. Prüft, ob die .NET 10 Desktop Runtime (x64) installiert ist
+	2. Wenn nicht: lädt den offiziellen Installer von Microsoft herunter und installiert ihn (bleibt beim Deinstallieren erhalten)
+	3. Installiert die MSI-Variante ohne Runtime (ZabbixTrayMonitor-RuntimeDependent.msi)
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal"
+     xmlns:netfx="http://wixtoolset.org/schemas/v4/wxs/netfx">
+
+	<!-- UpgradeCode des Bundles darf sich nie ändern (unabhängig vom UpgradeCode des MSI) -->
+	<Bundle Name="Zabbix Monitor"
+	        Manufacturer="ZabbixTrayMonitor"
+	        Version="$(var.ProductVersion)"
+	        UpgradeCode="6F748549-FED7-41FF-AB34-B178484BFAD2"
+	        IconSourceFile="$(var.AssetsDir)\tray-ok.ico">
+
+		<BootstrapperApplication>
+			<bal:WixStandardBootstrapperApplication Theme="hyperlinkLicense"
+			                                        LicenseUrl="https://github.com/petrsykora/ZabbixTrayMonitor/blob/master/LICENSE"
+			                                        ShowVersion="yes" />
+		</BootstrapperApplication>
+
+		<!-- höchste installierte Version 10.x der Windows Desktop Runtime (x64), leer wenn keine vorhanden -->
+		<netfx:DotNetCoreSearch Variable="DotNetDesktopRuntimeVersion"
+		                        RuntimeType="desktop"
+		                        Platform="x64"
+		                        MajorVersion="10" />
+
+		<Chain>
+			<ExePackage Id="DotNetDesktopRuntime"
+			            DisplayName=".NET $(var.RuntimeVersion) Desktop Runtime (x64)"
+			            DetectCondition="DotNetDesktopRuntimeVersion"
+			            InstallArguments="/install /quiet /norestart"
+			            Permanent="yes"
+			            Vital="yes">
+				<ExePackagePayload Name="windowsdesktop-runtime-$(var.RuntimeVersion)-win-x64.exe"
+				                   DownloadUrl="$(var.RuntimeUrl)"
+				                   Hash="$(var.RuntimeSha512)"
+				                   Size="$(var.RuntimeSize)"
+				                   Version="$(var.RuntimeVersion)"
+				                   ProductName="Microsoft Windows Desktop Runtime"
+				                   Description="Microsoft Windows Desktop Runtime - $(var.RuntimeVersion) (x64)" />
+			</ExePackage>
+
+			<MsiPackage Id="ZabbixMonitor"
+			            SourceFile="$(var.MsiPath)" />
+		</Chain>
+	</Bundle>
+
+</Wix>

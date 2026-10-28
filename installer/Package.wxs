@@ -5,6 +5,8 @@
 	- Startmenü-Verknüpfung und Autostart für alle Benutzer (Autostart abschaltbar mit: msiexec /i ZabbixTrayMonitor.msi AUTOSTART=0)
 	- Neue Versionen ersetzen ältere automatisch (MajorUpgrade), eine laufende Instanz wird vorher beendet
 	- config.json und API Token im Credential Manager liegen beim Benutzer und bleiben beim Deinstallieren erhalten
+	- Variante RuntimeDependent: ohne .NET Runtime, Installation nur wenn die .NET 10 Desktop Runtime (x64) vorhanden ist
+	  (setup.exe aus installer/bundle installiert die Runtime bei Bedarf vorher)
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
@@ -17,11 +19,30 @@
 	         Scope="perMachine"
 	         Compressed="yes">
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<!-- beide Varianten haben denselben UpgradeCode und ersetzen sich gegenseitig, auch bei gleicher Version -->
+		<MajorUpgrade AllowSameVersionUpgrades="yes"
+		              DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
 		<Icon Id="AppIcon" SourceFile="$(var.AssetsDir)\tray-ok.ico" />
 		<Property Id="ARPPRODUCTICON" Value="AppIcon" />
+
+<?if $(var.InstallerVariant) = "RuntimeDependent" ?>
+		<!-- .NET 10 Desktop Runtime (x64) suchen: PresentationFramework.dll mit Dateiversion 10.x in einem Unterordner von
+		     C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App -->
+		<Property Id="DOTNETDESKTOP10">
+			<DirectorySearch Id="DotNetWindowsDesktopApp"
+			                 Path="[ProgramFiles64Folder]dotnet\shared\Microsoft.WindowsDesktop.App"
+			                 Depth="1">
+				<FileSearch Name="PresentationFramework.dll"
+				            MinVersion="10.0.0.0"
+				            MaxVersion="10.65535.65535.65535" />
+			</DirectorySearch>
+		</Property>
+
+		<Launch Condition="Installed OR DOTNETDESKTOP10"
+		        Message="Zabbix Monitor requires the .NET 10 Desktop Runtime (x64). Install it from https://dotnet.microsoft.com/download/dotnet/10.0, or use the setup.exe that installs it automatically, or the installer that already contains the runtime." />
+<?endif?>
 
 		<!-- 1 = Autostart für alle Benutzer einrichten, 0 = nicht -->
 		<Property Id="AUTOSTART" Value="1" Secure="yes" />

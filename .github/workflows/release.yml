@@ -1,8 +1,15 @@
 name: Release
 
-# Baut die Windows-Version (ZIP + MSI) und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.3.1)
+# Baut die Windows-Version und erstellt ein GitHub Release, sobald ein Tag v* gepusht wird (zB. v1.3.2)
 # oder manuell über "Run workflow" mit Angabe des Tags (Tag wird dann vom Release auf dem gewählten Branch angelegt)
-# Mit "dry_run" wird nur gebaut und das Ergebnis als Workflow-Artefakt hochgeladen, ohne Release
+# Mit "dry_run" wird nur gebaut und das Ergebnis als Workflow-Artefakte hochgeladen, ohne Release
+#
+# Release-Dateien:
+#   ZabbixTrayMonitor-<tag>-win-x64-setup.exe               klein, installiert .NET 10 Desktop Runtime nur wenn sie fehlt
+#   ZabbixTrayMonitor-<tag>-win-x64-runtime-dependent.msi   klein, benötigt installierte .NET 10 Desktop Runtime
+#   ZabbixTrayMonitor-<tag>-win-x64-runtime-dependent.zip   klein, portabel, benötigt .NET 10 Desktop Runtime
+#   ZabbixTrayMonitor-<tag>-win-x64.msi                     groß, .NET Runtime enthalten
+#   ZabbixTrayMonitor-<tag>-win-x64.zip                     groß, portabel, .NET Runtime enthalten
 on:
   push:
     tags:
@@ -10,10 +17,10 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Release tag, e.g. v1.3.1"
+        description: "Release tag, e.g. v1.3.2"
         required: true
       dry_run:
-        description: "Only build and upload as workflow artifact, no release"
+        description: "Only build and upload as workflow artifacts, no release"
         type: boolean
         default: false
 
@@ -47,7 +54,9 @@ jobs:
           Write-Host "Version $version, tag $env:RELEASE_TAG"
 
       - name: Publish
-        run: dotnet publish ZabbixTrayMonitor.csproj -c Release -r win-x64 --self-contained true -o publish
+        run: |
+          dotnet publish ZabbixTrayMonitor.csproj -c Release -r win-x64 --self-contained true -o publish
+          dotnet publish ZabbixTrayMonitor.csproj -c Release -r win-x64 --self-contained false -o publish-runtime-dependent
 
       # Signieren mit eigenem Code-Signing-Zertifikat (siehe README "Code signing")
       # Läuft nur, wenn die Secrets SIGNING_CERT_PFX_BASE64 und SIGNING_CERT_PASSWORD gesetzt sind
@@ -56,32 +65,111 @@ jobs:
         if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
         shell: pwsh
         run: |
-          $files = @("publish\ZabbixTrayMonitor.exe", "publish\ZabbixTrayMonitor.dll") +
-            @(Get-ChildItem publish -Recurse -Filter ZabbixTrayMonitor.resources.dll | ForEach-Object FullName)
+          $files = foreach ($dir in "publish", "publish-runtime-dependent") {
+            "$dir\ZabbixTrayMonitor.exe"
+            "$dir\ZabbixTrayMonitor.dll"
+            Get-ChildItem $dir -Recurse -Filter ZabbixTrayMonitor.resources.dll | ForEach-Object FullName
+          }
           .\tools\Sign-Files.ps1 -Path $files
 
-      # MSI aus den (ggf. signierten) Dateien im publish-Ordner bauen
+      # MSI-Varianten aus den (ggf. signierten) Publish-Ordnern bauen
       - name: Build MSI
         shell: pwsh
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
           dotnet build installer\ZabbixTrayMonitor.Installer.wixproj -c Release `
-            -p:ProductVersion=${{ steps.version.outputs.version }} `
+            -p:ProductVersion=$env:PACKAGE_VERSION `
             -p:PublishDir="$PWD\publish"
           if ($LASTEXITCODE -ne 0) { throw "MSI build failed" }
-          $msi = Get-ChildItem installer\bin -Recurse -Filter ZabbixTrayMonitor.msi | Select-Object -First 1
-          if (-not $msi) { throw "ZabbixTrayMonitor.msi not found" }
-          Copy-Item $msi.FullName "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
+
+          dotnet build installer\ZabbixTrayMonitor.Installer.wixproj -c Release `
+            -p:ProductVersion=$env:PACKAGE_VERSION `
+            -p:InstallerVariant=RuntimeDependent `
+            -p:PublishDir="$PWD\publish-runtime-dependent"
+          if ($LASTEXITCODE -ne 0) { throw "Runtime-dependent MSI build failed" }
+
+          Copy-Item installer\bin\Release\SelfContained\ZabbixTrayMonitor.msi "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
+          Copy-Item installer\bin\Release\RuntimeDependent\ZabbixTrayMonitor-RuntimeDependent.msi "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.msi"
 
       - name: Sign MSI
         if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
         shell: pwsh
-        run: .\tools\Sign-Files.ps1 -Path "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
+        run: |
+          .\tools\Sign-Files.ps1 -Path "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi", "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.msi"
+
+      # setup.exe: installiert die aktuelle .NET 10 Desktop Runtime nur wenn nötig, danach das MSI ohne Runtime
+      - name: Build setup.exe
+        shell: pwsh
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # aktuelle Windows Desktop Runtime 10.x (x64) aus den offiziellen Release-Metadaten von Microsoft
+          $metadata = Invoke-RestMethod https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json
+          $release = $metadata.releases | Where-Object { $_.'release-version' -eq $metadata.'latest-release' } | Select-Object -First 1
+          $runtimeVersion = $release.windowsdesktop.version
+          $runtimeFile = $release.windowsdesktop.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name -like '*.exe' } | Select-Object -First 1
+          if (-not $runtimeFile) { throw "Windows Desktop Runtime win-x64 installer not found in release metadata" }
+
+          $runtimeSize = (Invoke-WebRequest $runtimeFile.url -Method Head -UseBasicParsing).Headers['Content-Length'] | Select-Object -First 1
+          if (-not $runtimeSize) { throw "Size of $($runtimeFile.url) unknown" }
+          Write-Host "Windows Desktop Runtime $runtimeVersion, $runtimeSize bytes, $($runtimeFile.url)"
+
+          dotnet build installer\bundle\ZabbixTrayMonitor.Bundle.wixproj -c Release `
+            -p:ProductVersion=$env:PACKAGE_VERSION `
+            -p:MsiPath="$PWD\ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.msi" `
+            -p:RuntimeUrl="$($runtimeFile.url)" `
+            -p:RuntimeSha512="$($runtimeFile.hash.ToUpperInvariant())" `
+            -p:RuntimeSize="$runtimeSize" `
+            -p:RuntimeVersion="$runtimeVersion"
+          if ($LASTEXITCODE -ne 0) { throw "setup.exe build failed" }
+
+          Copy-Item installer\bundle\bin\Release\ZabbixTrayMonitor-Setup.exe "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-setup.exe"
+
+      # Burn Bundle: zuerst die eingebettete Engine signieren, dann das ganze Bundle
+      - name: Sign setup.exe
+        if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
+        shell: pwsh
+        run: |
+          $setup = "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-setup.exe"
+          dotnet tool install --global wix --version 5.0.2
+          wix burn detach $setup -engine engine.exe
+          .\tools\Sign-Files.ps1 -Path engine.exe
+          wix burn reattach $setup -engine engine.exe -o $setup
+          .\tools\Sign-Files.ps1 -Path $setup
 
       - name: Package ZIP
         shell: pwsh
-        run: Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.zip"
+        run: |
+          Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.zip"
+          Compress-Archive -Path publish-runtime-dependent\* -DestinationPath "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.zip"
+          Get-ChildItem "ZabbixTrayMonitor-$env:RELEASE_TAG-*" | ForEach-Object { "{0,-70} {1,8:N1} MB" -f $_.Name, ($_.Length / 1MB) }
 
-      # MSI und ZIP als getrennte Artefakte, damit nur das Benötigte heruntergeladen wird
+      # jede Datei als eigenes Artefakt, damit nur das Benötigte heruntergeladen wird
+      - name: Upload setup.exe artifact (dry run)
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-setup
+          path: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-setup.exe
+          compression-level: 0
+
+      - name: Upload runtime-dependent MSI artifact (dry run)
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent-msi
+          path: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent.msi
+          compression-level: 0
+
+      - name: Upload runtime-dependent ZIP artifact (dry run)
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent-portable
+          path: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent.zip
+          compression-level: 0
+
       - name: Upload MSI artifact (dry run)
         if: ${{ inputs.dry_run }}
         uses: actions/upload-artifact@v7
@@ -107,6 +195,9 @@ jobs:
           name: ZabbixTrayMonitor ${{ env.RELEASE_TAG }}
           generate_release_notes: true
           files: |
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-setup.exe
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent.msi
+            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent.zip
             ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.msi
             ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
 

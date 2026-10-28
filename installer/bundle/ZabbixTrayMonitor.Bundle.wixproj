@@ -1,0 +1,28 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+
+	<!--
+		setup.exe für ZabbixTrayMonitor (WiX Burn Bundle, baut nur unter Windows)
+
+		Installiert die .NET 10 Desktop Runtime (x64) nur, wenn sie fehlt (Download von Microsoft während der Installation),
+		und danach die MSI-Variante RuntimeDependent.
+
+		Die Daten der Runtime (Download-URL, SHA-512, Größe, Version) liefert der Release-Workflow aus
+		https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json, zB.:
+		  dotnet build ZabbixTrayMonitor.Bundle.wixproj -c Release -p:ProductVersion=1.3.2 -p:MsiPath=...\ZabbixTrayMonitor-RuntimeDependent.msi
+		    -p:RuntimeUrl=... -p:RuntimeSha512=... -p:RuntimeSize=... -p:RuntimeVersion=...
+	-->
+
+	<PropertyGroup>
+		<OutputType>Bundle</OutputType>
+		<OutputName>ZabbixTrayMonitor-Setup</OutputName>
+		<InstallerPlatform>x64</InstallerPlatform>
+		<ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+		<DefineConstants>ProductVersion=$(ProductVersion);MsiPath=$(MsiPath);AssetsDir=$(MSBuildProjectDirectory)\..\..\Assets;RuntimeUrl=$(RuntimeUrl);RuntimeSha512=$(RuntimeSha512);RuntimeSize=$(RuntimeSize);RuntimeVersion=$(RuntimeVersion)</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Bal.wixext" Version="5.0.2" />
+		<PackageReference Include="WixToolset.Netfx.wixext" Version="5.0.2" />
+	</ItemGroup>
+
+</Project>
