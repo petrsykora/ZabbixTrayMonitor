@@ -241,6 +241,10 @@ SmartScreen mainly checks files downloaded from the internet with a browser (Mar
 Unblock-File .\ZabbixTrayMonitor-v1.3.1-win-x64.zip
 ```
 
+## License and origin
+
+Zabbix Monitor is based on [ZabbixTrayMonitor](https://github.com/Darano94/ZabbixTrayMonitor) by Darano94 and is distributed under the MIT License, see [LICENSE](LICENSE). The original copyright notice and the license text are kept in the repository, shipped with every build as `LICENSE.txt` (ZIP and MSI) and shown in the application under **About → License**.
+
 ## Libraries
 
 ### Hardcodet.NotifyIcon.Wpf

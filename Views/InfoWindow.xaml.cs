@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,7 +46,34 @@ namespace ZabbixTrayMonitor.Views
                 ChangesByText.Inlines.Add(CreateLink(AppInfo.ProjectUrl.Replace("https://", ""), AppInfo.ProjectUrl));
                 ChangesByText.Inlines.Add(")");
 
-                LicenseText.Text = AppInfo.License;
+                // MIT-Lizenz: Copyright des ursprünglichen Autors und der vollständige Lizenztext müssen erhalten bleiben
+                var licenseText = ReadEmbeddedLicense();
+                var copyright = licenseText?
+                    .Split('\n')
+                    .Select(line => line.Trim())
+                    .FirstOrDefault(line => line.StartsWith("Copyright", StringComparison.OrdinalIgnoreCase));
+
+                LicenseText.Inlines.Add(AppInfo.License);
+
+                if (!string.IsNullOrWhiteSpace(copyright))
+                {
+                    LicenseText.Inlines.Add(new LineBreak());
+                    LicenseText.Inlines.Add(copyright);
+                }
+
+                if (!string.IsNullOrWhiteSpace(licenseText))
+                {
+                    var showLicenseLink = new Hyperlink(new Run(Strings.About_ShowLicense));
+                    showLicenseLink.Click += (_, _) => MessageBox.Show(
+                        this,
+                        licenseText,
+                        Strings.About_License,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.None);
+
+                    LicenseText.Inlines.Add(new LineBreak());
+                    LicenseText.Inlines.Add(showLicenseLink);
+                }
 
                 ProgramText.Text = location;
 
@@ -56,6 +84,25 @@ namespace ZabbixTrayMonitor.Views
             catch
             {
                 VersionText.Text = Strings.Common_Unknown;
+            }
+        }
+
+        // LICENSE ist als Ressource eingebettet (siehe ZabbixTrayMonitor.csproj), damit der Text auch ohne LICENSE.txt verfügbar ist
+        private static string? ReadEmbeddedLicense()
+        {
+            try
+            {
+                using var stream = typeof(InfoWindow).Assembly.GetManifestResourceStream("ZabbixTrayMonitor.LICENSE");
+
+                if (stream == null)
+                    return null;
+
+                using var reader = new StreamReader(stream);
+                return reader.ReadToEnd().Replace("\r\n", "\n").Trim();
+            }
+            catch
+            {
+                return null;
             }
         }
 

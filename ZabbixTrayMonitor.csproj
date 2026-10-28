@@ -45,6 +45,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- MIT-Lizenz verlangt, dass Copyright und Lizenztext jeder Kopie beiliegen:
+		     als LICENSE.txt neben der exe (ZIP und MSI) und eingebettet für die Anzeige im Info-Fenster -->
+		<None Update="LICENSE" Link="LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<EmbeddedResource Include="LICENSE" LogicalName="ZabbixTrayMonitor.LICENSE" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CredentialManagement" Version="1.0.2" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
 	</ItemGroup>

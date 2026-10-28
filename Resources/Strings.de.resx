@@ -355,6 +355,9 @@ Zertifikatsfehler trotzdem ignorieren?</value>
   <data name="About_License" xml:space="preserve">
     <value>Lizenz</value>
   </data>
+  <data name="About_ShowLicense" xml:space="preserve">
+    <value>Lizenztext anzeigen</value>
+  </data>
   <data name="About_Program" xml:space="preserve">
     <value>Programm</value>
   </data>

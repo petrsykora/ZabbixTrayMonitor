@@ -121,6 +121,15 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show license text.
+        /// </summary>
+        public static string About_ShowLicense {
+            get {
+                return ResourceManager.GetString("About_ShowLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version.
         /// </summary>
         public static string About_Version {
