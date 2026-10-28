@@ -16,15 +16,34 @@ namespace ZabbixTrayMonitor.Services
     {
         private const string DefaultZabbixApiEndpoint = "/api_jsonrpc.php";
 
-        // Wiederverwendete HttpClient-Instanzen: eine standard, eine mit zertbypass
-        private static readonly HttpClient _defaultClient = new HttpClient();
-        private static readonly HttpClient _insecureClient;
+        // Kurzer Timeout damit ein nicht antwortender Server Tray-Status und Problemfenster nicht 100 Sekunden (HttpClient-Default) blockiert
+        private static readonly TimeSpan RequestTimeout = TimeSpan.FromSeconds(15);
 
-        static ZabbixClient()
+        // Verbindungen regelmäßig erneuern damit DNS-Änderungen am Zabbix-Server übernommen werden (statischer HttpClient lebt die ganze Laufzeit)
+        private static readonly TimeSpan PooledConnectionLifetime = TimeSpan.FromMinutes(5);
+
+        // Wiederverwendete HttpClient-Instanzen: eine standard, eine mit zertbypass
+        private static readonly HttpClient _defaultClient = CreateClient(ignoreCertificateErrors: false);
+        private static readonly HttpClient _insecureClient = CreateClient(ignoreCertificateErrors: true);
+
+        private static HttpClient CreateClient(bool ignoreCertificateErrors)
         {
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator; // Alle Zertifikatsfehler ignorieren zB bei self-signed
-            _insecureClient = new HttpClient(handler);
+            var handler = new SocketsHttpHandler
+            {
+                PooledConnectionLifetime = PooledConnectionLifetime
+            };
+
+            if (ignoreCertificateErrors)
+            {
+                // Alle Zertifikatsfehler ignorieren zB bei self-signed
+                // Achtung: damit ist die Verbindung nicht gegen Man-in-the-Middle geschützt und der API Token kann abgegriffen werden
+                handler.SslOptions.RemoteCertificateValidationCallback = (_, _, _, _) => true;
+            }
+
+            return new HttpClient(handler)
+            {
+                Timeout = RequestTimeout
+            };
         }
 
         private static HttpClient GetClient(bool ignoreCertificateErrors)

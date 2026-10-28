@@ -182,6 +182,15 @@ namespace ZabbixTrayMonitor
                 return;
 
             var zabbixUrl = ZabbixUrlTextBox.Text.Trim().TrimEnd('/');
+
+            if (!ValidateZabbixUrlSecurity(existingConfig.ZabbixUrl, zabbixUrl))
+                return;
+
+            var ignoreCertificateErrors = IgnoreCertificateErrorsCheckBox.IsChecked == true;
+
+            if (!ConfirmIgnoreCertificateErrors(existingConfig.IgnoreCertificateErrors, ignoreCertificateErrors))
+                return;
+
             var zabbixApiEndpoint = NormalizeZabbixApiEndpoint(ZabbixApiEndpointTextBox.Text);
             var dashboardUrl = ZabbixDashboardUrlTextBox.Text.Trim().TrimEnd('/');
 
@@ -205,7 +214,7 @@ namespace ZabbixTrayMonitor
             existingConfig.ZabbixDashboardUrl = dashboardUrl;
             existingConfig.PollIntervalSeconds = pollIntervalSeconds;
             existingConfig.TrayToolTipDelayMilliseconds = trayToolTipDelayMilliseconds;
-            existingConfig.IgnoreCertificateErrors = IgnoreCertificateErrorsCheckBox.IsChecked == true;
+            existingConfig.IgnoreCertificateErrors = ignoreCertificateErrors;
             existingConfig.UseDarkMode = DarkModeCheckBox.IsChecked == true;
             existingConfig.WarningSeverityThreshold = warningThreshold;
             existingConfig.ErrorSeverityThreshold = errorThreshold;
@@ -251,6 +260,64 @@ namespace ZabbixTrayMonitor
                 return false;
 
             return true;
+        }
+
+        // Der API Token wird bei jedem Request als Bearer-Header mitgeschickt, deshalb nur http/https zulassen und bei http warnen
+        // (nur wenn die URL geändert wurde, nicht bei jedem Speichern einer bereits bestätigten http-URL)
+        private bool ValidateZabbixUrlSecurity(string previousZabbixUrl, string zabbixUrl)
+        {
+            if (!Uri.TryCreate(zabbixUrl, UriKind.Absolute, out var uri) ||
+                (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
+            {
+                ShowValidationError("Die URL des Zabbix-Servers muss mit https:// (oder http://) beginnen");
+                ZabbixUrlTextBox.Focus();
+                ZabbixUrlTextBox.SelectAll();
+                return false;
+            }
+
+            if (uri.Scheme == Uri.UriSchemeHttps ||
+                string.Equals(previousZabbixUrl?.Trim().TrimEnd('/'), zabbixUrl, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            var result = MessageBox.Show(
+                "Die Verbindung zum Zabbix-Server ist nicht verschlüsselt (http://).\n\n" +
+                "Der API Token wird dabei im Klartext übertragen und kann im Netzwerk mitgelesen werden.\n\n" +
+                "Trotzdem speichern?",
+                "Unsichere Verbindung",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning,
+                MessageBoxResult.No
+            );
+
+            if (result == MessageBoxResult.Yes)
+                return true;
+
+            ZabbixUrlTextBox.Focus();
+            return false;
+        }
+
+        // Nur beim Einschalten nachfragen, nicht bei jedem Speichern einer bereits so gespeicherten Konfiguration
+        private bool ConfirmIgnoreCertificateErrors(bool wasIgnoringCertificateErrors, bool ignoreCertificateErrors)
+        {
+            if (!ignoreCertificateErrors || wasIgnoringCertificateErrors)
+                return true;
+
+            var result = MessageBox.Show(
+                "Wenn Zertifikatsfehler ignoriert werden, wird die Identität des Zabbix-Servers nicht mehr geprüft.\n\n" +
+                "Ein Angreifer im Netzwerk könnte sich dann als Server ausgeben und den API Token abgreifen.\n\n" +
+                "Besser: das Zertifikat bzw. die eigene CA in Windows als vertrauenswürdig importieren.\n\n" +
+                "Zertifikatsfehler trotzdem ignorieren?",
+                "Zertifikatsprüfung deaktivieren",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning,
+                MessageBoxResult.No
+            );
+
+            if (result == MessageBoxResult.Yes)
+                return true;
+
+            IgnoreCertificateErrorsCheckBox.Focus();
+            return false;
         }
 
         private bool ValidateApiTokenForSave(string fullTargetOld, string fullTargetNew)

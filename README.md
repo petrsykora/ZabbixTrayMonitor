@@ -79,7 +79,7 @@ Beispiel:
   "ZabbixApiEndpoint": "/api_jsonrpc.php",
   "PollIntervalSeconds": 60,
   "TrayToolTipDelayMilliseconds": 250,
-  "IgnoreCertificateErrors": true,
+  "IgnoreCertificateErrors": false,
   "UseDarkMode": true,
   "ShowSuppressedProblems": false,
   "RefreshAfterProblemAction": true,
@@ -155,6 +155,12 @@ apiinfo.version
 ```
 
 Der Benutzer hinter dem API-Token muss über die benötigten Zabbix-Berechtigungen verfügen. Für die Alarmbearbeitung muss das Bestätigen bzw. Unterdrücken der betreffenden Events erlaubt sein.
+
+### Sicherheitshinweise
+
+- Der API Token wird bei jedem Request mitgeschickt. Den Zabbix-Server deshalb über **https://** ansprechen; bei http:// fragt die Anwendung beim Speichern nach.
+- `IgnoreCertificateErrors` schaltet die Zertifikatsprüfung komplett ab. Ein Angreifer im Netzwerk kann sich dann als Zabbix-Server ausgeben und den Token abgreifen. Bei self-signed Zertifikaten besser das Zertifikat bzw. die eigene CA in Windows als vertrauenswürdig importieren.
+- Für den Token einen eigenen Zabbix-Benutzer mit möglichst wenigen Rechten verwenden (Lesen der relevanten Hostgruppen, ggf. Bestätigen/Unterdrücken).
 
 ## Bibliotheken
 

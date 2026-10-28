@@ -15,6 +15,10 @@ namespace ZabbixTrayMonitor.Services
 
         private const uint CredentialTypeGeneric = 1;
 
+        // Markierung im Comment-Feld der Credentials, damit beim Aufräumen nur von dieser App angelegte Einträge gelöscht werden
+        // und nicht fremde Credentials, die zufällig mit dem gleichen (frei konfigurierbaren) AppName-Prefix beginnen
+        private const string CredentialOwnerMarker = "Created by ZabbixTrayMonitor";
+
         // Windows API um Credentials zu filtern um alte Targets mit gleichem App-Prefix entfernen zu können weil das NuGet Paket CredentialManagement das nicht kann
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool CredEnumerate(
@@ -75,6 +79,7 @@ namespace ZabbixTrayMonitor.Services
                 Target = target.Trim(),
                 Username = username.Trim(),
                 Password = token,
+                Description = CredentialOwnerMarker,
                 Type = CredentialType.Generic,
                 PersistanceType = PersistanceType.LocalComputer
             };
@@ -188,7 +193,7 @@ namespace ZabbixTrayMonitor.Services
             return null;
         }
 
-        // Löscht alle anderen Generic Credentials mit gleichem App-Prefix
+        // Löscht alle anderen Generic Credentials mit gleichem App-Prefix, aber nur wenn sie von dieser App angelegt wurden (CredentialOwnerMarker)
         private static void DeleteOtherTokensWithSameAppPrefix(string keepTarget)
         {
             try
@@ -226,7 +231,7 @@ namespace ZabbixTrayMonitor.Services
             return normalizedTarget.Substring(0, lastDotIndex + 1);
         }
 
-        // Listet alle Credentials auf die zum Filter passen zB.: "ZabbixTrayMon.*" ... WindowsAPI gibt keine Liste zurück sondern Pointer auf die Credentials https://learn.microsoft.com/en-us/windows/win32/api/wincred/nf-wincred-credenumeratew
+        // Listet alle von dieser App angelegten Credentials auf die zum Filter passen zB.: "ZabbixTrayMon.*" ... WindowsAPI gibt keine Liste zurück sondern Pointer auf die Credentials https://learn.microsoft.com/en-us/windows/win32/api/wincred/nf-wincred-credenumeratew
         private static List<string> EnumerateGenericCredentialTargets(string filter)
         {
             var result = new List<string>();
@@ -245,6 +250,9 @@ namespace ZabbixTrayMonitor.Services
                     var credential = Marshal.PtrToStructure<NativeCredential>(credentialPointer);
 
                     if (credential.Type != CredentialTypeGeneric)
+                        continue;
+
+                    if (!string.Equals(credential.Comment, CredentialOwnerMarker, StringComparison.Ordinal))
                         continue;
 
                     if (!string.IsNullOrWhiteSpace(credential.TargetName))

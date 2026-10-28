@@ -12,6 +12,7 @@ namespace ZabbixTrayMonitor.Services
         private readonly string _appFolder;
         private readonly string _configPath;
         private const string ConfigFilename = "config.json";
+        private const string CorruptConfigBackupFilename = "config.corrupt.json";
 
         // konstanter AppData-Ordnername (nicht abhängig von konfigurierbarem AppName) .. Todo
         private const string AppDataBaseName = "ZabbixTrayMonitor";
@@ -68,6 +69,8 @@ namespace ZabbixTrayMonitor.Services
             }
             catch
             {
+                // Unlesbare config.json sichern, damit sie beim nächsten Speichern nicht unbemerkt mit Defaults überschrieben wird
+                BackupCorruptConfig();
                 return new ZabbixConfig();
             }
         }
@@ -78,7 +81,23 @@ namespace ZabbixTrayMonitor.Services
 
             var json = JsonSerializer.Serialize(config, _jsonOptions);
 
-            File.WriteAllText(_configPath, json);
+            // Erst in temporäre Datei schreiben und dann ersetzen, damit bei Absturz/vollem Datenträger keine halb geschriebene config.json entsteht
+            var tempPath = _configPath + ".tmp";
+            File.WriteAllText(tempPath, json);
+            File.Move(tempPath, _configPath, overwrite: true);
+        }
+
+        // Load() wird sehr oft aufgerufen (jeder Refresh/Tooltip), deshalb fester Dateiname und nicht überschreiben -> nur eine Sicherung
+        private void BackupCorruptConfig()
+        {
+            try
+            {
+                var backupPath = Path.Combine(_appFolder, CorruptConfigBackupFilename);
+
+                if (!File.Exists(backupPath))
+                    File.Copy(_configPath, backupPath);
+            }
+            catch { }
         }
 
         public string GetConfigPath()
