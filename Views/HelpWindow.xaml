@@ -4,10 +4,10 @@
         xmlns:res="clr-namespace:ZabbixTrayMonitor.Resources"
         Title="Help - Zabbix Monitor"
         Icon="/Assets/tray-ok.ico"
-        Width="620"
-        Height="640"
-        MinWidth="420"
-        MinHeight="300"
+        Width="760"
+        Height="560"
+        MinWidth="520"
+        MinHeight="320"
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="True"
         Background="{DynamicResource WindowBackgroundBrush}"
@@ -15,40 +15,80 @@
         FontSize="{DynamicResource {x:Static SystemFonts.MessageFontSizeKey}}"
         KeyDown="Window_KeyDown">
 
-    <!-- Standardfenster von Windows, Kapitel werden in HelpWindow.xaml.cs aus den Strings-Ressourcen aufgebaut -->
-    <Grid>
+    <!-- Standardfenster von Windows: links die Kapitel, rechts der Inhalt des gewählten Kapitels.
+         Die Kapitel werden in HelpWindow.xaml.cs aus den Strings-Ressourcen aufgebaut, die Hilfe ist vollständig offline -->
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="190" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0"
+        <ListBox x:Name="TopicsListBox"
+                 Grid.Row="0"
+                 Grid.Column="0"
+                 Margin="0,0,16,0"
+                 Background="{DynamicResource InputBackgroundBrush}"
+                 Foreground="{DynamicResource PrimaryTextBrush}"
+                 BorderBrush="{DynamicResource InputBorderBrush}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectionChanged="TopicsListBox_SelectionChanged">
+            <ListBox.ItemContainerStyle>
+                <!-- Eigenes Template, damit die Auswahl auch im Dark Mode gut lesbar ist -->
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="8,5" />
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="ItemBorder"
+                                        Background="Transparent"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource HoverBackgroundBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource ReadOnlyInputBackgroundBrush}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <ScrollViewer x:Name="ContentScrollViewer"
+                      Grid.Row="0"
+                      Grid.Column="1"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
-            <StackPanel x:Name="SectionsPanel"
-                        Margin="16,12,16,8" />
+            <StackPanel>
+                <TextBlock x:Name="TopicTitleText"
+                           Foreground="{DynamicResource PrimaryTextBrush}"
+                           FontWeight="Bold"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,10" />
+                <TextBlock x:Name="TopicText"
+                           Foreground="{DynamicResource PrimaryTextBrush}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
         </ScrollViewer>
 
-        <Grid Grid.Row="1"
-              Margin="16,8,16,16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       VerticalAlignment="Center">
-                <Hyperlink x:Name="DocumentationLink"
-                           Foreground="{DynamicResource LoadingBrush}"
-                           Click="DocumentationLink_Click">
-                    <Run Text="{x:Static res:Strings.Help_OnlineDocumentation}" />
-                </Hyperlink>
-            </TextBlock>
-
-            <Button Grid.Column="1"
-                    Content="{x:Static res:Strings.Common_Close}"
-                    MinWidth="90"
-                    Click="Close_Click" />
-        </Grid>
+        <Button Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Margin="0,16,0,0"
+                Content="{x:Static res:Strings.Common_Close}"
+                MinWidth="90"
+                Click="Close_Click" />
     </Grid>
 </Window>

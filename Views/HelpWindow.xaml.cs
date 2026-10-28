@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,7 +6,7 @@ using ZabbixTrayMonitor.Models;
 using ZabbixTrayMonitor.Resources;
 using ZabbixTrayMonitor.Services;
 
-// Hilfefenster mit kurzer Anleitung in der aktuellen Sprache, erreichbar über Tray-Menü, Einstellungen, Info und F1
+// Integrierte Hilfe in der aktuellen Sprache, erreichbar über Tray-Menü, Einstellungen, Info und F1
 
 namespace ZabbixTrayMonitor.Views
 {
@@ -21,14 +19,18 @@ namespace ZabbixTrayMonitor.Views
             SourceInitialized += (_, _) => ThemeService.ApplyTitleBarTheme(this, new ConfigService().Load().UseDarkMode);
 
             Title = string.Format(Strings.Help_Title, ZabbixConfig.AppDisplayName);
-            DocumentationLink.ToolTip = AppInfo.DocumentationUrl;
 
-            AddSection(Strings.Help_GettingStarted_Title, Strings.Help_GettingStarted_Text);
-            AddSection(Strings.Help_Tray_Title, Strings.Help_Tray_Text);
-            AddSection(Strings.Help_Problems_Title, Strings.Help_Problems_Text);
-            AddSection(Strings.Help_Alarms_Title, Strings.Help_Alarms_Text);
-            AddSection(Strings.Help_Settings_Title, Strings.Help_Settings_Text);
-            AddSection(Strings.Help_Troubleshooting_Title, Strings.Help_Troubleshooting_Text);
+            AddTopic(Strings.Help_GettingStarted_Title, Strings.Help_GettingStarted_Text);
+            AddTopic(Strings.Help_Install_Title, Strings.Help_Install_Text);
+            AddTopic(Strings.Help_Tray_Title, Strings.Help_Tray_Text);
+            AddTopic(Strings.Help_Problems_Title, Strings.Help_Problems_Text);
+            AddTopic(Strings.Help_Alarms_Title, Strings.Help_Alarms_Text);
+            AddTopic(Strings.Help_Settings_Title, Strings.Help_Settings_Text);
+            AddTopic(Strings.Help_Severities_Title, Strings.Help_Severities_Text);
+            AddTopic(Strings.Help_Security_Title, Strings.Help_Security_Text);
+            AddTopic(Strings.Help_Troubleshooting_Title, Strings.Help_Troubleshooting_Text);
+
+            TopicsListBox.SelectedIndex = 0;
         }
 
         // Nur ein Hilfefenster gleichzeitig, ein offenes wird nach vorne geholt
@@ -48,37 +50,20 @@ namespace ZabbixTrayMonitor.Views
             new HelpWindow().Show();
         }
 
-        private void AddSection(string title, string text)
+        // Kapitel als ListBoxItem: Content = Titel (wird in der Liste angezeigt), Tag = Text
+        private void AddTopic(string title, string text)
         {
-            SectionsPanel.Children.Add(new TextBlock
-            {
-                Text = title,
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(0, SectionsPanel.Children.Count == 0 ? 0 : 14, 0, 6)
-            });
-
-            SectionsPanel.Children.Add(new TextBlock
-            {
-                Text = text,
-                TextWrapping = TextWrapping.Wrap
-            });
-
-            // Farben aus dem Theme (DynamicResource), damit Dark/Light Mode passt
-            foreach (var textBlock in SectionsPanel.Children.OfType<TextBlock>().Skip(SectionsPanel.Children.Count - 2))
-                textBlock.SetResourceReference(TextBlock.ForegroundProperty, "PrimaryTextBrush");
+            TopicsListBox.Items.Add(new ListBoxItem { Content = title, Tag = text });
         }
 
-        private void DocumentationLink_Click(object sender, RoutedEventArgs e)
+        private void TopicsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = AppInfo.DocumentationUrl,
-                    UseShellExecute = true
-                });
-            }
-            catch { }
+            if (TopicsListBox.SelectedItem is not ListBoxItem item)
+                return;
+
+            TopicTitleText.Text = item.Content as string;
+            TopicText.Text = item.Tag as string;
+            ContentScrollViewer.ScrollToTop();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

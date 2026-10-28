@@ -299,11 +299,24 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Full documentation on GitHub.
+        ///   Looks up a localized string similar to • MSI installer: installs the application for all users to C:\Program Files\ZabbixTrayMonitor, adds a Start menu shortcut and starts the application when a user signs in. Administrator rights are required.
+        ///• Silent installation: msiexec /i ZabbixTrayMonitor-&lt;version&gt;-win-x64.msi /qn
+        ///• Without autostart: add AUTOSTART=0 to the command.
+        ///• Group Policy: assign the MSI to computers under Computer Configuration &gt; Policies &gt; Software Settings &gt; Software installation. It is installed at the next restart.
+        ///• Update: [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Help_OnlineDocumentation {
+        public static string Help_Install_Text {
             get {
-                return ResourceManager.GetString("Help_OnlineDocumentation", resourceCulture);
+                return ResourceManager.GetString("Help_Install_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation and updates.
+        /// </summary>
+        public static string Help_Install_Title {
+            get {
+                return ResourceManager.GetString("Help_Install_Title", resourceCulture);
             }
         }
         
@@ -328,11 +341,31 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • Dashboard URL: page opened by ⌂ and by clicking a problem. If empty, the Zabbix URL is used.
-        ///• Ignore SSL certificate errors: only for testing, the connection is then not protected against attackers. Better import your certificate or CA in Windows.
-        ///• Language: System uses the Windows display language (English if it is not supported).
-        ///• Poll interval: how often problems are loaded, at least 10 seconds.
-        ///• Warning and error threshold: Zabbix severity (0 Not classified to 5 Disaster) from which a problem coun [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to • The API token is sent with every request. Use https:// for the Zabbix URL; for http:// the application asks for confirmation when saving, because the token would be readable on the network.
+        ///• Ignore SSL certificate errors turns off the check of the server certificate. An attacker on the network could then pretend to be your Zabbix server and steal the token. Instead, import the server certificate or your own certification authority into the trusted certificates of Windows.
+        ///• Use a dedicated Zabbix user fo [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Help_Security_Text {
+            get {
+                return ResourceManager.GetString("Help_Security_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security.
+        /// </summary>
+        public static string Help_Security_Title {
+            get {
+                return ResourceManager.GetString("Help_Security_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Zabbix URL: address of the Zabbix web interface, including a subdirectory if there is one. The API path /api_jsonrpc.php is added automatically.
+        ///• Dashboard URL: page opened by ⌂ and by clicking a problem. If empty, the Zabbix URL is used.
+        ///• API token: stored in the Windows Credential Manager, never in the configuration file. When a token is stored, the field shows asterisks; enter a new token only to replace it.
+        ///• Ignore SSL certificate errors: only for testing, see Security.
+        ///• Dark mode: dark or light c [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Settings_Text {
             get {
@@ -346,6 +379,30 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Help_Settings_Title {
             get {
                 return ResourceManager.GetString("Help_Settings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zabbix uses six severities: 0 Not classified, 1 Information, 2 Warning, 3 Average, 4 High, 5 Disaster.
+        ///
+        ///• Problems below the warning threshold are ignored.
+        ///• From the warning threshold up to the error threshold they count as warnings (yellow).
+        ///• From the error threshold on they count as errors (red).
+        ///
+        ///Defaults: warning threshold 2, error threshold 4, so 0-1 ignored, 2-3 warning, 4-5 error. The error threshold must be higher than the warning threshold..
+        /// </summary>
+        public static string Help_Severities_Text {
+            get {
+                return ResourceManager.GetString("Help_Severities_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Severities.
+        /// </summary>
+        public static string Help_Severities_Title {
+            get {
+                return ResourceManager.GetString("Help_Severities_Title", resourceCulture);
             }
         }
         
@@ -380,10 +437,10 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • The tray icon is red and the tooltip shows an error: check the Zabbix URL and the API token with Test in the settings.
-        ///• &quot;Certificate&quot; or &quot;SSL&quot; error: the server certificate is not trusted by Windows. Import it, or the CA that issued it, into the trusted certificates.
-        ///• A problem from Zabbix is missing: check the warning threshold and whether the problem is suppressed. Problems of disabled triggers, hosts or items are not shown, just like in the Zabbix frontend.
-        ///• The configuration is stored in %AppData%\ [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to • The tray icon is red and the tooltip shows an error: open Settings and check the Zabbix URL and the API token with Test.
+        ///• Error mentioning a certificate or SSL: Windows does not trust the server certificate, see Security.
+        ///• &quot;Not authorized&quot; or a permission error: the token has expired, was deleted in Zabbix, or its user lacks permissions. Create a new token and enter it in Settings.
+        ///• A problem from Zabbix is missing: check the warning threshold and whether the problem is suppressed. Problems of disabled [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Troubleshooting_Text {
             get {

@@ -1,4 +1,4 @@
-// Feste Informationen über die Anwendung für das Info- und Hilfefenster
+// Feste Informationen über die Anwendung für das Info-Fenster
 
 namespace ZabbixTrayMonitor.Models
 {
@@ -12,7 +12,6 @@ namespace ZabbixTrayMonitor.Models
         // Diese Version
         public const string ChangesAuthor = "Petr Sýkora";
         public const string ProjectUrl = "https://github.com/petrsykora/ZabbixTrayMonitor";
-        public const string DocumentationUrl = ProjectUrl + "#readme";
 
         public const string License = "MIT";
     }

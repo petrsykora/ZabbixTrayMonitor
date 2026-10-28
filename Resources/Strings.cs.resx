@@ -367,9 +367,6 @@ Přesto ignorovat chyby certifikátu?</value>
   <data name="Help_Title" xml:space="preserve">
     <value>{0} - Nápověda</value>
   </data>
-  <data name="Help_OnlineDocumentation" xml:space="preserve">
-    <value>Podrobná dokumentace na GitHubu</value>
-  </data>
   <data name="Help_GettingStarted_Title" xml:space="preserve">
     <value>První kroky</value>
   </data>
@@ -409,21 +406,62 @@ Přesto ignorovat chyby certifikátu?</value>
   <data name="Help_Settings_Title" xml:space="preserve">
     <value>Nastavení</value>
   </data>
-  <data name="Help_Settings_Text" xml:space="preserve">
-    <value>• URL dashboardu: stránka, kterou otevře ⌂ a kliknutí na problém. Když je prázdná, použije se URL Zabbixu.
-• Ignorovat chyby SSL certifikátu: jen pro testování, připojení pak není chráněné proti útočníkům. Lepší je importovat certifikát nebo CA do Windows.
-• Jazyk: Systémový použije jazyk zobrazení Windows (angličtinu, pokud není podporovaný).
-• Interval dotazování: jak často se načítají problémy, nejméně 10 sekund.
-• Práh varování a chyby: závažnost v Zabbixu (0 Not classified až 5 Disaster), od které se problém počítá jako varování nebo chyba. Nižší závažnosti se ignorují.
-• API token se ukládá do Správce pověření Windows (Credential Manager), ne do konfiguračního souboru.</value>
-  </data>
   <data name="Help_Troubleshooting_Title" xml:space="preserve">
     <value>Řešení potíží</value>
   </data>
+  <data name="Help_Settings_Text" xml:space="preserve">
+    <value>• URL Zabbixu: adresa webového rozhraní Zabbixu, případně i s podsložkou. Cesta k API /api_jsonrpc.php se doplní automaticky.
+• URL dashboardu: stránka, kterou otevře ⌂ a kliknutí na problém. Když je prázdná, použije se URL Zabbixu.
+• API token: ukládá se do Správce pověření Windows (Credential Manager), nikdy do konfiguračního souboru. Když je token uložený, pole ukazuje hvězdičky; nový token zadávejte jen při jeho výměně.
+• Ignorovat chyby SSL certifikátu: jen pro testování, viz Zabezpečení.
+• Tmavý režim: tmavé nebo světlé barvy všech oken.
+• Jazyk: Systémový použije jazyk zobrazení Windows (angličtinu, pokud není podporovaný). Změna platí hned po uložení.
+• Interval dotazování: jak často se načítají problémy, nejméně 10 sekund.
+• Zpoždění tooltipu: jak dlouho musí myš zůstat na ikoně v trayi, než se zobrazí souhrn (0 až 10000 ms).
+• Práh varování a chyby: viz Závažnosti.
+• Zobrazovat i potlačené problémy: vypisovat i problémy potlačené v Zabbixu.
+• Po potvrzení/potlačení automaticky obnovit: po akci s alarmem znovu načíst seznam.
+• Výchozí zpráva: text předvyplněný v menu alarmu.
+• Windows Credential Manager: název (target) a uživatelské jméno, pod kterými je token uložený. Měňte je jen tehdy, když vaše organizace vyžaduje konkrétní názvy.</value>
+  </data>
+  <data name="Help_Install_Title" xml:space="preserve">
+    <value>Instalace a aktualizace</value>
+  </data>
+  <data name="Help_Install_Text" xml:space="preserve">
+    <value>• Instalátor MSI: nainstaluje aplikaci pro všechny uživatele do C:\Program Files\ZabbixTrayMonitor, přidá zástupce do nabídky Start a spouští aplikaci po přihlášení uživatele. Vyžaduje práva správce.
+• Tichá instalace: msiexec /i ZabbixTrayMonitor-&lt;verze&gt;-win-x64.msi /qn
+• Bez automatického spuštění: přidejte k příkazu AUTOSTART=0.
+• Zásady skupiny: přiřaďte MSI počítačům v Konfigurace počítače &gt; Zásady &gt; Nastavení softwaru &gt; Instalace softwaru. Nainstaluje se při příštím restartu.
+• Aktualizace: nainstalujte nové MSI; stará verze se nahradí a běžící aplikace se předtím ukončí.
+• Odinstalace: Nastavení &gt; Aplikace &gt; Zabbix Monitor. Vaše nastavení i API token zůstanou zachované.
+• Přenosný ZIP: rozbalte kamkoli a spusťte ZabbixTrayMonitor.exe. Nic se neinstaluje a aplikace se nespouští automaticky.</value>
+  </data>
+  <data name="Help_Severities_Title" xml:space="preserve">
+    <value>Závažnosti</value>
+  </data>
+  <data name="Help_Severities_Text" xml:space="preserve">
+    <value>Zabbix používá šest závažností: 0 Not classified, 1 Information, 2 Warning, 3 Average, 4 High, 5 Disaster.
+
+• Problémy pod prahem varování se ignorují.
+• Od prahu varování po práh chyby se počítají jako varování (žlutá).
+• Od prahu chyby se počítají jako chyby (červená).
+
+Výchozí hodnoty: práh varování 2, práh chyby 4, tedy 0-1 ignorováno, 2-3 varování, 4-5 chyba. Práh chyby musí být vyšší než práh varování.</value>
+  </data>
+  <data name="Help_Security_Title" xml:space="preserve">
+    <value>Zabezpečení</value>
+  </data>
+  <data name="Help_Security_Text" xml:space="preserve">
+    <value>• API token se posílá s každým požadavkem. Pro URL Zabbixu používejte https://; u http:// se aplikace při ukládání zeptá, protože token by byl v síti čitelný.
+• Ignorovat chyby SSL certifikátu vypne kontrolu certifikátu serveru. Útočník v síti by se pak mohl vydávat za váš Zabbix server a získat token. Místo toho importujte certifikát serveru nebo vlastní certifikační autoritu mezi důvěryhodné certifikáty Windows.
+• Pro token používejte samostatného Zabbix uživatele s co nejmenšími oprávněními: čtení skupin hostů, které chcete sledovat, a pokud chcete upravovat alarmy, oprávnění problémy potvrzovat a potlačovat.
+• Token je uložený šifrovaně pro vašeho uživatele Windows ve Správci pověření.</value>
+  </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
-    <value>• Ikona v trayi je červená a tooltip ukazuje chybu: v nastavení ověřte tlačítkem Otestovat URL Zabbixu a API token.
-• Chyba s „certifikát“ nebo „SSL“: Windows nedůvěřují certifikátu serveru. Importujte certifikát, případně CA, která ho vydala, mezi důvěryhodné certifikáty.
+    <value>• Ikona v trayi je červená a tooltip ukazuje chybu: otevřete Nastavení a tlačítkem Otestovat ověřte URL Zabbixu a API token.
+• Chyba zmiňující certifikát nebo SSL: Windows nedůvěřují certifikátu serveru, viz Zabezpečení.
+• „Not authorized“ nebo chyba oprávnění: token vypršel, byl v Zabbixu smazán, nebo jeho uživatel nemá oprávnění. Vytvořte nový token a zadejte ho v Nastavení.
 • Chybí problém, který je v Zabbixu: zkontrolujte práh varování a jestli problém není potlačený. Problémy vypnutých triggerů, hostů nebo položek se nezobrazují, stejně jako ve webovém rozhraní Zabbixu.
-• Konfigurace je uložená v %AppData%\ZabbixTrayMonitor\config.json (viz O aplikaci).</value>
+• Konfigurační soubor: %AppData%\ZabbixTrayMonitor\config.json. Obsahuje všechna nastavení kromě tokenu. Pokud ho nejde přečíst, uloží se jeho kopie jako config.corrupt.json a použije se výchozí nastavení. Okno O aplikaci obsahuje odkaz na složku.</value>
   </data>
 </root>
