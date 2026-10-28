@@ -20,8 +20,10 @@
 		<OutputName Condition="'$(InstallerVariant)' != 'RuntimeDependent'">ZabbixTrayMonitor</OutputName>
 		<InstallerPlatform>x64</InstallerPlatform>
 		<ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+		<!-- Lizenztext für den Lizenzdialog, wird aus LICENSE erzeugt: tools\New-LicenseRtf.ps1 -->
+		<LicenseRtf Condition="'$(LicenseRtf)' == ''">$(MSBuildProjectDirectory)\..\License.rtf</LicenseRtf>
 		<PublishDir Condition="'$(PublishDir)' == ''">$(MSBuildProjectDirectory)\..\..\publish</PublishDir>
-		<DefineConstants>ProductVersion=$(ProductVersion);PublishDir=$(PublishDir);AssetsDir=$(MSBuildProjectDirectory)\..\..\Assets;InstallerVariant=$(InstallerVariant)</DefineConstants>
+		<DefineConstants>ProductVersion=$(ProductVersion);PublishDir=$(PublishDir);AssetsDir=$(MSBuildProjectDirectory)\..\..\Assets;InstallerVariant=$(InstallerVariant);LicenseRtf=$(LicenseRtf)</DefineConstants>
 
 		<!-- getrennte Ausgabe- und Zwischenordner je Variante, damit sich die Builds nicht gegenseitig überschreiben -->
 		<OutputPath>bin\$(Configuration)\$(InstallerVariant)\</OutputPath>
@@ -30,6 +32,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+		<PackageReference Include="WixToolset.UI.wixext" Version="5.0.2" />
 	</ItemGroup>
 
 </Project>

@@ -72,6 +72,11 @@ jobs:
           }
           .\tools\Sign-Files.ps1 -Path $files
 
+      # Lizenztext (RTF) für die Lizenzdialoge von MSI und setup.exe aus LICENSE erzeugen
+      - name: Prepare license text
+        shell: pwsh
+        run: .\tools\New-LicenseRtf.ps1 -Source LICENSE -Destination installer\License.rtf
+
       # MSI-Varianten aus den (ggf. signierten) Publish-Ordnern bauen
       - name: Build MSI
         shell: pwsh

@@ -17,7 +17,9 @@
 		<OutputName>ZabbixTrayMonitor-Setup</OutputName>
 		<InstallerPlatform>x64</InstallerPlatform>
 		<ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
-		<DefineConstants>ProductVersion=$(ProductVersion);MsiPath=$(MsiPath);AssetsDir=$(MSBuildProjectDirectory)\..\..\Assets;RuntimeUrl=$(RuntimeUrl);RuntimeSha512=$(RuntimeSha512);RuntimeSize=$(RuntimeSize);RuntimeVersion=$(RuntimeVersion)</DefineConstants>
+		<!-- Lizenztext für den Lizenzdialog, wird aus LICENSE erzeugt: tools\New-LicenseRtf.ps1 -->
+		<LicenseRtf Condition="'$(LicenseRtf)' == ''">$(MSBuildProjectDirectory)\..\License.rtf</LicenseRtf>
+		<DefineConstants>ProductVersion=$(ProductVersion);MsiPath=$(MsiPath);AssetsDir=$(MSBuildProjectDirectory)\..\..\Assets;LicenseRtf=$(LicenseRtf);RuntimeUrl=$(RuntimeUrl);RuntimeSha512=$(RuntimeSha512);RuntimeSize=$(RuntimeSize);RuntimeVersion=$(RuntimeVersion)</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>

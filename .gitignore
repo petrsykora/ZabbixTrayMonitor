@@ -11,3 +11,6 @@ signing/
 *.pfx
 *.pfx.base64.txt
 publish/
+
+# wird beim Build aus LICENSE erzeugt (tools/New-LicenseRtf.ps1)
+installer/License.rtf

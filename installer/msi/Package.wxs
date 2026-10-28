@@ -9,6 +9,7 @@
 	  (setup.exe aus installer/bundle installiert die Runtime bei Bedarf vorher)
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
 
 	<!-- UpgradeCode darf sich nie ändern, sonst werden alte Versionen nicht mehr ersetzt -->
@@ -23,6 +24,10 @@
 		<MajorUpgrade AllowSameVersionUpgrades="yes"
 		              DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
+
+		<!-- Standarddialoge mit Lizenzbedingungen (MIT), bei stiller Installation (/qn) werden keine Dialoge angezeigt -->
+		<ui:WixUI Id="WixUI_Minimal" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseRtf)" />
 
 		<Icon Id="AppIcon" SourceFile="$(var.AssetsDir)\tray-ok.ico" />
 		<Property Id="ARPPRODUCTICON" Value="AppIcon" />

@@ -17,8 +17,9 @@
 	        IconSourceFile="$(var.AssetsDir)\tray-ok.ico">
 
 		<BootstrapperApplication>
-			<bal:WixStandardBootstrapperApplication Theme="hyperlinkLicense"
-			                                        LicenseUrl="https://github.com/petrsykora/ZabbixTrayMonitor/blob/master/LICENSE"
+			<!-- zeigt die Lizenzbedingungen (MIT) im Installer an, Installation erst nach Zustimmung -->
+			<bal:WixStandardBootstrapperApplication Theme="rtfLicense"
+			                                        LicenseFile="$(var.LicenseRtf)"
 			                                        ShowVersion="yes" />
 		</BootstrapperApplication>
 
