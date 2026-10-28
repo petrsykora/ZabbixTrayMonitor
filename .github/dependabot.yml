@@ -6,7 +6,8 @@ updates:
   - package-ecosystem: "nuget"
     directories:
       - "/"
-      - "/installer"
+      - "/installer/msi"
+      - "/installer/bundle"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5

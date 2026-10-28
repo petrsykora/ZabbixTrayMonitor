@@ -78,19 +78,19 @@ jobs:
         env:
           PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          dotnet build installer\ZabbixTrayMonitor.Installer.wixproj -c Release `
+          dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release `
             -p:ProductVersion=$env:PACKAGE_VERSION `
             -p:PublishDir="$PWD\publish"
           if ($LASTEXITCODE -ne 0) { throw "MSI build failed" }
 
-          dotnet build installer\ZabbixTrayMonitor.Installer.wixproj -c Release `
+          dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release `
             -p:ProductVersion=$env:PACKAGE_VERSION `
             -p:InstallerVariant=RuntimeDependent `
             -p:PublishDir="$PWD\publish-runtime-dependent"
           if ($LASTEXITCODE -ne 0) { throw "Runtime-dependent MSI build failed" }
 
-          Copy-Item installer\bin\Release\SelfContained\ZabbixTrayMonitor.msi "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
-          Copy-Item installer\bin\Release\RuntimeDependent\ZabbixTrayMonitor-RuntimeDependent.msi "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.msi"
+          Copy-Item installer\msi\bin\Release\SelfContained\ZabbixTrayMonitor.msi "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.msi"
+          Copy-Item installer\msi\bin\Release\RuntimeDependent\ZabbixTrayMonitor-RuntimeDependent.msi "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.msi"
 
       - name: Sign MSI
         if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
