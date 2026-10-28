@@ -111,15 +111,19 @@ jobs:
           $runtimeFile = $release.windowsdesktop.files | Where-Object { $_.rid -eq 'win-x64' -and $_.name -like '*.exe' } | Select-Object -First 1
           if (-not $runtimeFile) { throw "Windows Desktop Runtime win-x64 installer not found in release metadata" }
 
-          $runtimeSize = (Invoke-WebRequest $runtimeFile.url -Method Head -UseBasicParsing).Headers['Content-Length'] | Select-Object -First 1
-          if (-not $runtimeSize) { throw "Size of $($runtimeFile.url) unknown" }
+          # einmal herunterladen: Größe ermitteln und SHA-512 gegen die Metadaten prüfen (setup.exe lädt sie später selbst)
+          $runtimeInstaller = Join-Path $env:RUNNER_TEMP "windowsdesktop-runtime.exe"
+          Invoke-WebRequest $runtimeFile.url -OutFile $runtimeInstaller -UseBasicParsing
+          $runtimeSize = (Get-Item $runtimeInstaller).Length
+          $runtimeSha512 = (Get-FileHash $runtimeInstaller -Algorithm SHA512).Hash
+          if ($runtimeSha512 -ne $runtimeFile.hash.ToUpperInvariant()) { throw "SHA-512 of $($runtimeFile.url) does not match the release metadata" }
           Write-Host "Windows Desktop Runtime $runtimeVersion, $runtimeSize bytes, $($runtimeFile.url)"
 
           dotnet build installer\bundle\ZabbixTrayMonitor.Bundle.wixproj -c Release `
             -p:ProductVersion=$env:PACKAGE_VERSION `
             -p:MsiPath="$PWD\ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64-runtime-dependent.msi" `
             -p:RuntimeUrl="$($runtimeFile.url)" `
-            -p:RuntimeSha512="$($runtimeFile.hash.ToUpperInvariant())" `
+            -p:RuntimeSha512="$runtimeSha512" `
             -p:RuntimeSize="$runtimeSize" `
             -p:RuntimeVersion="$runtimeVersion"
           if ($LASTEXITCODE -ne 0) { throw "setup.exe build failed" }
