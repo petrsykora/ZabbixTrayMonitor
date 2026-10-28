@@ -1,0 +1,61 @@
+name: CodeQL
+
+# Statische Sicherheitsanalyse des C#-Codes und der GitHub-Actions-Workflows
+# Ergebnisse erscheinen im Repository unter Security > Code scanning
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    # wöchentlich, damit neue CodeQL-Regeln auch ohne Code-Änderung greifen
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ matrix.runs-on }}
+
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # WPF baut nur unter Windows, manueller Build damit auch der aus XAML generierte Code analysiert wird
+          - language: csharp
+            build-mode: manual
+            runs-on: windows-latest
+          - language: actions
+            build-mode: none
+            runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - uses: actions/setup-dotnet@v5
+        if: ${{ matrix.language == 'csharp' }}
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build
+        if: ${{ matrix.language == 'csharp' }}
+        run: dotnet build ZabbixTrayMonitor.csproj -c Release
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
