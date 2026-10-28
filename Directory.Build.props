@@ -7,7 +7,7 @@
 		<Product>ZabbixTrayMonitor</Product>
 		<Description>Zabbix Tray Monitor</Description>
 		<Company>Darano94</Company>
-		<Authors>Darano94</Authors>
-		<Copyright>Copyright © 2026</Copyright>
+		<Authors>Darano94, Petr Sýkora</Authors>
+		<Copyright>Copyright © 2026 Darano94, Petr Sýkora</Copyright>
 	</PropertyGroup>
 </Project>

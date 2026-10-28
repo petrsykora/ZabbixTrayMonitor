@@ -17,8 +17,8 @@
 		<Title>Zabbix Tray Monitor</Title>
 		<Description>Small Windows tray client for Zabbix</Description>
 		<Company>Darano94</Company>
-		<Authors>Darano94</Authors>
-		<Copyright>Copyright © 2026</Copyright>
+		<Authors>Darano94, Petr Sýkora</Authors>
+		<Copyright>Copyright © 2026 Darano94, Petr Sýkora</Copyright>
 
 		<ApplicationIcon>Assets\tray-ok.ico</ApplicationIcon>
 	</PropertyGroup>

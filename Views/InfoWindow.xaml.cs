@@ -48,17 +48,18 @@ namespace ZabbixTrayMonitor.Views
 
                 // MIT-Lizenz: Copyright des ursprünglichen Autors und der vollständige Lizenztext müssen erhalten bleiben
                 var licenseText = ReadEmbeddedLicense();
-                var copyright = licenseText?
+                var copyrightLines = licenseText?
                     .Split('\n')
                     .Select(line => line.Trim())
-                    .FirstOrDefault(line => line.StartsWith("Copyright", StringComparison.OrdinalIgnoreCase));
+                    .Where(line => line.StartsWith("Copyright", StringComparison.OrdinalIgnoreCase))
+                    .ToList() ?? new List<string>();
 
                 LicenseText.Inlines.Add(AppInfo.License);
 
-                if (!string.IsNullOrWhiteSpace(copyright))
+                foreach (var copyrightLine in copyrightLines)
                 {
                     LicenseText.Inlines.Add(new LineBreak());
-                    LicenseText.Inlines.Add(copyright);
+                    LicenseText.Inlines.Add(copyrightLine);
                 }
 
                 if (!string.IsNullOrWhiteSpace(licenseText))
