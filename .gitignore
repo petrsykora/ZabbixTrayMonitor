@@ -5,3 +5,8 @@ obj/
 *.suo
 
 release/
+
+# Code-Signing-Zertifikate nie einchecken
+signing/
+*.pfx
+*.pfx.base64.txt

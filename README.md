@@ -170,6 +170,57 @@ Der Benutzer hinter dem API-Token muss über die benötigten Zabbix-Berechtigung
 - `IgnoreCertificateErrors` schaltet die Zertifikatsprüfung komplett ab. Ein Angreifer im Netzwerk kann sich dann als Zabbix-Server ausgeben und den Token abgreifen. Bei self-signed Zertifikaten besser das Zertifikat bzw. die eigene CA in Windows als vertrauenswürdig importieren.
 - Für den Token einen eigenen Zabbix-Benutzer mit möglichst wenigen Rechten verwenden (Lesen der relevanten Hostgruppen, ggf. Bestätigen/Unterdrücken).
 
+## Code-Signierung
+
+Damit Windows die Anwendung als Programm eines bekannten Herausgebers behandelt, kann sie mit einem eigenen Code-Signing-Zertifikat signiert werden. Das Zertifikat wird per Gruppenrichtlinie (GPO) auf die verwalteten Rechner verteilt. Auf Rechnern ohne diese GPO gilt die Signatur als nicht vertrauenswürdig, die Anwendung verhält sich dort wie eine unsignierte.
+
+### 1. Zertifikat erstellen (einmalig)
+
+Auf einem Windows-Rechner in PowerShell:
+
+```powershell
+.\tools\New-CodeSigningCertificate.ps1 -Subject "CN=Meine Firma Code Signing" -OutputFolder C:\Signing
+```
+
+Das Skript fragt nach einem Passwort und erzeugt:
+
+- `ZabbixTrayMonitor-CodeSigning.pfx`: privater Schlüssel, sicher aufbewahren und nie ins Repository legen
+- `ZabbixTrayMonitor-CodeSigning.cer`: öffentliches Zertifikat für die GPO
+- `ZabbixTrayMonitor-CodeSigning.pfx.base64.txt`: Inhalt für das GitHub Secret, danach löschen
+
+### 2. GitHub Secrets setzen
+
+Im Repository unter **Settings → Secrets and variables → Actions → New repository secret**:
+
+- `SIGNING_CERT_PFX_BASE64`: Inhalt der Datei `.pfx.base64.txt`
+- `SIGNING_CERT_PASSWORD`: das Passwort aus Schritt 1
+
+Der Release-Workflow signiert dann `ZabbixTrayMonitor.exe`, `ZabbixTrayMonitor.dll` und die Sprachdateien automatisch (mit Zeitstempel, damit die Signatur auch nach Ablauf des Zertifikats gültig bleibt). Ohne Secrets wird wie bisher unsigniert gebaut.
+
+### 3. Zertifikat per GPO verteilen
+
+In der Gruppenrichtlinienverwaltung ein GPO für die betroffenen Computer anlegen und die `.cer`-Datei an **zwei** Stellen importieren:
+
+- **Computerkonfiguration → Richtlinien → Windows-Einstellungen → Sicherheitseinstellungen → Richtlinien für öffentliche Schlüssel → Vertrauenswürdige Stammzertifizierungsstellen**
+- **… → Richtlinien für öffentliche Schlüssel → Vertrauenswürdige Herausgeber**
+
+Ohne GPO (zB. zum Testen) auf einem einzelnen Rechner als Administrator:
+
+```powershell
+Import-Certificate -FilePath .\ZabbixTrayMonitor-CodeSigning.cer -CertStoreLocation Cert:\LocalMachine\Root
+Import-Certificate -FilePath .\ZabbixTrayMonitor-CodeSigning.cer -CertStoreLocation Cert:\LocalMachine\TrustedPublisher
+```
+
+Prüfen: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` muss `Status: Valid` zeigen.
+
+### Hinweis zu SmartScreen
+
+SmartScreen prüft vor allem Dateien, die per Browser aus dem Internet geladen wurden (Mark of the Web). Ein eigenes Zertifikat hat bei Microsoft keine Reputation, deshalb kann ein direkt von GitHub geladenes ZIP trotzdem eine Warnung auslösen. Für eine Verteilung ohne Warnung die Anwendung intern ausrollen (GPO-Softwareverteilung, Intune, Netzwerkfreigabe im Intranet) oder ein heruntergeladenes ZIP vor dem Entpacken freigeben:
+
+```powershell
+Unblock-File .\ZabbixTrayMonitor-v1.2.2-win-x64.zip
+```
+
 ## Bibliotheken
 
 ### Hardcodet.NotifyIcon.Wpf

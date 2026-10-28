@@ -21,6 +21,7 @@ jobs:
 
     env:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      SIGNING_CERT_PFX_BASE64: ${{ secrets.SIGNING_CERT_PFX_BASE64 }}
 
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +32,40 @@ jobs:
 
       - name: Publish
         run: dotnet publish ZabbixTrayMonitor.csproj -c Release -r win-x64 --self-contained true -o publish
+
+      # Signieren mit eigenem Code-Signing-Zertifikat (siehe README "Code-Signierung")
+      # Läuft nur, wenn die Secrets SIGNING_CERT_PFX_BASE64 und SIGNING_CERT_PASSWORD gesetzt sind
+      # Signiert werden nur die eigenen Dateien, die .NET-Runtime-Dateien sind bereits von Microsoft signiert
+      - name: Sign
+        if: ${{ env.SIGNING_CERT_PFX_BASE64 != '' }}
+        shell: pwsh
+        env:
+          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+        run: |
+          $pfxPath = Join-Path $env:RUNNER_TEMP "signing.pfx"
+          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:SIGNING_CERT_PFX_BASE64))
+
+          try {
+            $signtool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+              Sort-Object FullName |
+              Select-Object -Last 1 -ExpandProperty FullName
+
+            $files = @(Get-Item publish\ZabbixTrayMonitor.exe, publish\ZabbixTrayMonitor.dll) +
+              @(Get-ChildItem publish -Recurse -Filter ZabbixTrayMonitor.resources.dll)
+
+            & $signtool sign /fd SHA256 /f $pfxPath /p $env:SIGNING_CERT_PASSWORD /tr http://timestamp.digicert.com /td SHA256 $files.FullName
+            if ($LASTEXITCODE -ne 0) { throw "signtool fehlgeschlagen ($LASTEXITCODE)" }
+
+            # Eigenes Zertifikat ist auf dem Runner nicht vertrauenswürdig, deshalb nur prüfen dass eine Signatur vorhanden ist
+            foreach ($file in $files) {
+              $signature = Get-AuthenticodeSignature $file.FullName
+              if ($null -eq $signature.SignerCertificate) { throw "Keine Signatur: $($file.FullName)" }
+              Write-Host "$($file.Name): $($signature.SignerCertificate.Subject) ($($signature.SignerCertificate.Thumbprint))"
+            }
+          }
+          finally {
+            Remove-Item $pfxPath -Force -ErrorAction SilentlyContinue
+          }
 
       - name: Package
         shell: pwsh
