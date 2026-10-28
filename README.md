@@ -45,26 +45,40 @@ The MSI installer and a portable ZIP are attached to every [release](https://git
 
 ## Installation
 
-### MSI installer (recommended)
+### Which file do I need?
 
-Download `ZabbixTrayMonitor-<version>-win-x64.msi` from the releases and run it. The installer:
+Every release contains these files:
 
-- installs the application for all users to `C:\Program Files\ZabbixTrayMonitor` (administrator rights required)
-- adds a Start menu shortcut and starts the application automatically when a user signs in
-- replaces older versions automatically on update and closes a running instance first
-- keeps the user's settings (`config.json`) and the API token in the Credential Manager on uninstall
+| File | Size | .NET runtime | Use it for |
+|---|---|---|---|
+| `…-win-x64-setup.exe` | small | installed automatically if missing | **Recommended** for installing on a single computer |
+| `…-win-x64-runtime-dependent.msi` | small | must already be installed | Scripts, Intune or Group Policy where the .NET 10 Desktop Runtime is deployed separately |
+| `…-win-x64-runtime-dependent.zip` | small | must already be installed | Portable use without installation |
+| `…-win-x64.msi` | large | included | Scripts, Intune or Group Policy without a separate runtime, offline computers |
+| `…-win-x64.zip` | large | included | Portable use without installation and without the runtime |
 
-Silent installation, for example for scripts or Intune:
+The application needs the **.NET 10 Desktop Runtime (x64)**. `setup.exe` checks whether it is installed; if not, it downloads it from Microsoft and installs it before the application. The runtime stays installed when the application is uninstalled. The runtime-dependent MSI refuses to install without the runtime and tells you where to get it. If the runtime is missing when the runtime-dependent ZIP is started, Windows offers to download it.
+
+All installers:
+
+- install the application for all users to `C:\Program Files\ZabbixTrayMonitor` (administrator rights required)
+- add a Start menu shortcut and start the application automatically when a user signs in
+- replace older versions (and the other MSI variant) automatically on update and close a running instance first
+- keep the user's settings (`config.json`) and the API token in the Credential Manager on uninstall
+
+Silent installation with an MSI, for example for scripts or Intune (works the same with the runtime-dependent MSI):
 
 ```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.1-win-x64.msi /qn
+msiexec /i ZabbixTrayMonitor-v1.3.2-win-x64.msi /qn
 ```
 
 Without autostart:
 
 ```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.1-win-x64.msi /qn AUTOSTART=0
+msiexec /i ZabbixTrayMonitor-v1.3.2-win-x64.msi /qn AUTOSTART=0
 ```
+
+`setup.exe` can also be run silently: `ZabbixTrayMonitor-v1.3.2-win-x64-setup.exe /quiet`.
 
 Deployment via Group Policy: put the MSI on a network share that the computer accounts can read and assign it under **Computer Configuration → Policies → Software Settings → Software installation → New → Package** (choose **Assigned**). It is installed on the next restart. For a new version, add the new MSI to the same GPO and set it to upgrade the existing package.
 
@@ -84,8 +98,8 @@ Submitting the package to the official catalog is prepared but not done yet: the
 
 ### ZIP (portable)
 
-1. Download and extract the latest release ZIP.
-2. Start `ZabbixTrayMonitor.exe`.
+1. Download and extract one of the ZIPs: `…-win-x64-runtime-dependent.zip` (small, needs the .NET 10 Desktop Runtime) or `…-win-x64.zip` (runtime included).
+2. Start `ZabbixTrayMonitor.exe`. Nothing is installed and there is no autostart.
 
 ### First start
 
@@ -263,7 +277,7 @@ Check: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` must show `Status: Va
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a ZIP downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded ZIP before extracting it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.1-win-x64.zip
+Unblock-File .\ZabbixTrayMonitor-v1.3.2-win-x64.zip
 ```
 
 ## License and origin

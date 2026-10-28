@@ -308,11 +308,10 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • MSI installer: installs the application for all users to C:\Program Files\ZabbixTrayMonitor, adds a Start menu shortcut and starts the application when a user signs in. Administrator rights are required.
-        ///• Silent installation: msiexec /i ZabbixTrayMonitor-&lt;version&gt;-win-x64.msi /qn
-        ///• Without autostart: add AUTOSTART=0 to the command.
-        ///• Group Policy: assign the MSI to computers under Computer Configuration &gt; Policies &gt; Software Settings &gt; Software installation. It is installed at the next restart.
-        ///• Update: [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to The application needs the .NET 10 Desktop Runtime (x64). Every release contains:
+        ///• ...-setup.exe (recommended): checks whether the runtime is installed, downloads and installs it from Microsoft only if it is missing, then installs the application.
+        ///• ...-runtime-dependent.msi: small installer for scripts, Intune or Group Policy where the runtime is deployed separately. It does not install without the runtime.
+        ///• ...-win-x64.msi: larger installer with the runtime included, also for computers without internet a [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Install_Text {
             get {

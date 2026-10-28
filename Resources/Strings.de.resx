@@ -430,15 +430,6 @@ Zertifikatsfehler trotzdem ignorieren?</value>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Installation und Updates</value>
   </data>
-  <data name="Help_Install_Text" xml:space="preserve">
-    <value>• MSI-Installer: installiert die Anwendung für alle Benutzer nach C:\Program Files\ZabbixTrayMonitor, legt eine Startmenü-Verknüpfung an und startet die Anwendung bei der Anmeldung. Administratorrechte sind erforderlich.
-• Stille Installation: msiexec /i ZabbixTrayMonitor-&lt;Version&gt;-win-x64.msi /qn
-• Ohne Autostart: AUTOSTART=0 an den Befehl anhängen.
-• Gruppenrichtlinie: das MSI unter Computerkonfiguration &gt; Richtlinien &gt; Softwareeinstellungen &gt; Softwareinstallation den Computern zuweisen. Es wird beim nächsten Neustart installiert.
-• Update: das neue MSI installieren; die alte Version wird ersetzt, eine laufende Instanz vorher beendet.
-• Deinstallation: Einstellungen &gt; Apps &gt; Zabbix Monitor. Ihre Einstellungen und der API Token bleiben erhalten.
-• Portables ZIP: beliebig entpacken und ZabbixTrayMonitor.exe starten. Es wird nichts installiert und es gibt keinen Autostart.</value>
-  </data>
   <data name="Help_Severities_Title" xml:space="preserve">
     <value>Schweregrade</value>
   </data>
@@ -466,5 +457,19 @@ Standard: Warn-Schwelle 2, Error-Schwelle 4, also 0-1 ignoriert, 2-3 Warnung, 4-
 • "Not authorized" oder ein Berechtigungsfehler: der Token ist abgelaufen, wurde in Zabbix gelöscht oder seinem Benutzer fehlen Rechte. Einen neuen Token erstellen und in den Einstellungen eintragen.
 • Ein Problem aus Zabbix fehlt: Warn-Schwelle prüfen und ob das Problem unterdrückt ist. Probleme deaktivierter Trigger, Hosts oder Items werden wie im Zabbix-Frontend nicht angezeigt.
 • Konfigurationsdatei: %AppData%\ZabbixTrayMonitor\config.json. Sie enthält alle Einstellungen außer dem Token. Ist sie nicht lesbar, wird eine Kopie als config.corrupt.json gesichert und es gelten die Standardeinstellungen. Das Info-Fenster enthält einen Link zum Ordner.</value>
+  </data>
+  <data name="Help_Install_Text" xml:space="preserve">
+    <value>Die Anwendung benötigt die .NET 10 Desktop Runtime (x64). Jedes Release enthält:
+• ...-setup.exe (empfohlen): prüft, ob die Runtime installiert ist, lädt sie nur bei Bedarf von Microsoft herunter und installiert sie, danach die Anwendung.
+• ...-runtime-dependent.msi: kleiner Installer für Skripte, Intune oder Gruppenrichtlinien, wenn die Runtime separat verteilt wird. Ohne Runtime wird nicht installiert.
+• ...-win-x64.msi: größerer Installer mit enthaltener Runtime, auch für Rechner ohne Internetzugang.
+• ZIP-Dateien: portable Versionen ohne Installation und ohne Autostart, mit oder ohne Runtime.
+
+Die Installer installieren die Anwendung für alle Benutzer nach C:\Program Files\ZabbixTrayMonitor, legen eine Startmenü-Verknüpfung an und starten die Anwendung bei der Anmeldung. Administratorrechte sind erforderlich.
+• Stille Installation: msiexec /i &lt;Datei&gt;.msi /qn oder &lt;Datei&gt;-setup.exe /quiet
+• Ohne Autostart: AUTOSTART=0 an den msiexec-Befehl anhängen.
+• Gruppenrichtlinie: das MSI unter Computerkonfiguration &gt; Richtlinien &gt; Softwareeinstellungen &gt; Softwareinstallation den Computern zuweisen. Es wird beim nächsten Neustart installiert.
+• Update: die neue Version installieren; die alte Version wird ersetzt, eine laufende Instanz vorher beendet.
+• Deinstallation: Einstellungen &gt; Apps &gt; Zabbix Monitor. Ihre Einstellungen und der API Token bleiben erhalten, die .NET Runtime bleibt installiert.</value>
   </data>
 </root>

@@ -430,15 +430,6 @@ Přesto ignorovat chyby certifikátu?</value>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Instalace a aktualizace</value>
   </data>
-  <data name="Help_Install_Text" xml:space="preserve">
-    <value>• Instalátor MSI: nainstaluje aplikaci pro všechny uživatele do C:\Program Files\ZabbixTrayMonitor, přidá zástupce do nabídky Start a spouští aplikaci po přihlášení uživatele. Vyžaduje práva správce.
-• Tichá instalace: msiexec /i ZabbixTrayMonitor-&lt;verze&gt;-win-x64.msi /qn
-• Bez automatického spuštění: přidejte k příkazu AUTOSTART=0.
-• Zásady skupiny: přiřaďte MSI počítačům v Konfigurace počítače &gt; Zásady &gt; Nastavení softwaru &gt; Instalace softwaru. Nainstaluje se při příštím restartu.
-• Aktualizace: nainstalujte nové MSI; stará verze se nahradí a běžící aplikace se předtím ukončí.
-• Odinstalace: Nastavení &gt; Aplikace &gt; Zabbix Monitor. Vaše nastavení i API token zůstanou zachované.
-• Přenosný ZIP: rozbalte kamkoli a spusťte ZabbixTrayMonitor.exe. Nic se neinstaluje a aplikace se nespouští automaticky.</value>
-  </data>
   <data name="Help_Severities_Title" xml:space="preserve">
     <value>Závažnosti</value>
   </data>
@@ -466,5 +457,19 @@ Výchozí hodnoty: práh varování 2, práh chyby 4, tedy 0-1 ignorováno, 2-3 
 • „Not authorized“ nebo chyba oprávnění: token vypršel, byl v Zabbixu smazán, nebo jeho uživatel nemá oprávnění. Vytvořte nový token a zadejte ho v Nastavení.
 • Chybí problém, který je v Zabbixu: zkontrolujte práh varování a jestli problém není potlačený. Problémy vypnutých triggerů, hostů nebo položek se nezobrazují, stejně jako ve webovém rozhraní Zabbixu.
 • Konfigurační soubor: %AppData%\ZabbixTrayMonitor\config.json. Obsahuje všechna nastavení kromě tokenu. Pokud ho nejde přečíst, uloží se jeho kopie jako config.corrupt.json a použije se výchozí nastavení. Okno O aplikaci obsahuje odkaz na složku.</value>
+  </data>
+  <data name="Help_Install_Text" xml:space="preserve">
+    <value>Aplikace potřebuje .NET 10 Desktop Runtime (x64). Každé vydání obsahuje:
+• ...-setup.exe (doporučeno): zkontroluje, jestli je runtime nainstalovaný, jen když chybí, stáhne ho z Microsoftu a nainstaluje, a pak nainstaluje aplikaci.
+• ...-runtime-dependent.msi: malý instalátor pro skripty, Intune nebo zásady skupiny, kde se runtime nasazuje zvlášť. Bez runtime se nenainstaluje.
+• ...-win-x64.msi: větší instalátor s přibaleným runtime, i pro počítače bez internetu.
+• Soubory ZIP: přenosné verze bez instalace a bez automatického spuštění, s runtime nebo bez něj.
+
+Instalátory nainstalují aplikaci pro všechny uživatele do C:\Program Files\ZabbixTrayMonitor, přidají zástupce do nabídky Start a spouštějí aplikaci po přihlášení uživatele. Vyžadují práva správce.
+• Tichá instalace: msiexec /i &lt;soubor&gt;.msi /qn, nebo &lt;soubor&gt;-setup.exe /quiet
+• Bez automatického spuštění: přidejte k příkazu msiexec AUTOSTART=0.
+• Zásady skupiny: přiřaďte MSI počítačům v Konfigurace počítače &gt; Zásady &gt; Nastavení softwaru &gt; Instalace softwaru. Nainstaluje se při příštím restartu.
+• Aktualizace: nainstalujte novou verzi; stará verze se nahradí a běžící aplikace se předtím ukončí.
+• Odinstalace: Nastavení &gt; Aplikace &gt; Zabbix Monitor. Vaše nastavení i API token zůstanou zachované, .NET runtime zůstane nainstalovaný.</value>
   </data>
 </root>
