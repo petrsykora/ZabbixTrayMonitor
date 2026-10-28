@@ -41,7 +41,17 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 
 ## Download
 
-The MSI installer and a portable ZIP are attached to every [release](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest).
+`setup.exe`, MSI installers and portable ZIPs are attached to every [release](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest). Changes per version are listed in the [changelog](CHANGELOG.md).
+
+## Documentation
+
+- [Deployment](docs/deployment.md): silent installation, Group Policy, Intune, update, uninstall, preparing settings for users
+- [Zabbix setup](docs/zabbix-setup.md): Zabbix user, role, permissions and API token with as few permissions as possible
+- [Troubleshooting](docs/troubleshooting.md): connection, certificate, permission and installation problems
+- [Code signing](docs/code-signing.md): signing the releases with your own certificate and trusting it via Group Policy
+- [Development](docs/development.md): building, installers, translations and releasing a new version
+
+The application also contains a built-in help (tray menu → **Help**, or F1).
 
 ## Installation
 
@@ -67,21 +77,13 @@ All installers:
 - replace older versions (and the other MSI variant) automatically on update and close a running instance first
 - keep the user's settings (`config.json`) and the API token in the Credential Manager on uninstall
 
-Silent installation with an MSI, for example for scripts or Intune (works the same with the runtime-dependent MSI):
+Silent installation, for example for scripts or Intune:
 
 ```powershell
 msiexec /i ZabbixTrayMonitor-v1.3.2-win-x64.msi /qn
 ```
 
-Without autostart:
-
-```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.2-win-x64.msi /qn AUTOSTART=0
-```
-
-`setup.exe` can also be run silently: `ZabbixTrayMonitor-v1.3.2-win-x64-setup.exe /quiet`.
-
-Deployment via Group Policy: put the MSI on a network share that the computer accounts can read and assign it under **Computer Configuration → Policies → Software Settings → Software installation → New → Package** (choose **Assigned**). It is installed on the next restart. For a new version, add the new MSI to the same GPO and set it to upgrade the existing package.
+Add `AUTOSTART=0` to install without autostart. `setup.exe` runs silently with `/quiet`. Group Policy, Intune, updates and uninstalling are described in [Deployment](docs/deployment.md).
 
 ### winget (local manifest)
 
@@ -163,7 +165,7 @@ Example:
 
 The user interface is available in English, German and Czech. By default it follows the Windows display language; if that language is not supported, English is used. Under **Settings → Language** you can choose a fixed language instead (`Language` in config.json: `""` for the system language, `"en"`, `"de"` or `"cs"`). The change takes effect right after saving.
 
-The texts are stored in `Resources/Strings.resx` (English), `Resources/Strings.de.resx` and `Resources/Strings.cs.resx`. To add another language, add a `Strings.<code>.resx` file and add the code to `LocalizationService.SupportedLanguages` and to the language selection in the settings window.
+How to change texts or add another language is described in [Development](docs/development.md#translations).
 
 ## Severity mapping
 
@@ -220,7 +222,7 @@ event.acknowledge
 apiinfo.version
 ```
 
-The user behind the API token needs the required Zabbix permissions. For alarm handling, acknowledging and suppressing the affected events must be allowed.
+The user behind the API token needs the required Zabbix permissions. For alarm handling, acknowledging and suppressing the affected events must be allowed. A step-by-step setup with as few permissions as possible is described in [Zabbix setup](docs/zabbix-setup.md).
 
 ### Security notes
 
@@ -232,54 +234,7 @@ To report a security vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Code signing
 
-To make Windows treat the application as coming from a known publisher, it can be signed with your own code signing certificate. The certificate is distributed to the managed computers via Group Policy (GPO). On computers without this GPO the signature is not trusted and the application behaves like an unsigned one.
-
-### 1. Create the certificate (once)
-
-On a Windows computer in PowerShell:
-
-```powershell
-.\tools\New-CodeSigningCertificate.ps1 -Subject "CN=My Company Code Signing" -OutputFolder C:\Signing
-```
-
-The script asks for a password and creates:
-
-- `ZabbixTrayMonitor-CodeSigning.pfx`: private key, keep it safe and never commit it to the repository
-- `ZabbixTrayMonitor-CodeSigning.cer`: public certificate for the GPO
-- `ZabbixTrayMonitor-CodeSigning.pfx.base64.txt`: value for the GitHub secret, delete it afterwards
-
-### 2. Set the GitHub secrets
-
-In the repository under **Settings → Secrets and variables → Actions → New repository secret**:
-
-- `SIGNING_CERT_PFX_BASE64`: content of the `.pfx.base64.txt` file
-- `SIGNING_CERT_PASSWORD`: the password from step 1
-
-The release workflow then signs `ZabbixTrayMonitor.exe`, `ZabbixTrayMonitor.dll`, the language files and the MSI installer automatically, with a timestamp so the signature stays valid after the certificate expires. Without the secrets the build stays unsigned as before.
-
-### 3. Distribute the certificate via GPO
-
-In Group Policy Management, create a GPO for the affected computers and import the `.cer` file in **two** places:
-
-- **Computer Configuration → Policies → Windows Settings → Security Settings → Public Key Policies → Trusted Root Certification Authorities**
-- **… → Public Key Policies → Trusted Publishers**
-
-Without a GPO (for example for testing), on a single computer as administrator:
-
-```powershell
-Import-Certificate -FilePath .\ZabbixTrayMonitor-CodeSigning.cer -CertStoreLocation Cert:\LocalMachine\Root
-Import-Certificate -FilePath .\ZabbixTrayMonitor-CodeSigning.cer -CertStoreLocation Cert:\LocalMachine\TrustedPublisher
-```
-
-Check: `Get-AuthenticodeSignature .\ZabbixTrayMonitor.exe` must show `Status: Valid`.
-
-### Note on SmartScreen
-
-SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a ZIP downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded ZIP before extracting it:
-
-```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.2-win-x64.zip
-```
+The release files are not signed yet. How to sign them with your own code signing certificate, distribute the certificate via Group Policy and avoid SmartScreen warnings is described in [Code signing](docs/code-signing.md).
 
 ## License and origin
 

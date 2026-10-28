@@ -1,0 +1,99 @@
+# Changelog
+
+All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
+
+## Unreleased
+
+### Changed
+
+- The project can be restored and built on Linux, which fixes GitHub's automatic dependency submission.
+- Documentation for administrators and developers in `docs/`, and this changelog.
+
+## 1.3.2 – 2026-10-28
+
+### Added
+
+- `…-setup.exe`: installs the .NET 10 Desktop Runtime only if it is missing, then the application.
+- Small runtime-dependent MSI and ZIP without the bundled .NET runtime. The MSI refuses to install without the runtime and says where to get it.
+- License terms (MIT) in the MSI and `setup.exe` dialogs.
+- Option to start the application at the end of an interactive installation.
+- Application and installer icon.
+- winget manifests for installation from a local copy of the repository.
+
+### Changed
+
+- Fonts follow the Windows text size setting (**Accessibility → Text size**).
+- README with badges and a description of all installation variants.
+
+## 1.3.1 – 2026-10-28
+
+### Added
+
+- MSI installer for all users with Start menu shortcut and autostart (`AUTOSTART=0` to turn it off), suitable for Group Policy and Intune.
+- Built-in help (tray menu → **Help** or F1) with the complete documentation.
+- About window with version, origin, copyright and license.
+- The MIT license is shipped as `LICENSE.txt` with every build.
+- `SECURITY.md`, Dependabot and CodeQL.
+
+### Changed
+
+- Settings simplified: the application name is fixed to "Zabbix Monitor", the API path is fixed to `/api_jsonrpc.php` (a subdirectory belongs in the Zabbix URL), the status colors are fixed. Existing configurations and stored tokens are migrated automatically.
+- Language selection as a drop-down list, **System** preselected.
+- Settings, problems, suppress and about dialogs are standard windows; the settings window has a fixed size.
+
+## 1.3.0 – 2026-10-28
+
+### Added
+
+- User interface in English, German and Czech. By default the Windows display language is used, English if it is not supported; a fixed language can be chosen in the settings.
+- Optional code signing of the release files with your own certificate, see [Code signing](docs/code-signing.md).
+
+### Changed
+
+- English README.
+
+## 1.2.2 – 2026-10-28
+
+### Security
+
+- Removing old tokens only deletes entries in the Credential Manager that were created by the application.
+- The Zabbix URL must be an absolute `https://` or `http://` address; saving an `http://` URL asks for confirmation, because the token would be sent unencrypted.
+- Turning off certificate validation asks for confirmation.
+- Requests time out after 15 seconds instead of 100 seconds.
+
+### Fixed
+
+- `config.json` is written via a temporary file, so a crash cannot leave a half-written file. An unreadable file is kept as `config.corrupt.json` before the defaults are used.
+
+### Added
+
+- Release workflow that builds the application and publishes it as a GitHub release.
+
+## 1.2.1 – 2026-09-04
+
+### Fixed
+
+- Tray tooltip delay and refresh after alarm actions.
+
+## 1.2.0 – 2026-09-04
+
+### Added
+
+- Acknowledging and suppressing problems directly in the problems window.
+
+## 1.1.3 – 2026-08-18
+
+### Changed
+
+- Problems with ignored severities are filtered out.
+
+## 1.1.2 – 2026-08-18
+
+### Fixed
+
+- Problems of disabled triggers are no longer shown.
+- Smaller release package.
+
+## 1.1.0 – 2026-06-23
+
+- First release with tray status, tooltip, problems window and settings.
