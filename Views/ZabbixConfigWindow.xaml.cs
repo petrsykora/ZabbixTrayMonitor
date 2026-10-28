@@ -45,10 +45,45 @@ namespace ZabbixTrayMonitor
                     return;
                 }
 
-                var version = await _zabbixClient.GetVersionAsync(url, IgnoreCertificateErrorsCheckBox.IsChecked == true);
+                var ignoreCertificateErrors = IgnoreCertificateErrorsCheckBox.IsChecked == true;
+
+                var version = await _zabbixClient.GetVersionAsync(url, ignoreCertificateErrors);
+
+                // apiinfo.version funktioniert ohne Token, deshalb den Token zusätzlich mit einer authentifizierten Abfrage prüfen
+                var token = GetTokenForTest();
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    MessageBox.Show(
+                        string.Format(Strings.Settings_TestConnectionNoToken, version),
+                        Strings.Settings_TestConnectionCaption,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+
+                    return;
+                }
+
+                string problemCount;
+
+                try
+                {
+                    problemCount = await _zabbixClient.CheckApiTokenAsync(url, token, ignoreCertificateErrors);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        string.Format(Strings.Settings_TestConnectionTokenFailed, version, ex.Message),
+                        Strings.Settings_TestConnectionCaption,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+
+                    return;
+                }
 
                 MessageBox.Show(
-                    string.Format(Strings.Settings_TestConnectionSuccess, version),
+                    string.Format(Strings.Settings_TestConnectionSuccess, version, problemCount),
                     Strings.Settings_TestConnectionCaption,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
@@ -570,6 +605,36 @@ namespace ZabbixTrayMonitor
                 MessageBoxButton.OK,
                 MessageBoxImage.Error
             );
+        }
+
+        // Token für den Verbindungstest: neu eingegebener Token, sonst (Platzhalter) der gespeicherte aus dem Credential Manager
+        private string? GetTokenForTest()
+        {
+            var token = ApiTokenTextBox.Password.Trim();
+
+            if (token != TokenPlaceholder)
+                return token;
+
+            try
+            {
+                var suffixes = new[]
+                {
+                    NormalizeCredentialSuffix(CredentialTargetSuffixTextBox.Text),
+                    NormalizeCredentialSuffix(_configService.Load().CredentialTargetSuffix)
+                };
+
+                foreach (var suffix in suffixes)
+                {
+                    var storedToken = CredentialService.GetToken(
+                        CredentialService.BuildTarget(ZabbixConfig.CredentialAppName, suffix));
+
+                    if (!string.IsNullOrWhiteSpace(storedToken))
+                        return storedToken;
+                }
+            }
+            catch { }
+
+            return null;
         }
 
         private static string NormalizeCredentialSuffix(string value)

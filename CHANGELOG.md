@@ -6,6 +6,7 @@ All notable changes to this project. Versions up to 1.2.1 were released by Daran
 
 ### Changed
 
+- **Test** in the settings also checks the API token (before, it only checked that the server can be reached) and shows the number of problems visible to the token.
 - The project can be restored and built on Linux, which fixes GitHub's automatic dependency submission.
 - Documentation for administrators and developers in `docs/`, and this changelog.
 

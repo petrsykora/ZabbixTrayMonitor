@@ -237,7 +237,8 @@
   <data name="Settings_TestConnectionSuccess" xml:space="preserve">
     <value>Verbindung erfolgreich!
 
-Zabbix Version: {0}</value>
+Zabbix Version: {0}
+Der API Token ist gültig. Für den Token sichtbare Probleme: {1}</value>
   </data>
   <data name="Settings_TestConnectionFailed" xml:space="preserve">
     <value>Verbindung fehlgeschlagen:
@@ -377,7 +378,7 @@ Zertifikatsfehler trotzdem ignorieren?</value>
     <value>1. Einstellungen öffnen (Rechtsklick auf das Tray-Icon &gt; Einstellungen).
 2. Die Zabbix URL eintragen, zB. https://zabbix.example.com. Läuft Zabbix in einem Unterverzeichnis, dieses mit angeben, zB. https://example.com/zabbix.
 3. Einen API Token eintragen. Er wird in Zabbix unter Benutzereinstellungen &gt; API-Token erstellt.
-4. Mit Testen die Verbindung prüfen und dann Speichern.</value>
+4. Mit Testen die Verbindung und den API Token prüfen und dann Speichern.</value>
   </data>
   <data name="Help_Tray_Title" xml:space="preserve">
     <value>Tray-Icon</value>
@@ -471,5 +472,15 @@ Die Installer installieren die Anwendung für alle Benutzer nach C:\Program File
 • Gruppenrichtlinie: das MSI unter Computerkonfiguration &gt; Richtlinien &gt; Softwareeinstellungen &gt; Softwareinstallation den Computern zuweisen. Es wird beim nächsten Neustart installiert.
 • Update: die neue Version installieren; die alte Version wird ersetzt, eine laufende Instanz vorher beendet.
 • Deinstallation: Einstellungen &gt; Apps &gt; Zabbix Monitor. Ihre Einstellungen und der API Token bleiben erhalten, die .NET Runtime bleibt installiert.</value>
+  </data>
+  <data name="Settings_TestConnectionNoToken" xml:space="preserve">
+    <value>Der Zabbix Server ist erreichbar (Zabbix Version: {0}).
+
+Der API Token wurde nicht geprüft, weil kein Token eingegeben ist.</value>
+  </data>
+  <data name="Settings_TestConnectionTokenFailed" xml:space="preserve">
+    <value>Der Zabbix Server ist erreichbar (Zabbix Version: {0}), aber der API Token funktioniert nicht:
+
+{1}</value>
   </data>
 </root>

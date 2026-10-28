@@ -290,7 +290,7 @@ namespace ZabbixTrayMonitor.Resources {
         ///   Looks up a localized string similar to 1. Open Settings (right-click the tray icon &gt; Settings).
         ///2. Enter the Zabbix URL, for example https://zabbix.example.com. If Zabbix runs in a subdirectory, include it, for example https://example.com/zabbix.
         ///3. Enter an API token. You create it in Zabbix under User settings &gt; API tokens.
-        ///4. Click Test to check the connection, then Save..
+        ///4. Click Test to check the connection and the API token, then Save..
         /// </summary>
         public static string Help_GettingStarted_Text {
             get {
@@ -1011,13 +1011,36 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Zabbix server can be reached (Zabbix version: {0}).
+        ///
+        ///The API token was not checked because no token is entered..
+        /// </summary>
+        public static string Settings_TestConnectionNoToken {
+            get {
+                return ResourceManager.GetString("Settings_TestConnectionNoToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection successful!
         ///
-        ///Zabbix version: {0}.
+        ///Zabbix version: {0}
+        ///The API token is valid. Problems visible to the token: {1}.
         /// </summary>
         public static string Settings_TestConnectionSuccess {
             get {
                 return ResourceManager.GetString("Settings_TestConnectionSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Zabbix server can be reached (Zabbix version: {0}), but the API token does not work:
+        ///
+        ///{1}.
+        /// </summary>
+        public static string Settings_TestConnectionTokenFailed {
+            get {
+                return ResourceManager.GetString("Settings_TestConnectionTokenFailed", resourceCulture);
             }
         }
         

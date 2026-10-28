@@ -237,7 +237,8 @@
   <data name="Settings_TestConnectionSuccess" xml:space="preserve">
     <value>Připojení bylo úspěšné!
 
-Verze Zabbixu: {0}</value>
+Verze Zabbixu: {0}
+API token je platný. Problémy viditelné pro token: {1}</value>
   </data>
   <data name="Settings_TestConnectionFailed" xml:space="preserve">
     <value>Připojení selhalo:
@@ -377,7 +378,7 @@ Přesto ignorovat chyby certifikátu?</value>
     <value>1. Otevřete Nastavení (pravým tlačítkem na ikonu v trayi &gt; Nastavení).
 2. Zadejte URL Zabbixu, např. https://zabbix.example.com. Pokud Zabbix běží v podsložce, uveďte ji také, např. https://example.com/zabbix.
 3. Zadejte API token. Vytvoříte ho v Zabbixu v Uživatelském nastavení &gt; API tokeny.
-4. Tlačítkem Otestovat ověřte připojení a pak klikněte na Uložit.</value>
+4. Tlačítkem Otestovat ověřte připojení a API token a pak klikněte na Uložit.</value>
   </data>
   <data name="Help_Tray_Title" xml:space="preserve">
     <value>Ikona v trayi</value>
@@ -471,5 +472,15 @@ Instalátory nainstalují aplikaci pro všechny uživatele do C:\Program Files\Z
 • Zásady skupiny: přiřaďte MSI počítačům v Konfigurace počítače &gt; Zásady &gt; Nastavení softwaru &gt; Instalace softwaru. Nainstaluje se při příštím restartu.
 • Aktualizace: nainstalujte novou verzi; stará verze se nahradí a běžící aplikace se předtím ukončí.
 • Odinstalace: Nastavení &gt; Aplikace &gt; Zabbix Monitor. Vaše nastavení i API token zůstanou zachované, .NET runtime zůstane nainstalovaný.</value>
+  </data>
+  <data name="Settings_TestConnectionNoToken" xml:space="preserve">
+    <value>Server Zabbix je dostupný (verze Zabbixu: {0}).
+
+API token nebyl ověřen, protože není zadaný.</value>
+  </data>
+  <data name="Settings_TestConnectionTokenFailed" xml:space="preserve">
+    <value>Server Zabbix je dostupný (verze Zabbixu: {0}), ale API token nefunguje:
+
+{1}</value>
   </data>
 </root>

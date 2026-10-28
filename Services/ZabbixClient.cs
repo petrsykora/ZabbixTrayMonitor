@@ -510,6 +510,52 @@ namespace ZabbixTrayMonitor.Services
             throw new Exception(Strings.Api_InvalidResponse);
         }
 
+        // Prüft den API Token mit einer authentifizierten Abfrage (apiinfo.version geht auch ohne Token)
+        // und gibt die Anzahl der für den Token sichtbaren Probleme zurück
+        public async Task<string> CheckApiTokenAsync(string zabbixUrl, string apiToken, bool ignoreCertificateErrors)
+        {
+            var apiUrl = BuildApiUrl(zabbixUrl);
+
+            var client = GetClient(ignoreCertificateErrors);
+
+            var requestObj = new
+            {
+                jsonrpc = "2.0",
+                method = "problem.get",
+                @params = new
+                {
+                    countOutput = true
+                },
+                id = 1
+            };
+
+            var json = JsonSerializer.Serialize(requestObj);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, apiUrl)
+            {
+                Content = content
+            };
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
+
+            var response = await client.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+
+            using var document = JsonDocument.Parse(responseJson);
+
+            ThrowIfJsonRpcError(document.RootElement);
+
+            // countOutput liefert die Anzahl als String
+            if (document.RootElement.TryGetProperty("result", out var result))
+                return result.ValueKind == JsonValueKind.String ? result.GetString() ?? "" : result.ToString();
+
+            throw new Exception(Strings.Api_InvalidResponse);
+        }
+
         private static bool IsApiFlagSet(JsonElement element)
         {
             if (element.ValueKind == JsonValueKind.String)

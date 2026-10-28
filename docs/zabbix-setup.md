@@ -12,8 +12,8 @@ Zabbix Monitor reads the current problems through the Zabbix JSON-RPC API with a
 
 | Method | Purpose |
 |---|---|
-| `apiinfo.version` | **Test** button in the settings (needs no token) |
-| `problem.get` | current problems |
+| `apiinfo.version` | **Test** button in the settings: Zabbix version (needs no token) |
+| `problem.get` | current problems; the **Test** button also uses it to check the token |
 | `event.get` | event details |
 | `trigger.get` | host names and trigger/item information |
 | `event.acknowledge` | acknowledging and suppressing problems |
@@ -59,7 +59,9 @@ Enter the token in Zabbix Monitor under **Settings → API token**. It is stored
 
 ## 5. Check the token
 
-The **Test** button in the settings only checks that the Zabbix API can be reached (`apiinfo.version`); it does not check the token. To check the token and its permissions before rolling out, call `problem.get` in PowerShell:
+The **Test** button in the settings checks both: that the Zabbix API can be reached and that the entered (or stored) token works. It shows the Zabbix version and the number of problems the token can see.
+
+To check a token without the application, for example before rolling out, call `problem.get` in PowerShell:
 
 ```powershell
 $body = '{"jsonrpc":"2.0","method":"problem.get","params":{"countOutput":true},"id":1}'

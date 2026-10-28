@@ -237,7 +237,8 @@
   <data name="Settings_TestConnectionSuccess" xml:space="preserve">
     <value>Connection successful!
 
-Zabbix version: {0}</value>
+Zabbix version: {0}
+The API token is valid. Problems visible to the token: {1}</value>
   </data>
   <data name="Settings_TestConnectionFailed" xml:space="preserve">
     <value>Connection failed:
@@ -377,7 +378,7 @@ Ignore certificate errors anyway?</value>
     <value>1. Open Settings (right-click the tray icon &gt; Settings).
 2. Enter the Zabbix URL, for example https://zabbix.example.com. If Zabbix runs in a subdirectory, include it, for example https://example.com/zabbix.
 3. Enter an API token. You create it in Zabbix under User settings &gt; API tokens.
-4. Click Test to check the connection, then Save.</value>
+4. Click Test to check the connection and the API token, then Save.</value>
   </data>
   <data name="Help_Tray_Title" xml:space="preserve">
     <value>Tray icon</value>
@@ -471,5 +472,15 @@ The installers install the application for all users to C:\Program Files\ZabbixT
 • Group Policy: assign the MSI to computers under Computer Configuration &gt; Policies &gt; Software Settings &gt; Software installation. It is installed at the next restart.
 • Update: install the new version; the old version is replaced and a running instance is closed first.
 • Uninstall: Settings &gt; Apps &gt; Zabbix Monitor. Your settings and the API token are kept, the .NET runtime stays installed.</value>
+  </data>
+  <data name="Settings_TestConnectionNoToken" xml:space="preserve">
+    <value>The Zabbix server can be reached (Zabbix version: {0}).
+
+The API token was not checked because no token is entered.</value>
+  </data>
+  <data name="Settings_TestConnectionTokenFailed" xml:space="preserve">
+    <value>The Zabbix server can be reached (Zabbix version: {0}), but the API token does not work:
+
+{1}</value>
   </data>
 </root>

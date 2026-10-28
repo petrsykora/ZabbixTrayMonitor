@@ -16,9 +16,16 @@ The tray icon shows the state at a glance: green no problems, yellow warnings, r
 
 The settings are incomplete. Open **Settings** from the tray menu, enter the URL and the token and click **Save**.
 
-### The Test button works, but the tray icon stays red
+### What the Test button checks
 
-**Test** only calls `apiinfo.version`, which Zabbix answers without a token. It shows that the URL is right, but not that the token works. Check the token as described in [Zabbix setup](zabbix-setup.md#5-check-the-token).
+**Test** in the settings first checks that the Zabbix API can be reached, then that the token works:
+
+- **Connection successful** with the Zabbix version and the number of visible problems: URL and token are fine.
+- **The Zabbix server can be reached, but the API token does not work**: the URL is right, the error message says what is wrong with the token (see below).
+- **The API token was not checked**: no token is entered and none is stored.
+- **Connection failed**: the server cannot be reached; see 404, timeout and certificate errors below.
+
+The test uses the values in the window, also before they are saved.
 
 ### "Not authorized" or "Session terminated"
 
