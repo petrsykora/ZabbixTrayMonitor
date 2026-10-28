@@ -1,0 +1,34 @@
+# Automatische Updates der Abhängigkeiten (https://docs.github.com/code-security/dependabot)
+version: 2
+
+updates:
+  # NuGet-Pakete der Anwendung und des MSI-Installers
+  - package-ecosystem: "nuget"
+    directories:
+      - "/"
+      - "/installer"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      # Kleine Updates in einem gemeinsamen Pull Request
+      nuget-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # WiX ab v6 verlangt die Zustimmung zu geänderten Lizenzbedingungen (Open Source Maintenance Fee),
+      # Major-Updates deshalb nur bewusst von Hand
+      - dependency-name: "WixToolset.*"
+        update-types:
+          - "version-update:semver-major"
+
+  # Actions im Release-Workflow
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
