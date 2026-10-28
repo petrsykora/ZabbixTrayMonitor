@@ -50,6 +50,7 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 - [Troubleshooting](docs/troubleshooting.md): connection, certificate, permission and installation problems
 - [Code signing](docs/code-signing.md): signing the releases with your own certificate and trusting it via Group Policy
 - [Development](docs/development.md): building, installers, translations and releasing a new version
+- [Contributing](CONTRIBUTING.md): reporting bugs, suggesting features and pull requests
 
 The application also contains a built-in help (tray menu → **Help**, or F1).
 

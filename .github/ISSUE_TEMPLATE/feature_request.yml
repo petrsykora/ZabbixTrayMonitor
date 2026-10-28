@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest an idea or an improvement
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What do you want to achieve, or what is missing or inconvenient today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How could Zabbix Monitor help with it?
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other solutions or workarounds you have considered.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Screenshots, examples or links.

@@ -1,0 +1,90 @@
+name: Bug report
+description: Something does not work as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a problem. Please check [Troubleshooting](https://github.com/petrsykora/ZabbixTrayMonitor/blob/master/docs/troubleshooting.md) first.
+
+        **Security vulnerabilities** must not be reported here, see [SECURITY.md](https://github.com/petrsykora/ZabbixTrayMonitor/blob/master/SECURITY.md).
+        **Never post your API token.** Remove internal host names or URLs if they must not be public.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Settings
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error message
+      description: The exact text from the tooltip or the message box, if there is one.
+      render: text
+
+  - type: input
+    id: version
+    attributes:
+      label: Zabbix Monitor version
+      description: Shown in the About window.
+      placeholder: "1.3.3"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Installed with
+      options:
+        - setup.exe
+        - MSI with runtime (…-win-x64.msi)
+        - Runtime-dependent MSI
+        - ZIP (portable)
+        - Built from source
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+
+  - type: input
+    id: zabbix
+    attributes:
+      label: Zabbix server version
+      description: Shown by the Test button in the settings.
+      placeholder: "7.4.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language of the application
+      options:
+        - English
+        - German
+        - Czech
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Screenshots, configuration (without the token) or anything else that helps.
