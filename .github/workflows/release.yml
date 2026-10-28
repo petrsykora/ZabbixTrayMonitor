@@ -81,14 +81,22 @@ jobs:
         shell: pwsh
         run: Compress-Archive -Path publish\* -DestinationPath "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64.zip"
 
-      - name: Upload artifact (dry run)
+      # MSI und ZIP als getrennte Artefakte, damit nur das Benötigte heruntergeladen wird
+      - name: Upload MSI artifact (dry run)
         if: ${{ inputs.dry_run }}
         uses: actions/upload-artifact@v7
         with:
-          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}
-          path: |
-            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.msi
-            ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
+          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-msi
+          path: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.msi
+          compression-level: 0
+
+      - name: Upload ZIP artifact (dry run)
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-portable
+          path: ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
+          compression-level: 0
 
       - name: Create release
         if: ${{ !inputs.dry_run }}
