@@ -2,11 +2,12 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
-## Unreleased
+## 1.3.7 – 2026-10-29
 
 ### Changed
 
-- README: the code signing section describes how to check the unsigned release files.
+- The release files are signed with a code signing certificate of the project (trusted on computers that receive the certificate via Group Policy).
+- README: the code signing section describes how to check the release files.
 
 ## 1.3.6 – 2026-10-29
 
