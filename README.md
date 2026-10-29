@@ -239,7 +239,7 @@ To report a security vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Code signing
 
-Since version 1.3.8, the application files, both MSI installers and `setup.exe` are signed with the project's own code signing certificate (publisher **Petr Sýkora**) and an RFC 3161 timestamp. The certificate is self-signed: Windows trusts the signature only on computers that receive the certificate, for example via Group Policy, see [Code signing](docs/code-signing.md). On other computers the files behave like unsigned ones and SmartScreen may warn when they are downloaded and started.
+Since version 1.3.7, the application files, both MSI installers and `setup.exe` are signed with the project's own code signing certificate (publisher **Petr Sýkora**) and an RFC 3161 timestamp. The certificate is self-signed: Windows trusts the signature only on computers that receive the certificate, for example via Group Policy, see [Code signing](docs/code-signing.md). On other computers the files behave like unsigned ones and SmartScreen may warn when they are downloaded and started.
 
 To check that the files are genuine:
 
