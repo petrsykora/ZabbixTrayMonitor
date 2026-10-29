@@ -7,6 +7,7 @@ All notable changes to this project. Versions up to 1.2.1 were released by Daran
 ### Added
 
 - **VirusTotal** workflow to check the files of an existing release again and update its result.
+- Code signing policy and privacy policy in the README; the built-in help lists the network connections of the application.
 
 ## 1.3.5 – 2026-10-29
 

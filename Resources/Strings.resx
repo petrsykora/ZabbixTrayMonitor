@@ -451,7 +451,8 @@ Defaults: warning threshold 2, error threshold 4, so 0-1 ignored, 2-3 warning, 4
     <value>• The API token is sent with every request. Use https:// for the Zabbix URL; for http:// the application asks for confirmation when saving, because the token would be readable on the network.
 • Ignore SSL certificate errors turns off the check of the server certificate. An attacker on the network could then pretend to be your Zabbix server and steal the token. Instead, import the server certificate or your own certification authority into the trusted certificates of Windows.
 • Use a dedicated Zabbix user for the token with as few permissions as possible: read access to the host groups you want to monitor and, if you want to edit alarms, permission to acknowledge and suppress problems.
-• The token is stored encrypted for your Windows user in the Credential Manager.</value>
+• The token is stored encrypted for your Windows user in the Credential Manager.
+• Network connections: the application only connects to the Zabbix server from the settings and, once a day, to GitHub (api.github.com) to check for a new version. No token and no data from Zabbix is sent to GitHub. The check can be turned off in the settings.</value>
   </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
     <value>• The tray icon is red and the tooltip shows an error: open Settings and check the Zabbix URL and the API token with Test.

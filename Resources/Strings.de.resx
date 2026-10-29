@@ -451,7 +451,8 @@ Standard: Warn-Schwelle 2, Error-Schwelle 4, also 0-1 ignoriert, 2-3 Warnung, 4-
     <value>• Der API Token wird bei jeder Anfrage mitgeschickt. Für die Zabbix URL https:// verwenden; bei http:// fragt die Anwendung beim Speichern nach, weil der Token im Netzwerk lesbar wäre.
 • SSL-Zertifikatsfehler ignorieren schaltet die Prüfung des Serverzertifikats ab. Ein Angreifer im Netzwerk könnte sich dann als Ihr Zabbix-Server ausgeben und den Token abgreifen. Stattdessen das Serverzertifikat bzw. die eigene Zertifizierungsstelle in die vertrauenswürdigen Zertifikate von Windows importieren.
 • Für den Token einen eigenen Zabbix-Benutzer mit möglichst wenigen Rechten verwenden: Lesezugriff auf die zu überwachenden Hostgruppen und, wenn Alarme bearbeitet werden sollen, das Recht Probleme zu bestätigen und zu unterdrücken.
-• Der Token wird für Ihren Windows-Benutzer verschlüsselt im Credential Manager gespeichert.</value>
+• Der Token wird für Ihren Windows-Benutzer verschlüsselt im Credential Manager gespeichert.
+• Netzwerkverbindungen: Die Anwendung verbindet sich nur mit dem Zabbix Server aus den Einstellungen und einmal am Tag mit GitHub (api.github.com), um nach einer neuen Version zu suchen. An GitHub werden weder der Token noch Daten aus Zabbix gesendet. Die Prüfung kann in den Einstellungen abgeschaltet werden.</value>
   </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
     <value>• Das Tray-Icon ist rot und der Tooltip zeigt einen Fehler: Einstellungen öffnen und Zabbix URL und API Token mit Testen prüfen.

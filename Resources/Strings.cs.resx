@@ -451,7 +451,8 @@ Výchozí hodnoty: práh varování 2, práh chyby 4, tedy 0-1 ignorováno, 2-3 
     <value>• API token se posílá s každým požadavkem. Pro URL Zabbixu používejte https://; u http:// se aplikace při ukládání zeptá, protože token by byl v síti čitelný.
 • Ignorovat chyby SSL certifikátu vypne kontrolu certifikátu serveru. Útočník v síti by se pak mohl vydávat za váš Zabbix server a získat token. Místo toho importujte certifikát serveru nebo vlastní certifikační autoritu mezi důvěryhodné certifikáty Windows.
 • Pro token používejte samostatného Zabbix uživatele s co nejmenšími oprávněními: čtení skupin hostů, které chcete sledovat, a pokud chcete upravovat alarmy, oprávnění problémy potvrzovat a potlačovat.
-• Token je uložený šifrovaně pro vašeho uživatele Windows ve Správci pověření.</value>
+• Token je uložený šifrovaně pro vašeho uživatele Windows ve Správci pověření.
+• Síťová spojení: aplikace se připojuje jen k serveru Zabbix z nastavení a jednou denně ke GitHubu (api.github.com) kvůli kontrole nové verze. Na GitHub se neposílá token ani žádná data ze Zabbixu. Kontrolu lze vypnout v nastavení.</value>
   </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
     <value>• Ikona v trayi je červená a tooltip ukazuje chybu: otevřete Nastavení a tlačítkem Otestovat ověřte URL Zabbixu a API token.

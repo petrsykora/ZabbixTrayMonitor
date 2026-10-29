@@ -237,9 +237,31 @@ The user behind the API token needs the required Zabbix permissions. For alarm h
 
 To report a security vulnerability, see [SECURITY.md](SECURITY.md).
 
-## Code signing
+## Code signing policy
 
-The release files are not signed yet. How to sign them with your own code signing certificate, distribute the certificate via Group Policy and avoid SmartScreen warnings is described in [Code signing](docs/code-signing.md).
+Free code signing for the Windows releases is provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org). The application for the SignPath Foundation program is pending; until it is accepted, the release files are unsigned.
+
+Only files built from this repository by the [release workflow](.github/workflows/release.yml) on GitHub-hosted runners are signed. Every signing request is approved manually.
+
+Team roles:
+
+| Role | Members |
+|---|---|
+| Committers and reviewers | [Petr Sýkora](https://github.com/petrsykora) |
+| Approvers | [Petr Sýkora](https://github.com/petrsykora) |
+
+All members use two-factor authentication on GitHub and SignPath.
+
+To sign the files with your own certificate for computers in your organization, see [Code signing](docs/code-signing.md).
+
+## Privacy policy
+
+This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. It only connects to:
+
+- **The Zabbix server** configured by the user in the settings, to read and handle problems with the API token entered by the user.
+- **GitHub** (`api.github.com`), once a day, to check whether a new version has been released. Only the number of the latest version is requested; no token, no data from Zabbix and no personal data is sent. The check can be turned off under **Settings → Check for updates automatically**, or for all users by an administrator (see [Deployment](docs/deployment.md#update-notification)). New versions are never downloaded or installed automatically.
+
+The settings and the API token are stored only on the local computer (`%AppData%\ZabbixTrayMonitor\config.json` and the Windows Credential Manager).
 
 ## License and origin
 
