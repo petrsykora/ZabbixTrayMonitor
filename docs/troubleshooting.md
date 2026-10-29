@@ -82,6 +82,17 @@ The token would be sent unencrypted. Switch the Zabbix web server to HTTPS. You 
 
 Zabbix processes the action asynchronously. With **Refresh automatically after acknowledging/suppressing** enabled, the application refreshes right after the action and once more about 4 seconds later. Otherwise use **Refresh**.
 
+### No notification about a new version
+
+The automatic check runs one minute after the start and then every 6 hours. Open **About**: the row **Update check** shows the time and result of the last check.
+
+- **Version … available**, but no notification appeared: Windows suppressed it. Check **Do not disturb** and **Settings → System → Notifications** (notifications of Zabbix Monitor must be allowed). The tray menu shows **Update available** in any case.
+- **Failed: …**: the check could not reach GitHub, for example because of a proxy or firewall blocking `api.github.com`, or because GitHub limits unauthenticated requests per public IP address (60 per hour), which can happen behind a shared company address.
+- **Automatic check turned off**: see **Settings → Check for updates automatically**, or the policy `DisableUpdateCheck` described in [Deployment](deployment.md#update-notification).
+- **Not checked yet**: wait one minute after the start.
+
+**About → Check for updates** always checks right away and shows errors.
+
 ## Settings
 
 ### Reset all settings

@@ -81,6 +81,8 @@ namespace ZabbixTrayMonitor.Views
                 // Link öffnet den Ordner mit der config.json im Explorer
                 var configPath = configService.GetConfigPath();
                 ConfigText.Inlines.Add(CreateLink(configPath, Path.GetDirectoryName(configPath) ?? configPath));
+
+                ShowUpdateCheckStatus();
             }
             catch
             {
@@ -159,6 +161,12 @@ namespace ZabbixTrayMonitor.Views
             HelpWindow.ShowHelp();
         }
 
+        private void ShowUpdateCheckStatus()
+        {
+            UpdateCheckText.Text = (Application.Current.MainWindow as MainWindow)?.LastUpdateCheckStatus
+                ?? Strings.Update_StatusNotYet;
+        }
+
         // Prüfung läuft im MainWindow, damit Menüeintrag und Update-Fenster dort aktualisiert werden
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
@@ -174,6 +182,7 @@ namespace ZabbixTrayMonitor.Views
             finally
             {
                 CheckForUpdatesButton.IsEnabled = true;
+                ShowUpdateCheckStatus();
             }
         }
 

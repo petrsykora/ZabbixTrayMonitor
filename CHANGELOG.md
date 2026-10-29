@@ -4,6 +4,10 @@ All notable changes to this project. Versions up to 1.2.1 were released by Daran
 
 ## Unreleased
 
+### Added
+
+- The About window shows the time and the result of the last update check, including errors of the automatic check, which are otherwise not shown.
+
 ### Fixed
 
 - The Start menu shortcut created by the installers showed a blank (white) icon; it now uses the icon of the application.

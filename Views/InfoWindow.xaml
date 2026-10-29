@@ -58,6 +58,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.Resources>
@@ -92,6 +93,10 @@
 
             <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="{x:Static res:Strings.About_Config}" />
             <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource ValueStyle}" x:Name="ConfigText" />
+
+            <!-- Zeit und Ergebnis der letzten Update-Prüfung (automatisch oder manuell), auch Fehler der automatischen Prüfung -->
+            <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="{x:Static res:Strings.About_UpdateCheck}" />
+            <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource ValueStyle}" x:Name="UpdateCheckText" />
         </Grid>
 
         <StackPanel Grid.Row="3"

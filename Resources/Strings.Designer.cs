@@ -130,6 +130,15 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update check.
+        /// </summary>
+        public static string About_UpdateCheck {
+            get {
+                return ResourceManager.GetString("About_UpdateCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version.
         /// </summary>
         public static string About_Version {
@@ -1459,6 +1468,51 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Update_Skip {
             get {
                 return ResourceManager.GetString("Update_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:g} – version {1} available.
+        /// </summary>
+        public static string Update_StatusAvailable {
+            get {
+                return ResourceManager.GetString("Update_StatusAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:g} – automatic check turned off.
+        /// </summary>
+        public static string Update_StatusDisabled {
+            get {
+                return ResourceManager.GetString("Update_StatusDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:g} – failed: {1}.
+        /// </summary>
+        public static string Update_StatusFailed {
+            get {
+                return ResourceManager.GetString("Update_StatusFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not checked yet (first check one minute after the start).
+        /// </summary>
+        public static string Update_StatusNotYet {
+            get {
+                return ResourceManager.GetString("Update_StatusNotYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:g} – latest version.
+        /// </summary>
+        public static string Update_StatusUpToDate {
+            get {
+                return ResourceManager.GetString("Update_StatusUpToDate", resourceCulture);
             }
         }
         

@@ -542,7 +542,25 @@ The API token was not checked because no token is entered.</value>
     <value>• Every 6 hours (and one minute after the start) the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows "Update available".
 • The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
 • Nothing is downloaded or installed automatically. Only the number of the latest version is requested from GitHub (api.github.com).
-• About &gt; Check for updates checks right away.
+• About &gt; Check for updates checks right away. The About window also shows the time and the result of the last check, including errors of the automatic check.
 • The automatic check can be turned off in Settings. Administrators can turn it off for all users with the registry value DisableUpdateCheck = 1 (DWORD) under HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor.</value>
+  </data>
+  <data name="About_UpdateCheck" xml:space="preserve">
+    <value>Update check</value>
+  </data>
+  <data name="Update_StatusNotYet" xml:space="preserve">
+    <value>Not checked yet (first check one minute after the start)</value>
+  </data>
+  <data name="Update_StatusDisabled" xml:space="preserve">
+    <value>{0:g} – automatic check turned off</value>
+  </data>
+  <data name="Update_StatusUpToDate" xml:space="preserve">
+    <value>{0:g} – latest version</value>
+  </data>
+  <data name="Update_StatusAvailable" xml:space="preserve">
+    <value>{0:g} – version {1} available</value>
+  </data>
+  <data name="Update_StatusFailed" xml:space="preserve">
+    <value>{0:g} – failed: {1}</value>
   </data>
 </root>
