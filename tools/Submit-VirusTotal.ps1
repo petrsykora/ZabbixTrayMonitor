@@ -7,11 +7,14 @@
       - a Markdown section with the result and a link to the report of every file (for the release notes)
       - a JSON file for a shields.io endpoint badge (attached to the release as virustotal-badge.json)
 
+    With -ReleaseTag, the Markdown section is added to the notes of that GitHub release (an existing VirusTotal
+    section is replaced) and the badge file is attached to the release. This needs the GitHub CLI with GH_TOKEN.
+
     The API key is read from the environment variable VIRUSTOTAL_API_KEY.
     The free public API allows 4 requests per minute, so the script waits between requests.
 
 .EXAMPLE
-    .\tools\Submit-VirusTotal.ps1 -Path ZabbixTrayMonitor-v1.3.5-win-x64.msi -MarkdownPath virustotal.md -BadgePath virustotal-badge.json
+    .\tools\Submit-VirusTotal.ps1 -Path ZabbixTrayMonitor-v1.3.5-win-x64.msi -MarkdownPath virustotal.md -BadgePath virustotal-badge.json -ReleaseTag v1.3.5
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -22,6 +25,9 @@ param(
 
     [Parameter(Mandatory = $true)]
     [string] $BadgePath,
+
+    # GitHub-Release, dessen Beschreibung und Dateien aktualisiert werden (leer = nur Dateien schreiben)
+    [string] $ReleaseTag,
 
     [string] $ApiBaseUrl = "https://www.virustotal.com/api/v3",
 
@@ -147,3 +153,28 @@ $badge = [ordered]@{
 Set-Content -Path $BadgePath -Value ($badge | ConvertTo-Json) -Encoding utf8NoBOM
 
 Write-Host "Result: at most $maxDetections detection(s) per file"
+
+# 4. Release aktualisieren
+if ($ReleaseTag) {
+    $notes = gh release view $ReleaseTag --json body --jq .body
+    if ($LASTEXITCODE -ne 0) { throw "Reading the release notes of $ReleaseTag failed" }
+
+    # Vorherigen VirusTotal-Abschnitt (bei erneuter Prüfung) entfernen, er steht immer am Ende
+    $notes = ($notes -join "`n") -replace "(?s)\s*## VirusTotal\n.*$", ""
+
+    $notesPath = Join-Path ([IO.Path]::GetTempPath()) "release-notes-$([guid]::NewGuid()).md"
+    Set-Content -Path $notesPath -Value (($notes.TrimEnd(), ($markdown -join "`n")) -join "`n`n") -Encoding utf8NoBOM
+
+    try {
+        gh release edit $ReleaseTag --notes-file $notesPath | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "Updating the release notes of $ReleaseTag failed" }
+    }
+    finally {
+        Remove-Item $notesPath -ErrorAction SilentlyContinue
+    }
+
+    gh release upload $ReleaseTag $BadgePath --clobber
+    if ($LASTEXITCODE -ne 0) { throw "Uploading $BadgePath to $ReleaseTag failed" }
+
+    Write-Host "Release $ReleaseTag updated"
+}

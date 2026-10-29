@@ -220,21 +220,10 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           $files = Get-ChildItem "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64*" | ForEach-Object FullName
-          .\tools\Submit-VirusTotal.ps1 -Path $files -MarkdownPath virustotal.md -BadgePath virustotal-badge.json
-
-          $notes = gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --json body --jq .body
-          if ($LASTEXITCODE -ne 0) { throw "Reading the release notes failed" }
-
-          $newNotes = (($notes -join "`n").TrimEnd(), (Get-Content virustotal.md -Raw)) -join "`n`n"
-          Set-Content release-notes.md -Value $newNotes -Encoding utf8NoBOM
-
-          gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --notes-file release-notes.md
-          if ($LASTEXITCODE -ne 0) { throw "Updating the release notes failed" }
-
-          gh release upload $env:RELEASE_TAG virustotal-badge.json --repo $env:GITHUB_REPOSITORY --clobber
-          if ($LASTEXITCODE -ne 0) { throw "Uploading virustotal-badge.json failed" }
+          .\tools\Submit-VirusTotal.ps1 -Path $files -MarkdownPath virustotal.md -BadgePath virustotal-badge.json -ReleaseTag $env:RELEASE_TAG
 
       # Neue Version des winget-Pakets PetrSykora.ZabbixMonitor als Pull Request bei microsoft/winget-pkgs einreichen
       # Läuft nur mit Secret WINGET_TOKEN und erst, wenn die erste Version (Workflow "winget") in winget aufgenommen wurde

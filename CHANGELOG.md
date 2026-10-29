@@ -2,6 +2,12 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
+## Unreleased
+
+### Added
+
+- **VirusTotal** workflow to check the files of an existing release again and update its result.
+
 ## 1.3.5 – 2026-10-29
 
 ### Added

@@ -1,0 +1,40 @@
+name: VirusTotal
+
+# Prüft die Dateien eines bestehenden Releases erneut bei VirusTotal, zB. für Releases von vor der
+# VirusTotal-Prüfung im Release-Workflow oder um ein Ergebnis zu aktualisieren.
+# Ergebnis wie im Release-Workflow: Abschnitt in der Release-Beschreibung und virustotal-badge.json am Release
+# Braucht das Secret VIRUSTOTAL_API_KEY
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. v1.3.5"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: windows-latest
+
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+      VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check with VirusTotal
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrEmpty($env:VIRUSTOTAL_API_KEY)) { throw "Secret VIRUSTOTAL_API_KEY is not set" }
+          if ($env:RELEASE_TAG -notmatch '^v\d+(\.\d+){1,3}$') { throw "Invalid tag: $env:RELEASE_TAG" }
+
+          gh release download $env:RELEASE_TAG --pattern "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64*" --dir release-files
+          if ($LASTEXITCODE -ne 0) { throw "Downloading the files of $env:RELEASE_TAG failed" }
+
+          $files = Get-ChildItem release-files | ForEach-Object FullName
+          .\tools\Submit-VirusTotal.ps1 -Path $files -MarkdownPath virustotal.md -BadgePath virustotal-badge.json -ReleaseTag $env:RELEASE_TAG

@@ -125,6 +125,8 @@ After the release is created, the release workflow can upload all five files to 
 2. Add it in the repository under **Settings → Secrets and variables → Actions → New repository secret** as `VIRUSTOTAL_API_KEY`.
 3. The next release is checked. Without the secret the step is skipped.
 
+To check an existing release (for example one released before the secret was set) or to refresh its result, run **Actions → VirusTotal → Run workflow** with the tag, for example `v1.3.5`. It downloads the files of that release, checks them and replaces the VirusTotal section of the release notes and the badge file.
+
 The free public API allows 4 requests per minute and is meant for non-commercial use. The script waits between requests, so the check takes about 5 to 15 minutes. If VirusTotal fails or takes longer than 30 minutes, the step fails, but the release itself stays as it is. Files uploaded to VirusTotal can be downloaded by its subscribers, which is fine for public releases.
 
 ### Badge
