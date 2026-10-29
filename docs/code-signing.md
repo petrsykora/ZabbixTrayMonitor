@@ -78,5 +78,5 @@ Before the certificate expires, create a new one (step 1), distribute the new `.
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a file downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded file before using it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.8-win-x64.zip
+Unblock-File .\ZabbixTrayMonitor-v1.3.9-win-x64.zip
 ```
