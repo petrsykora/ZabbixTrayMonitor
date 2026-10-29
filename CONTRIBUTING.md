@@ -33,6 +33,8 @@ Open a [feature request](https://github.com/petrsykora/ZabbixTrayMonitor/issues/
 6. Build and test the application on Windows (`dotnet build`, then run it against a Zabbix server).
 7. Open the pull request and describe what changed and how you tested it.
 
+Pull requests are merged with **Squash and merge**, so each pull request becomes one commit on `master`.
+
 Building, the installers and the release process are described in [Development](docs/development.md).
 
 ## Translations

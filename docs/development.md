@@ -97,6 +97,16 @@ XAML uses the texts with `{x:Static res:Strings.Key}`, code with `Strings.Key`.
 3. Add the language to the language list in `Views/ZabbixConfigWindow.xaml.cs` (method that fills `LanguageComboBox`), with the name of the language in that language.
 4. Add the language to the README (features, badge, languages section).
 
+## Changes to master
+
+`master` is not changed directly. Every change goes through a branch and a pull request:
+
+1. Push the change to a branch, for example `update-<topic>`.
+2. Open a pull request against `master` and review the changes (a review by Copilot is requested automatically by the repository ruleset).
+3. Merge it in the GitHub web interface with **Squash and merge**, then delete the branch.
+
+Squash and merge creates a single commit on `master` that GitHub signs, so the history of `master` only contains verified commits, one per change.
+
 ## Releasing a new version
 
 1. Update the version in **both** files:
@@ -105,7 +115,7 @@ XAML uses the texts with `{x:Static res:Strings.Key}`, code with `Strings.Key`.
 2. Add the changes to [CHANGELOG.md](../CHANGELOG.md).
 3. Update the version in the examples in README and docs if they mention it.
 4. Optionally add winget manifests for the new version in `winget/manifests/p/PetrSykora/ZabbixMonitor/<version>/`.
-5. Commit and push to `master`.
+5. Merge the change into `master` as described in [Changes to master](#changes-to-master).
 6. Start the release: **Actions → Release → Run workflow**, branch `master`, tag `v<version>` (for example `v1.3.7`). The workflow creates the tag on the current commit and the GitHub release with all five files. Pushing a tag `v*` starts the same workflow.
 
 Use **dry_run** to only build: the files are then attached to the workflow run as artifacts and no tag or release is created.
