@@ -114,7 +114,7 @@ Downgrades are not possible. Uninstall the newer version first if you really nee
 The release files are not signed with a certificate trusted by Microsoft. Click **More info → Run anyway**, or unblock the file before running it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.7-win-x64-setup.exe
+Unblock-File .\ZabbixTrayMonitor-v1.3.8-win-x64-setup.exe
 ```
 
 For managed computers, sign the files with your own certificate and trust it via Group Policy, see [Code signing](code-signing.md), or distribute the MSI internally (Group Policy, Intune), which does not trigger SmartScreen.

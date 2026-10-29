@@ -2,7 +2,7 @@
 
 To make Windows treat the application as coming from a known publisher, it can be signed with your own code signing certificate. The certificate is distributed to the managed computers via Group Policy (GPO). On computers without this GPO the signature is not trusted and the application behaves like an unsigned one.
 
-The official releases of this repository are signed this way since version 1.3.7 (publisher "Petr Sýkora"). To trust them on your computers, distribute the public certificate of the project via Group Policy (step 3). You can extract it from any signed file: **Properties → Digital Signatures → Details → View Certificate → Details → Copy to File**. If you prefer your own certificate, fork the repository and follow all steps below.
+The official releases of this repository are signed this way since version 1.3.8 (publisher "Petr Sýkora"). To trust them on your computers, distribute the public certificate of the project via Group Policy (step 3). You can extract it from any signed file: **Properties → Digital Signatures → Details → View Certificate → Details → Copy to File**. If you prefer your own certificate, fork the repository and follow all steps below.
 
 ## What is signed
 
@@ -78,5 +78,5 @@ Before the certificate expires, create a new one (step 1), distribute the new `.
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a file downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded file before using it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.7-win-x64.zip
+Unblock-File .\ZabbixTrayMonitor-v1.3.8-win-x64.zip
 ```
