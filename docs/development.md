@@ -117,7 +117,7 @@ The workflow signs the files when the signing secrets are set, see [Code signing
 After the release is created, the release workflow can upload all five files to [VirusTotal](https://www.virustotal.com) (`tools/Submit-VirusTotal.ps1`), wait for the analyses and then:
 
 - add a **VirusTotal** section to the release notes with the detections and a link to the report of every file
-- attach `virustotal-badge.json` to the release, the data for a badge in the README
+- attach `virustotal-badge.json` to the release and, for the latest release, store it in the branch `badges`, from where the badge in the README reads it (shields.io does not load files from GitHub release downloads). The branch always has a single commit and is overwritten by every check.
 
 ### Setup
 
@@ -131,10 +131,10 @@ The free public API allows 4 requests per minute and is meant for non-commercial
 
 ### Badge
 
-Once a release has `virustotal-badge.json`, this badge shows the result of the latest release (green without detections, orange for 1 to 3 detections, red for more):
+The badge in the README shows the result of the latest release (green without detections, orange for 1 to 3 detections, red for more):
 
 ```markdown
-[![VirusTotal](https://img.shields.io/endpoint?url=https%3A%2F%2Fgithub.com%2Fpetrsykora%2FZabbixTrayMonitor%2Freleases%2Flatest%2Fdownload%2Fvirustotal-badge.json)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
+[![VirusTotal](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpetrsykora%2FZabbixTrayMonitor%2Fbadges%2Fvirustotal-badge.json)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
 ```
 
 Unsigned .NET applications, especially the self-contained variants, are sometimes reported by a few engines as a false positive. Signing the files (see [Code signing](code-signing.md)) usually reduces that.

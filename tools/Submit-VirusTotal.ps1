@@ -8,7 +8,9 @@
       - a JSON file for a shields.io endpoint badge (attached to the release as virustotal-badge.json)
 
     With -ReleaseTag, the Markdown section is added to the notes of that GitHub release (an existing VirusTotal
-    section is replaced) and the badge file is attached to the release. This needs the GitHub CLI with GH_TOKEN.
+    section is replaced) and the badge file is attached to the release. If it is the latest release, the badge file
+    is also stored in the branch -BadgeBranch, where the README badge reads it. This needs the GitHub CLI with
+    GH_TOKEN and GH_REPO.
 
     The API key is read from the environment variable VIRUSTOTAL_API_KEY.
     The free public API allows 4 requests per minute, so the script waits between requests.
@@ -28,6 +30,9 @@ param(
 
     # GitHub-Release, dessen Beschreibung und Dateien aktualisiert werden (leer = nur Dateien schreiben)
     [string] $ReleaseTag,
+
+    # Branch mit virustotal-badge.json für das Badge in der README (nur mit -ReleaseTag)
+    [string] $BadgeBranch = "badges",
 
     [string] $ApiBaseUrl = "https://www.virustotal.com/api/v3",
 
@@ -177,4 +182,35 @@ if ($ReleaseTag) {
     if ($LASTEXITCODE -ne 0) { throw "Uploading $BadgePath to $ReleaseTag failed" }
 
     Write-Host "Release $ReleaseTag updated"
+
+    # Badge-Datei für die README in den Branch $BadgeBranch (shields.io lädt keine Dateien von github.com/.../releases,
+    # aber von raw.githubusercontent.com). Der Branch hat immer genau einen Commit ohne Vorgänger und wird nur für das
+    # neueste Release aktualisiert, damit die Prüfung eines älteren Releases das Badge nicht überschreibt.
+    $latestTag = gh api "repos/{owner}/{repo}/releases/latest" --jq .tag_name
+    if ($LASTEXITCODE -ne 0) { throw "Reading the latest release failed" }
+
+    if ($latestTag -ne $ReleaseTag) {
+        Write-Host "$ReleaseTag is not the latest release ($latestTag), badge branch not updated"
+        return
+    }
+
+    $blob = gh api "repos/{owner}/{repo}/git/blobs" -f "content=$(Get-Content $BadgePath -Raw)" -f encoding=utf-8 --jq .sha
+    if ($LASTEXITCODE -ne 0) { throw "Creating the badge blob failed" }
+
+    $tree = gh api "repos/{owner}/{repo}/git/trees" `
+        -f "tree[][path]=virustotal-badge.json" -f "tree[][mode]=100644" -f "tree[][type]=blob" -f "tree[][sha]=$blob" --jq .sha
+    if ($LASTEXITCODE -ne 0) { throw "Creating the badge tree failed" }
+
+    $commit = gh api "repos/{owner}/{repo}/git/commits" -f "message=VirusTotal result of $ReleaseTag" -f "tree=$tree" --jq .sha
+    if ($LASTEXITCODE -ne 0) { throw "Creating the badge commit failed" }
+
+    gh api -X PATCH "repos/{owner}/{repo}/git/refs/heads/$BadgeBranch" -f "sha=$commit" -F force=true --silent 2>$null
+
+    if ($LASTEXITCODE -ne 0) {
+        # Branch existiert noch nicht
+        gh api "repos/{owner}/{repo}/git/refs" -f "ref=refs/heads/$BadgeBranch" -f "sha=$commit" --silent
+        if ($LASTEXITCODE -ne 0) { throw "Updating the branch $BadgeBranch failed" }
+    }
+
+    Write-Host "Badge branch $BadgeBranch updated"
 }

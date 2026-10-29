@@ -3,7 +3,7 @@
 [![Latest release](https://img.shields.io/github/v/release/petrsykora/ZabbixTrayMonitor?label=release)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/petrsykora/ZabbixTrayMonitor/total)](https://github.com/petrsykora/ZabbixTrayMonitor/releases)
 [![Release build](https://github.com/petrsykora/ZabbixTrayMonitor/actions/workflows/release.yml/badge.svg)](https://github.com/petrsykora/ZabbixTrayMonitor/actions/workflows/release.yml)
-[![VirusTotal](https://img.shields.io/endpoint?url=https%3A%2F%2Fgithub.com%2Fpetrsykora%2FZabbixTrayMonitor%2Freleases%2Flatest%2Fdownload%2Fvirustotal-badge.json)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
+[![VirusTotal](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpetrsykora%2FZabbixTrayMonitor%2Fbadges%2Fvirustotal-badge.json)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/petrsykora/ZabbixTrayMonitor)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/petrsykora/ZabbixTrayMonitor)](https://github.com/petrsykora/ZabbixTrayMonitor/commits/master)
 ![Platform: Windows 10/11](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D4)
