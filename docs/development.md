@@ -58,8 +58,8 @@ The license dialog needs `installer\License.rtf`, which is generated from `LICEN
 Then, after publishing as above:
 
 ```powershell
-dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.9 -p:PublishDir="$PWD\publish"
-dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.9 -p:InstallerVariant=RuntimeDependent -p:PublishDir="$PWD\publish-runtime-dependent"
+dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.4.0 -p:PublishDir="$PWD\publish"
+dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.4.0 -p:InstallerVariant=RuntimeDependent -p:PublishDir="$PWD\publish-runtime-dependent"
 ```
 
 The MSI files are written to `installer\msi\bin\Release\SelfContained\` and `installer\msi\bin\Release\RuntimeDependent\`.
@@ -116,7 +116,7 @@ Squash and merge creates a single commit on `master` that GitHub signs, so the h
 3. Update the version in the examples in README and docs (file names such as `ZabbixTrayMonitor-v<version>-win-x64.msi` and `-p:ProductVersion=`). Do not replace it blindly: statements such as "since version 1.3.7" must keep their version.
 4. Optionally add winget manifests for the new version in `winget/manifests/p/PetrSykora/ZabbixMonitor/<version>/`.
 5. Merge the change into `master` as described in [Changes to master](#changes-to-master).
-6. Start the release: **Actions → Release → Run workflow**, branch `master`, tag `v<version>` (for example `v1.3.9`). The workflow creates the tag on the current commit and the GitHub release with all five files. Pushing a tag `v*` starts the same workflow.
+6. Start the release: **Actions → Release → Run workflow**, branch `master`, tag `v<version>` (for example `v1.4.0`). The workflow creates the tag on the current commit and the GitHub release with all five files. Pushing a tag `v*` starts the same workflow.
 
 Use **dry_run** to only build: the files are then attached to the workflow run as artifacts and no tag or release is created.
 
@@ -135,7 +135,7 @@ After the release is created, the release workflow can upload all five files to 
 2. Add it in the repository under **Settings → Secrets and variables → Actions → New repository secret** as `VIRUSTOTAL_API_KEY`.
 3. The next release is checked. Without the secret the step is skipped.
 
-To check an existing release (for example one released before the secret was set) or to refresh its result, run **Actions → VirusTotal → Run workflow** with the tag, for example `v1.3.9`. It downloads the files of that release, checks them and replaces the VirusTotal section of the release notes and the badge file.
+To check an existing release (for example one released before the secret was set) or to refresh its result, run **Actions → VirusTotal → Run workflow** with the tag, for example `v1.4.0`. It downloads the files of that release, checks them and replaces the VirusTotal section of the release notes and the badge file.
 
 The free public API allows 4 requests per minute and is meant for non-commercial use. The script waits between requests, so the check takes about 5 to 15 minutes. If VirusTotal fails or takes longer than 30 minutes, the step fails, but the release itself stays as it is. Files uploaded to VirusTotal can be downloaded by its subscribers, which is fine for public releases.
 

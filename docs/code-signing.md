@@ -84,5 +84,5 @@ The application only installs updates signed with a known certificate (see [Inst
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a file downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded file before using it:
 
 ```powershell
-Unblock-File .\ZabbixTrayMonitor-v1.3.9-win-x64.zip
+Unblock-File .\ZabbixTrayMonitor-v1.4.0-win-x64.zip
 ```
