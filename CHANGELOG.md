@@ -2,6 +2,12 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
+## Unreleased
+
+### Fixed
+
+- The application icon was blank (white) in the Alt+Tab switcher: the small icon sizes are now stored as bitmaps instead of PNG.
+
 ## 1.3.3 – 2026-10-28
 
 ### Changed

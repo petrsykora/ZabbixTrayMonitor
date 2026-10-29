@@ -1,5 +1,7 @@
 # Usage: python3 tools/make_app_icon.py Assets/app.ico preview.png  (requires Pillow)
 # Erzeugt Assets/app.ico (16-256 px): blaues abgerundetes Quadrat, weiße Monitoring-Kurve, grüner Statuspunkt
+import io
+import struct
 import sys
 from PIL import Image, ImageDraw
 
@@ -40,9 +42,47 @@ def render(size):
 
     return img.resize((size, size), Image.LANCZOS)
 
+def bmp_frame(im):
+    # 32-Bit-DIB (BGRA, von unten nach oben) mit AND-Maske, Höhe im Header doppelt (XOR + AND)
+    w, h = im.size
+    header = struct.pack("<IiiHHIIiiII", 40, w, h * 2, 1, 32, 0, 0, 0, 0, 0, 0)
+    px = im.load()
+    xor = bytearray()
+    for y in range(h - 1, -1, -1):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            xor += bytes((b, g, r, a))
+    row = ((w + 31) // 32) * 4
+    mask = bytearray()
+    for y in range(h - 1, -1, -1):
+        bits = bytearray(row)
+        for x in range(w):
+            if px[x, y][3] == 0:
+                bits[x // 8] |= 0x80 >> (x % 8)
+        mask += bits
+    return header + bytes(xor) + bytes(mask)
+
+def png_frame(im):
+    buf = io.BytesIO()
+    im.save(buf, format="PNG")
+    return buf.getvalue()
+
+# Kleine Größen als BMP, nur 256 px als PNG: Windows zeigt PNG-komprimierte kleine Frames nicht überall an
+# (zB. leere Ikone im Alt+Tab-Umschalter)
+def save_ico(path, images):
+    frames = [png_frame(im) if im.size[0] >= 256 else bmp_frame(im) for im in images]
+    out = struct.pack("<HHH", 0, 1, len(frames))
+    offset = 6 + 16 * len(frames)
+    for im, data in zip(images, frames):
+        n = im.size[0]
+        out += struct.pack("<BBBBHHII", n % 256, n % 256, 0, 0, 1, 32, len(data), offset)
+        offset += len(data)
+    with open(path, "wb") as f:
+        f.write(out + b"".join(frames))
+
 sizes = [16, 20, 24, 32, 40, 48, 64, 128, 256]
 images = [render(n) for n in sizes]
-images[-1].save(sys.argv[1], format="ICO", sizes=[(n, n) for n in sizes], append_images=images[:-1])
+save_ico(sys.argv[1], images)
 
 # Vorschau
 preview = Image.new("RGBA", (sum(sizes) + 10 * len(sizes), 256), (240, 240, 240, 255))
