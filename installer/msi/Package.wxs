@@ -47,6 +47,8 @@
 		</UI>
 
 		<Icon Id="AppIcon" SourceFile="$(var.AssetsDir)\app.ico" />
+		<!-- Icon der Startmenü-Verknüpfung: ICE50 verlangt dieselbe Endung wie das Ziel (.exe), deshalb aus der exe -->
+		<Icon Id="ShortcutIcon.exe" SourceFile="$(var.PublishDir)\ZabbixTrayMonitor.exe" />
 		<Property Id="ARPPRODUCTICON" Value="AppIcon" />
 
 <?if $(var.InstallerVariant) = "RuntimeDependent" ?>
@@ -90,13 +92,17 @@
 
 	<Fragment>
 		<ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
-			<!-- exe separat, damit die Startmenü-Verknüpfung darauf zeigen kann (Icon kommt aus der exe) -->
+			<!-- exe separat, damit die Startmenü-Verknüpfung darauf zeigen kann.
+			     Angekündigte Verknüpfung (für Installation pro Computer), das Icon kommt aus der Icon-Tabelle (ShortcutIcon),
+			     sonst zeigt das Startmenü ein leeres (weißes) Icon -->
 			<Component>
 				<File Id="MainExe" Source="$(var.PublishDir)\ZabbixTrayMonitor.exe" KeyPath="yes">
 					<Shortcut Id="StartMenuShortcut"
 					          Directory="ProgramMenuFolder"
 					          Name="Zabbix Monitor"
+					          Description="Zabbix Monitor"
 					          WorkingDirectory="INSTALLFOLDER"
+					          Icon="ShortcutIcon.exe"
 					          Advertise="yes" />
 				</File>
 			</Component>

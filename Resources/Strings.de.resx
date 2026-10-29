@@ -542,7 +542,25 @@ Der API Token wurde nicht geprüft, weil kein Token eingegeben ist.</value>
     <value>• Alle 6 Stunden (und eine Minute nach dem Start) prüft die Anwendung auf GitHub, ob eine neue Version veröffentlicht wurde. Wenn ja, erscheint eine Benachrichtigung am Tray-Icon und das Tray-Menü zeigt "Update verfügbar".
 • Das Update-Fenster zeigt die installierte und die neue Version. Herunterladen öffnet die Release-Seite; zum Aktualisieren den Installer von dort ausführen. Diese Version überspringen blendet den Hinweis aus, bis eine noch neuere Version erscheint. Später erinnert bei der nächsten Prüfung erneut.
 • Es wird nichts automatisch heruntergeladen oder installiert. Von GitHub (api.github.com) wird nur die Nummer der neuesten Version abgefragt.
-• Info &gt; Nach Updates suchen prüft sofort.
+• Info &gt; Nach Updates suchen prüft sofort. Das Info-Fenster zeigt auch Zeit und Ergebnis der letzten Prüfung, einschließlich Fehlern der automatischen Prüfung.
 • Die automatische Prüfung kann in den Einstellungen abgeschaltet werden. Administratoren können sie für alle Benutzer mit dem Registry-Wert DisableUpdateCheck = 1 (DWORD) unter HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor abschalten.</value>
+  </data>
+  <data name="About_UpdateCheck" xml:space="preserve">
+    <value>Update-Prüfung</value>
+  </data>
+  <data name="Update_StatusNotYet" xml:space="preserve">
+    <value>Noch nicht geprüft (erste Prüfung eine Minute nach dem Start)</value>
+  </data>
+  <data name="Update_StatusDisabled" xml:space="preserve">
+    <value>{0:g} – automatische Prüfung abgeschaltet</value>
+  </data>
+  <data name="Update_StatusUpToDate" xml:space="preserve">
+    <value>{0:g} – neueste Version</value>
+  </data>
+  <data name="Update_StatusAvailable" xml:space="preserve">
+    <value>{0:g} – Version {1} verfügbar</value>
+  </data>
+  <data name="Update_StatusFailed" xml:space="preserve">
+    <value>{0:g} – fehlgeschlagen: {1}</value>
   </data>
 </root>

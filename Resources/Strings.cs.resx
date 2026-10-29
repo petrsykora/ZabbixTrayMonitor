@@ -542,7 +542,25 @@ API token nebyl ověřen, protože není zadaný.</value>
     <value>• Každých 6 hodin (a minutu po spuštění) aplikace zkontroluje na GitHubu, jestli nevyšla nová verze. Pokud ano, zobrazí se u ikony v trayi oznámení a v menu položka "Dostupná aktualizace".
 • Okno aktualizace ukazuje nainstalovanou a novou verzi. Stáhnout otevře stránku vydání; pro aktualizaci spusťte instalátor odtud. Přeskočit tuto verzi skryje upozornění, dokud nevyjde ještě novější verze. Později připomene aktualizaci při příští kontrole.
 • Nic se nestahuje ani neinstaluje automaticky. Z GitHubu (api.github.com) se zjišťuje jen číslo nejnovější verze.
-• O aplikaci &gt; Zkontrolovat aktualizace zkontroluje hned.
+• O aplikaci &gt; Zkontrolovat aktualizace zkontroluje hned. Okno O aplikaci ukazuje také čas a výsledek poslední kontroly, včetně chyb automatické kontroly.
 • Automatickou kontrolu lze vypnout v Nastavení. Správci ji mohou vypnout pro všechny uživatele hodnotou registru DisableUpdateCheck = 1 (DWORD) v HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor.</value>
+  </data>
+  <data name="About_UpdateCheck" xml:space="preserve">
+    <value>Kontrola aktualizací</value>
+  </data>
+  <data name="Update_StatusNotYet" xml:space="preserve">
+    <value>Zatím neproběhla (první kontrola minutu po spuštění)</value>
+  </data>
+  <data name="Update_StatusDisabled" xml:space="preserve">
+    <value>{0:g} – automatická kontrola je vypnutá</value>
+  </data>
+  <data name="Update_StatusUpToDate" xml:space="preserve">
+    <value>{0:g} – nejnovější verze</value>
+  </data>
+  <data name="Update_StatusAvailable" xml:space="preserve">
+    <value>{0:g} – k dispozici verze {1}</value>
+  </data>
+  <data name="Update_StatusFailed" xml:space="preserve">
+    <value>{0:g} – selhala: {1}</value>
   </data>
 </root>

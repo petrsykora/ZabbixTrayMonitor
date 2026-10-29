@@ -24,6 +24,9 @@ namespace ZabbixTrayMonitor
         private readonly DispatcherTimer _updateCheckTimer = new();
         private List<ZabbixProblem> _currentProblems = new();
         private UpdateInfo? _availableUpdate;
+
+        // Zeit und Ergebnis der letzten Update-Prüfung für das Info-Fenster (null = noch keine Prüfung)
+        public string? LastUpdateCheckStatus { get; private set; }
         private bool _isCheckingForUpdates = false;
 
         // Erste Update-Prüfung kurz nach dem Start (nicht gleichzeitig mit dem ersten Abruf der Probleme), danach alle 6 Stunden
@@ -90,7 +93,10 @@ namespace ZabbixTrayMonitor
             var config = _configService.Load();
 
             if (!interactive && (!config.CheckForUpdates || UpdateService.IsDisabledByPolicy()))
+            {
+                LastUpdateCheckStatus = string.Format(Strings.Update_StatusDisabled, DateTime.Now);
                 return;
+            }
 
             _isCheckingForUpdates = true;
 
@@ -100,6 +106,10 @@ namespace ZabbixTrayMonitor
 
                 _availableUpdate = update;
                 UpdateTrayUpdateMenuItem();
+
+                LastUpdateCheckStatus = update == null
+                    ? string.Format(Strings.Update_StatusUpToDate, DateTime.Now)
+                    : string.Format(Strings.Update_StatusAvailable, DateTime.Now, UpdateService.FormatVersion(update.Version));
 
                 if (update == null)
                 {
@@ -131,7 +141,9 @@ namespace ZabbixTrayMonitor
             }
             catch (Exception ex)
             {
-                // Automatische Prüfung still, zB. ohne Internet oder bei gesperrtem GitHub
+                LastUpdateCheckStatus = string.Format(Strings.Update_StatusFailed, DateTime.Now, ex.Message);
+
+                // Automatische Prüfung still (Ergebnis nur im Info-Fenster), zB. ohne Internet oder bei gesperrtem GitHub
                 if (interactive)
                 {
                     MessageBox.Show(
