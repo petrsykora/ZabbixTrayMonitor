@@ -58,8 +58,8 @@ The license dialog needs `installer\License.rtf`, which is generated from `LICEN
 Then, after publishing as above:
 
 ```powershell
-dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.4 -p:PublishDir="$PWD\publish"
-dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.4 -p:InstallerVariant=RuntimeDependent -p:PublishDir="$PWD\publish-runtime-dependent"
+dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.5 -p:PublishDir="$PWD\publish"
+dotnet build installer\msi\ZabbixTrayMonitor.Installer.wixproj -c Release -p:ProductVersion=1.3.5 -p:InstallerVariant=RuntimeDependent -p:PublishDir="$PWD\publish-runtime-dependent"
 ```
 
 The MSI files are written to `installer\msi\bin\Release\SelfContained\` and `installer\msi\bin\Release\RuntimeDependent\`.
@@ -106,7 +106,7 @@ XAML uses the texts with `{x:Static res:Strings.Key}`, code with `Strings.Key`.
 3. Update the version in the examples in README and docs if they mention it.
 4. Optionally add winget manifests for the new version in `winget/manifests/p/PetrSykora/ZabbixMonitor/<version>/`.
 5. Commit and push to `master`.
-6. Start the release: **Actions → Release → Run workflow**, branch `master`, tag `v<version>` (for example `v1.3.4`). The workflow creates the tag on the current commit and the GitHub release with all five files. Pushing a tag `v*` starts the same workflow.
+6. Start the release: **Actions → Release → Run workflow**, branch `master`, tag `v<version>` (for example `v1.3.5`). The workflow creates the tag on the current commit and the GitHub release with all five files. Pushing a tag `v*` starts the same workflow.
 
 Use **dry_run** to only build: the files are then attached to the workflow run as artifacts and no tag or release is created.
 

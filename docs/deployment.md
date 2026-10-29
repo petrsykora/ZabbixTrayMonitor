@@ -26,19 +26,19 @@ Both MSI files have the same upgrade code: installing one replaces the other, al
 MSI (both variants):
 
 ```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.4-win-x64.msi /qn
+msiexec /i ZabbixTrayMonitor-v1.3.5-win-x64.msi /qn
 ```
 
 With a log file:
 
 ```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.4-win-x64.msi /qn /l*v "$env:TEMP\ZabbixMonitor-install.log"
+msiexec /i ZabbixTrayMonitor-v1.3.5-win-x64.msi /qn /l*v "$env:TEMP\ZabbixMonitor-install.log"
 ```
 
 `setup.exe`:
 
 ```powershell
-ZabbixTrayMonitor-v1.3.4-win-x64-setup.exe /quiet /norestart
+ZabbixTrayMonitor-v1.3.5-win-x64-setup.exe /quiet /norestart
 ```
 
 Silent installations do not start the application; it starts at the next sign-in through the autostart entry.
@@ -52,7 +52,7 @@ Silent installations do not start the application; it starts at the next sign-in
 Example without autostart:
 
 ```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.4-win-x64.msi /qn AUTOSTART=0
+msiexec /i ZabbixTrayMonitor-v1.3.5-win-x64.msi /qn AUTOSTART=0
 ```
 
 ## Update
@@ -87,7 +87,7 @@ Interactively: **Settings → Apps → Installed apps → Zabbix Monitor → Uni
 Silently, with the MSI file of the installed version:
 
 ```powershell
-msiexec /x ZabbixTrayMonitor-v1.3.4-win-x64.msi /qn
+msiexec /x ZabbixTrayMonitor-v1.3.5-win-x64.msi /qn
 ```
 
 Or without the file, by the product name:
