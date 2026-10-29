@@ -8,6 +8,7 @@ All notable changes to this project. Versions up to 1.2.1 were released by Daran
 
 - Notification when a new version is available: once a day the application checks the latest release on GitHub. The update window offers **Download** (release page), **Skip this version** and **Later**; nothing is installed automatically.
 - **About → Check for updates** and the setting **Check for updates automatically**. Administrators can turn the check off with the registry policy `HKLM\Software\Policies\ZabbixTrayMonitor`, `DisableUpdateCheck = 1`, see [Deployment](docs/deployment.md#update-notification).
+- Optional VirusTotal check of the release files in the release workflow: the result is added to the release notes and attached as `virustotal-badge.json` for a README badge, see [Development](docs/development.md#virustotal).
 
 ## 1.3.4 – 2026-10-29
 

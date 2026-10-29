@@ -20,7 +20,7 @@ The application project can also be restored and built on Linux or macOS (`Enabl
 | `Assets/` | application and tray icons, README screenshots |
 | `installer/msi/` | MSI installer (WiX Toolset v5), variants `SelfContained` and `RuntimeDependent` |
 | `installer/bundle/` | `setup.exe` (WiX Burn bundle) that installs the .NET runtime if needed |
-| `tools/` | scripts for code signing, license text and icon generation |
+| `tools/` | scripts for code signing, VirusTotal check, license text and icon generation |
 | `winget/manifests/` | local winget manifests |
 | `.github/workflows/` | release and winget workflows |
 
@@ -110,7 +110,32 @@ XAML uses the texts with `{x:Static res:Strings.Key}`, code with `Strings.Key`.
 
 Use **dry_run** to only build: the files are then attached to the workflow run as artifacts and no tag or release is created.
 
-The workflow signs the files when the signing secrets are set, see [Code signing](code-signing.md). When the `WINGET_TOKEN` secret is set and the package already exists in the official winget catalog, it also submits the new version to `microsoft/winget-pkgs`.
+The workflow signs the files when the signing secrets are set, see [Code signing](code-signing.md). When the `VIRUSTOTAL_API_KEY` secret is set, it checks the files with VirusTotal, see [VirusTotal](#virustotal). When the `WINGET_TOKEN` secret is set and the package already exists in the official winget catalog, it also submits the new version to `microsoft/winget-pkgs`.
+
+## VirusTotal
+
+After the release is created, the release workflow can upload all five files to [VirusTotal](https://www.virustotal.com) (`tools/Submit-VirusTotal.ps1`), wait for the analyses and then:
+
+- add a **VirusTotal** section to the release notes with the detections and a link to the report of every file
+- attach `virustotal-badge.json` to the release, the data for a badge in the README
+
+### Setup
+
+1. Create a free account on <https://www.virustotal.com> and copy the **API key** from your profile.
+2. Add it in the repository under **Settings → Secrets and variables → Actions → New repository secret** as `VIRUSTOTAL_API_KEY`.
+3. The next release is checked. Without the secret the step is skipped.
+
+The free public API allows 4 requests per minute and is meant for non-commercial use. The script waits between requests, so the check takes about 5 to 15 minutes. If VirusTotal fails or takes longer than 30 minutes, the step fails, but the release itself stays as it is. Files uploaded to VirusTotal can be downloaded by its subscribers, which is fine for public releases.
+
+### Badge
+
+Once a release has `virustotal-badge.json`, this badge shows the result of the latest release (green without detections, orange for 1 to 3 detections, red for more):
+
+```markdown
+[![VirusTotal](https://img.shields.io/endpoint?url=https%3A%2F%2Fgithub.com%2Fpetrsykora%2FZabbixTrayMonitor%2Freleases%2Flatest%2Fdownload%2Fvirustotal-badge.json)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
+```
+
+Unsigned .NET applications, especially the self-contained variants, are sometimes reported by a few engines as a false positive. Signing the files (see [Code signing](code-signing.md)) usually reduces that.
 
 ## Security checks
 

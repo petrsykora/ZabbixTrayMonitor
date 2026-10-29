@@ -36,6 +36,7 @@ jobs:
       SIGNING_CERT_PFX_BASE64: ${{ secrets.SIGNING_CERT_PFX_BASE64 }}
       SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
       WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+      VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
 
     steps:
       - uses: actions/checkout@v7
@@ -209,6 +210,31 @@ jobs:
             ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64-runtime-dependent.zip
             ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.msi
             ZabbixTrayMonitor-${{ env.RELEASE_TAG }}-win-x64.zip
+
+      # Release-Dateien bei VirusTotal prüfen: Ergebnis als Tabelle in die Release-Beschreibung und
+      # virustotal-badge.json (shields.io Endpoint-Badge für die README) als Datei ans Release
+      # Läuft nur mit Secret VIRUSTOTAL_API_KEY, ein Fehler bei VirusTotal lässt das Release unverändert
+      - name: Check with VirusTotal
+        if: ${{ !inputs.dry_run && env.VIRUSTOTAL_API_KEY != '' }}
+        continue-on-error: true
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $files = Get-ChildItem "ZabbixTrayMonitor-$env:RELEASE_TAG-win-x64*" | ForEach-Object FullName
+          .\tools\Submit-VirusTotal.ps1 -Path $files -MarkdownPath virustotal.md -BadgePath virustotal-badge.json
+
+          $notes = gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --json body --jq .body
+          if ($LASTEXITCODE -ne 0) { throw "Reading the release notes failed" }
+
+          $newNotes = (($notes -join "`n").TrimEnd(), (Get-Content virustotal.md -Raw)) -join "`n`n"
+          Set-Content release-notes.md -Value $newNotes -Encoding utf8NoBOM
+
+          gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --notes-file release-notes.md
+          if ($LASTEXITCODE -ne 0) { throw "Updating the release notes failed" }
+
+          gh release upload $env:RELEASE_TAG virustotal-badge.json --repo $env:GITHUB_REPOSITORY --clobber
+          if ($LASTEXITCODE -ne 0) { throw "Uploading virustotal-badge.json failed" }
 
       # Neue Version des winget-Pakets PetrSykora.ZabbixMonitor als Pull Request bei microsoft/winget-pkgs einreichen
       # Läuft nur mit Secret WINGET_TOKEN und erst, wenn die erste Version (Workflow "winget") in winget aufgenommen wurde
