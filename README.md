@@ -81,7 +81,7 @@ All installers:
 Silent installation, for example for scripts or Intune:
 
 ```powershell
-msiexec /i ZabbixTrayMonitor-v1.3.3-win-x64.msi /qn
+msiexec /i ZabbixTrayMonitor-v1.3.4-win-x64.msi /qn
 ```
 
 Add `AUTOSTART=0` to install without autostart. `setup.exe` runs silently with `/quiet`. Group Policy, Intune, updates and uninstalling are described in [Deployment](docs/deployment.md).
