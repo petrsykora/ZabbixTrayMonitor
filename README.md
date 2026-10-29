@@ -237,20 +237,13 @@ The user behind the API token needs the required Zabbix permissions. For alarm h
 
 To report a security vulnerability, see [SECURITY.md](SECURITY.md).
 
-## Code signing policy
+## Code signing
 
-Free code signing for the Windows releases is provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org). The application for the SignPath Foundation program is pending; until it is accepted, the release files are unsigned.
+The release files are currently not signed, so Windows SmartScreen may warn when they are downloaded and started. To check that the files are genuine:
 
-Only files built from this repository by the [release workflow](.github/workflows/release.yml) on GitHub-hosted runners are signed. Every signing request is approved manually.
-
-Team roles:
-
-| Role | Members |
-|---|---|
-| Committers and reviewers | [Petr Sýkora](https://github.com/petrsykora) |
-| Approvers | [Petr Sýkora](https://github.com/petrsykora) |
-
-All members use two-factor authentication on GitHub and SignPath.
+- They are built from this repository by the [release workflow](.github/workflows/release.yml) on GitHub-hosted runners; the build log of every release is public under [Actions](https://github.com/petrsykora/ZabbixTrayMonitor/actions).
+- Every release is checked with VirusTotal; the result and links to the reports are in the release notes.
+- GitHub shows the SHA-256 checksum of every file on the release page.
 
 To sign the files with your own certificate for computers in your organization, see [Code signing](docs/code-signing.md).
 

@@ -2,7 +2,7 @@
 
 To make Windows treat the application as coming from a known publisher, it can be signed with your own code signing certificate. The certificate is distributed to the managed computers via Group Policy (GPO). On computers without this GPO the signature is not trusted and the application behaves like an unsigned one.
 
-The official releases of this repository are currently not signed. Signing through the free [SignPath Foundation](https://signpath.org) program for open source projects has been applied for, see the [code signing policy](../README.md#code-signing-policy). The own certificate described on this page is independent of that and is meant for organizations that want to sign the files themselves.
+The official releases of this repository are currently not signed.
 
 ## What is signed
 
