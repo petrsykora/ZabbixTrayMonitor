@@ -2,7 +2,7 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
-## Unreleased
+## 1.3.6 – 2026-10-29
 
 ### Added
 
