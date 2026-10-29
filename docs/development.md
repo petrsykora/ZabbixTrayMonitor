@@ -113,7 +113,7 @@ Squash and merge creates a single commit on `master` that GitHub signs, so the h
    - `Directory.Build.props`: `Version`, `AssemblyVersion`, `FileVersion`, `InformationalVersion`
    - `ZabbixTrayMonitor.csproj`: the same four properties (the release workflow reads the version from here)
 2. Add the changes to [CHANGELOG.md](../CHANGELOG.md).
-3. Update the version in the examples in README and docs if they mention it.
+3. Update the version in the examples in README and docs (file names such as `ZabbixTrayMonitor-v<version>-win-x64.msi` and `-p:ProductVersion=`). Do not replace it blindly: statements such as "since version 1.3.7" must keep their version.
 4. Optionally add winget manifests for the new version in `winget/manifests/p/PetrSykora/ZabbixMonitor/<version>/`.
 5. Merge the change into `master` as described in [Changes to master](#changes-to-master).
 6. Start the release: **Actions → Release → Run workflow**, branch `master`, tag `v<version>` (for example `v1.3.8`). The workflow creates the tag on the current commit and the GitHub release with all five files. Pushing a tag `v*` starts the same workflow.
@@ -147,7 +147,7 @@ The badge in the README shows the result of the latest release (green without de
 [![VirusTotal](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpetrsykora%2FZabbixTrayMonitor%2Fbadges%2Fvirustotal-badge.json)](https://github.com/petrsykora/ZabbixTrayMonitor/releases/latest)
 ```
 
-Unsigned .NET applications, especially the self-contained variants, are sometimes reported by a few engines as a false positive. Signing the files (see [Code signing](code-signing.md)) usually reduces that.
+A few engines occasionally report new .NET applications, especially the self-contained variants, as a false positive. Signing the files (see [Code signing](code-signing.md)) usually reduces that.
 
 ## Security checks
 

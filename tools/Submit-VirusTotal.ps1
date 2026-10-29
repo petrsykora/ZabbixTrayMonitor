@@ -140,7 +140,7 @@ $markdown = @(
     "|---|---|---|"
     foreach ($row in $rows) { "| ``$($row.Name)`` | $($row.Detections) / $($row.Engines) | [Report]($($row.ReportUrl)) |" }
     ""
-    "Unsigned .NET applications are sometimes reported by a few engines as a false positive."
+    "A few engines occasionally report new .NET applications as a false positive."
 )
 
 Set-Content -Path $MarkdownPath -Value ($markdown -join "`n") -Encoding utf8NoBOM
