@@ -427,7 +427,7 @@ Zertifikatsfehler trotzdem ignorieren?</value>
 • Nach Bestätigung/Unterdrückung automatisch aktualisieren: Liste nach einer Alarmaktion neu laden.
 • Standardnachricht: im Alarmmenü vorbelegter Text.
 • Windows Credential Manager: Name (Target) und Benutzername, unter denen der Token gespeichert wird. Nur ändern, wenn Ihre Organisation bestimmte Namen vorgibt.
-• Automatisch nach Updates suchen: tägliche Prüfung auf eine neue Version, siehe Updates.</value>
+• Automatisch nach Updates suchen: Prüfung auf eine neue Version alle 6 Stunden, siehe Updates.</value>
   </data>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Installation und Updates</value>
@@ -452,7 +452,7 @@ Standard: Warn-Schwelle 2, Error-Schwelle 4, also 0-1 ignoriert, 2-3 Warnung, 4-
 • SSL-Zertifikatsfehler ignorieren schaltet die Prüfung des Serverzertifikats ab. Ein Angreifer im Netzwerk könnte sich dann als Ihr Zabbix-Server ausgeben und den Token abgreifen. Stattdessen das Serverzertifikat bzw. die eigene Zertifizierungsstelle in die vertrauenswürdigen Zertifikate von Windows importieren.
 • Für den Token einen eigenen Zabbix-Benutzer mit möglichst wenigen Rechten verwenden: Lesezugriff auf die zu überwachenden Hostgruppen und, wenn Alarme bearbeitet werden sollen, das Recht Probleme zu bestätigen und zu unterdrücken.
 • Der Token wird für Ihren Windows-Benutzer verschlüsselt im Credential Manager gespeichert.
-• Netzwerkverbindungen: Die Anwendung verbindet sich nur mit dem Zabbix Server aus den Einstellungen und einmal am Tag mit GitHub (api.github.com), um nach einer neuen Version zu suchen. An GitHub werden weder der Token noch Daten aus Zabbix gesendet. Die Prüfung kann in den Einstellungen abgeschaltet werden.</value>
+• Netzwerkverbindungen: Die Anwendung verbindet sich nur mit dem Zabbix Server aus den Einstellungen und alle 6 Stunden mit GitHub (api.github.com), um nach einer neuen Version zu suchen. An GitHub werden weder der Token noch Daten aus Zabbix gesendet. Die Prüfung kann in den Einstellungen abgeschaltet werden.</value>
   </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
     <value>• Das Tray-Icon ist rot und der Tooltip zeigt einen Fehler: Einstellungen öffnen und Zabbix URL und API Token mit Testen prüfen.
@@ -539,7 +539,7 @@ Der API Token wurde nicht geprüft, weil kein Token eingegeben ist.</value>
     <value>Updates</value>
   </data>
   <data name="Help_Updates_Text" xml:space="preserve">
-    <value>• Einmal am Tag prüft die Anwendung auf GitHub, ob eine neue Version veröffentlicht wurde. Wenn ja, erscheint eine Benachrichtigung am Tray-Icon und das Tray-Menü zeigt "Update verfügbar".
+    <value>• Alle 6 Stunden (und eine Minute nach dem Start) prüft die Anwendung auf GitHub, ob eine neue Version veröffentlicht wurde. Wenn ja, erscheint eine Benachrichtigung am Tray-Icon und das Tray-Menü zeigt "Update verfügbar".
 • Das Update-Fenster zeigt die installierte und die neue Version. Herunterladen öffnet die Release-Seite; zum Aktualisieren den Installer von dort ausführen. Diese Version überspringen blendet den Hinweis aus, bis eine noch neuere Version erscheint. Später erinnert bei der nächsten Prüfung erneut.
 • Es wird nichts automatisch heruntergeladen oder installiert. Von GitHub (api.github.com) wird nur die Nummer der neuesten Version abgefragt.
 • Info &gt; Nach Updates suchen prüft sofort.

@@ -61,7 +61,7 @@ Install the new version the same way as the first one. The old version is remove
 
 ### Update notification
 
-Once a day (first one minute after the start) the application asks GitHub for the latest release (`https://api.github.com/repos/petrsykora/ZabbixTrayMonitor/releases/latest`). If it is newer, a notification appears next to the tray icon and the tray menu shows **Update available**. The update window offers **Download** (opens the release page in the browser), **Skip this version** and **Later**. Nothing is downloaded or installed automatically, and no data besides the request itself is sent.
+Every 6 hours (first one minute after the start) the application asks GitHub for the latest release (`https://api.github.com/repos/petrsykora/ZabbixTrayMonitor/releases/latest`). If it is newer, a notification appears next to the tray icon and the tray menu shows **Update available**. The update window offers **Download** (opens the release page in the browser), **Skip this version** and **Later**. Nothing is downloaded or installed automatically, and no data besides the request itself is sent.
 
 Users can turn the check off under **Settings → Check for updates automatically**; **About → Check for updates** always checks right away.
 

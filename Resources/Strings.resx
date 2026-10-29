@@ -427,7 +427,7 @@ Ignore certificate errors anyway?</value>
 • Refresh automatically after acknowledging/suppressing: reload the list after an alarm action.
 • Default message: text prefilled in the alarm menu.
 • Windows Credential Manager: name (target) and user name under which the token is stored. Change them only if your organization requires specific names.
-• Check for updates automatically: daily check for a new version, see Updates.</value>
+• Check for updates automatically: check for a new version every 6 hours, see Updates.</value>
   </data>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Installation and updates</value>
@@ -452,7 +452,7 @@ Defaults: warning threshold 2, error threshold 4, so 0-1 ignored, 2-3 warning, 4
 • Ignore SSL certificate errors turns off the check of the server certificate. An attacker on the network could then pretend to be your Zabbix server and steal the token. Instead, import the server certificate or your own certification authority into the trusted certificates of Windows.
 • Use a dedicated Zabbix user for the token with as few permissions as possible: read access to the host groups you want to monitor and, if you want to edit alarms, permission to acknowledge and suppress problems.
 • The token is stored encrypted for your Windows user in the Credential Manager.
-• Network connections: the application only connects to the Zabbix server from the settings and, once a day, to GitHub (api.github.com) to check for a new version. No token and no data from Zabbix is sent to GitHub. The check can be turned off in the settings.</value>
+• Network connections: the application only connects to the Zabbix server from the settings and, every 6 hours, to GitHub (api.github.com) to check for a new version. No token and no data from Zabbix is sent to GitHub. The check can be turned off in the settings.</value>
   </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
     <value>• The tray icon is red and the tooltip shows an error: open Settings and check the Zabbix URL and the API token with Test.
@@ -539,7 +539,7 @@ The API token was not checked because no token is entered.</value>
     <value>Updates</value>
   </data>
   <data name="Help_Updates_Text" xml:space="preserve">
-    <value>• Once a day the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows "Update available".
+    <value>• Every 6 hours (and one minute after the start) the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows "Update available".
 • The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
 • Nothing is downloaded or installed automatically. Only the number of the latest version is requested from GitHub (api.github.com).
 • About &gt; Check for updates checks right away.

@@ -466,9 +466,9 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • Once a day the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows &quot;Update available&quot;.
+        ///   Looks up a localized string similar to • Every 6 hours (and one minute after the start) the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows &quot;Update available&quot;.
         ///• The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
-        ///• Nothing is downloaded or installed automatically. Only the number of t [rest of string was truncated]&quot;;.
+        ///• Nothing is downloaded or installed [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Updates_Text {
             get {

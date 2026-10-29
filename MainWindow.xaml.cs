@@ -26,9 +26,9 @@ namespace ZabbixTrayMonitor
         private UpdateInfo? _availableUpdate;
         private bool _isCheckingForUpdates = false;
 
-        // Erste Update-Prüfung kurz nach dem Start (nicht gleichzeitig mit dem ersten Abruf der Probleme), danach täglich
+        // Erste Update-Prüfung kurz nach dem Start (nicht gleichzeitig mit dem ersten Abruf der Probleme), danach alle 6 Stunden
         private static readonly TimeSpan FirstUpdateCheckDelay = TimeSpan.FromMinutes(1);
-        private static readonly TimeSpan UpdateCheckInterval = TimeSpan.FromHours(24);
+        private static readonly TimeSpan UpdateCheckInterval = TimeSpan.FromHours(6);
         private ProblemsWindow? _problemsWindow;
         private string? _lastRefreshError;
         private bool _isRefreshing = false;
