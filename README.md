@@ -252,7 +252,7 @@ To check that the files are genuine:
 This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. It only connects to:
 
 - **The Zabbix server** configured by the user in the settings, to read and handle problems with the API token entered by the user.
-- **GitHub** (`api.github.com`), once a day, to check whether a new version has been released. Only the number of the latest version is requested; no token, no data from Zabbix and no personal data is sent. The check can be turned off under **Settings → Check for updates automatically**, or for all users by an administrator (see [Deployment](docs/deployment.md#update-notification)). New versions are never downloaded or installed automatically.
+- **GitHub** (`api.github.com`), every 6 hours, to check whether a new version has been released. Only the number of the latest version is requested; no token, no data from Zabbix and no personal data is sent. The check can be turned off under **Settings → Check for updates automatically**, or for all users by an administrator (see [Deployment](docs/deployment.md#update-notification)). New versions are never downloaded or installed automatically.
 
 The settings and the API token are stored only on the local computer (`%AppData%\ZabbixTrayMonitor\config.json` and the Windows Credential Manager).
 

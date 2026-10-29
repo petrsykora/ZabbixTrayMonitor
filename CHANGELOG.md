@@ -2,6 +2,12 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
+## Unreleased
+
+### Changed
+
+- The automatic update check runs every 6 hours instead of once a day, so a new version is noticed sooner without restarting the application.
+
 ## 1.3.7 – 2026-10-29
 
 ### Changed

@@ -427,7 +427,7 @@ Přesto ignorovat chyby certifikátu?</value>
 • Po potvrzení/potlačení automaticky obnovit: po akci s alarmem znovu načíst seznam.
 • Výchozí zpráva: text předvyplněný v menu alarmu.
 • Windows Credential Manager: název (target) a uživatelské jméno, pod kterými je token uložený. Měňte je jen tehdy, když vaše organizace vyžaduje konkrétní názvy.
-• Automaticky kontrolovat aktualizace: denní kontrola nové verze, viz Aktualizace.</value>
+• Automaticky kontrolovat aktualizace: kontrola nové verze každých 6 hodin, viz Aktualizace.</value>
   </data>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Instalace a aktualizace</value>
@@ -452,7 +452,7 @@ Výchozí hodnoty: práh varování 2, práh chyby 4, tedy 0-1 ignorováno, 2-3 
 • Ignorovat chyby SSL certifikátu vypne kontrolu certifikátu serveru. Útočník v síti by se pak mohl vydávat za váš Zabbix server a získat token. Místo toho importujte certifikát serveru nebo vlastní certifikační autoritu mezi důvěryhodné certifikáty Windows.
 • Pro token používejte samostatného Zabbix uživatele s co nejmenšími oprávněními: čtení skupin hostů, které chcete sledovat, a pokud chcete upravovat alarmy, oprávnění problémy potvrzovat a potlačovat.
 • Token je uložený šifrovaně pro vašeho uživatele Windows ve Správci pověření.
-• Síťová spojení: aplikace se připojuje jen k serveru Zabbix z nastavení a jednou denně ke GitHubu (api.github.com) kvůli kontrole nové verze. Na GitHub se neposílá token ani žádná data ze Zabbixu. Kontrolu lze vypnout v nastavení.</value>
+• Síťová spojení: aplikace se připojuje jen k serveru Zabbix z nastavení a každých 6 hodin ke GitHubu (api.github.com) kvůli kontrole nové verze. Na GitHub se neposílá token ani žádná data ze Zabbixu. Kontrolu lze vypnout v nastavení.</value>
   </data>
   <data name="Help_Troubleshooting_Text" xml:space="preserve">
     <value>• Ikona v trayi je červená a tooltip ukazuje chybu: otevřete Nastavení a tlačítkem Otestovat ověřte URL Zabbixu a API token.
@@ -539,7 +539,7 @@ API token nebyl ověřen, protože není zadaný.</value>
     <value>Aktualizace</value>
   </data>
   <data name="Help_Updates_Text" xml:space="preserve">
-    <value>• Jednou denně aplikace zkontroluje na GitHubu, jestli nevyšla nová verze. Pokud ano, zobrazí se u ikony v trayi oznámení a v menu položka "Dostupná aktualizace".
+    <value>• Každých 6 hodin (a minutu po spuštění) aplikace zkontroluje na GitHubu, jestli nevyšla nová verze. Pokud ano, zobrazí se u ikony v trayi oznámení a v menu položka "Dostupná aktualizace".
 • Okno aktualizace ukazuje nainstalovanou a novou verzi. Stáhnout otevře stránku vydání; pro aktualizaci spusťte instalátor odtud. Přeskočit tuto verzi skryje upozornění, dokud nevyjde ještě novější verze. Později připomene aktualizaci při příští kontrole.
 • Nic se nestahuje ani neinstaluje automaticky. Z GitHubu (api.github.com) se zjišťuje jen číslo nejnovější verze.
 • O aplikaci &gt; Zkontrolovat aktualizace zkontroluje hned.
