@@ -90,14 +90,17 @@
 
 	<Fragment>
 		<ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
-			<!-- exe separat, damit die Startmenü-Verknüpfung darauf zeigen kann (Icon kommt aus der exe) -->
+			<!-- exe separat, damit die Startmenü-Verknüpfung darauf zeigen kann.
+			     Normale (nicht angekündigte) Verknüpfung: das Icon kommt direkt aus der exe. Eine angekündigte
+			     Verknüpfung (Advertise="yes") ohne eigenes Icon aus der Icon-Tabelle wird im Startmenü leer (weiß) angezeigt -->
 			<Component>
 				<File Id="MainExe" Source="$(var.PublishDir)\ZabbixTrayMonitor.exe" KeyPath="yes">
 					<Shortcut Id="StartMenuShortcut"
 					          Directory="ProgramMenuFolder"
 					          Name="Zabbix Monitor"
+					          Description="Zabbix Monitor"
 					          WorkingDirectory="INSTALLFOLDER"
-					          Advertise="yes" />
+					          Advertise="no" />
 				</File>
 			</Component>
 

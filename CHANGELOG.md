@@ -6,6 +6,7 @@ All notable changes to this project. Versions up to 1.2.1 were released by Daran
 
 ### Fixed
 
+- The Start menu shortcut created by the installers showed a blank (white) icon; it now uses the icon of the application.
 - README and code signing docs: the releases are signed since version 1.3.7 (the version bump had changed it to 1.3.8).
 
 ## 1.3.8 – 2026-10-29
