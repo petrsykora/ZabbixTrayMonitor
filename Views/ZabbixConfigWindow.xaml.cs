@@ -121,6 +121,18 @@ namespace ZabbixTrayMonitor
 
             IgnoreCertificateErrorsCheckBox.IsChecked = config.IgnoreCertificateErrors;
             DarkModeCheckBox.IsChecked = config.UseDarkMode;
+
+            if (UpdateService.IsDisabledByPolicy())
+            {
+                CheckForUpdatesCheckBox.IsChecked = false;
+                CheckForUpdatesCheckBox.IsEnabled = false;
+                CheckForUpdatesCheckBox.ToolTip = Strings.Settings_CheckForUpdatesPolicy;
+                ToolTipService.SetShowOnDisabled(CheckForUpdatesCheckBox, true);
+            }
+            else
+            {
+                CheckForUpdatesCheckBox.IsChecked = config.CheckForUpdates;
+            }
             InitializeLanguageComboBox(config.Language);
             PollIntervalSecondsTextBox.Text = config.PollIntervalSeconds.ToString();
             TrayToolTipDelayMillisecondsTextBox.Text = config.TrayToolTipDelayMilliseconds.ToString();
@@ -214,6 +226,10 @@ namespace ZabbixTrayMonitor
             existingConfig.TrayToolTipDelayMilliseconds = trayToolTipDelayMilliseconds;
             existingConfig.IgnoreCertificateErrors = ignoreCertificateErrors;
             existingConfig.UseDarkMode = DarkModeCheckBox.IsChecked == true;
+
+            // Gesperrte Checkbox (Richtlinie) nicht speichern, damit die eigene Einstellung erhalten bleibt
+            if (CheckForUpdatesCheckBox.IsEnabled)
+                existingConfig.CheckForUpdates = CheckForUpdatesCheckBox.IsChecked == true;
             existingConfig.Language = LanguageComboBox.SelectedValue as string ?? LocalizationService.DefaultLanguage;
             existingConfig.WarningSeverityThreshold = warningThreshold;
             existingConfig.ErrorSeverityThreshold = errorThreshold;

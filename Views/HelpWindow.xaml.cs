@@ -22,6 +22,7 @@ namespace ZabbixTrayMonitor.Views
 
             AddTopic(Strings.Help_GettingStarted_Title, Strings.Help_GettingStarted_Text);
             AddTopic(Strings.Help_Install_Title, Strings.Help_Install_Text);
+            AddTopic(Strings.Help_Updates_Title, Strings.Help_Updates_Text);
             AddTopic(Strings.Help_Tray_Title, Strings.Help_Tray_Text);
             AddTopic(Strings.Help_Problems_Title, Strings.Help_Problems_Text);
             AddTopic(Strings.Help_Alarms_Title, Strings.Help_Alarms_Text);

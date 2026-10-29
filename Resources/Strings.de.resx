@@ -426,7 +426,8 @@ Zertifikatsfehler trotzdem ignorieren?</value>
 • Unterdrückte Probleme weiterhin anzeigen: auch in Zabbix unterdrückte Probleme auflisten.
 • Nach Bestätigung/Unterdrückung automatisch aktualisieren: Liste nach einer Alarmaktion neu laden.
 • Standardnachricht: im Alarmmenü vorbelegter Text.
-• Windows Credential Manager: Name (Target) und Benutzername, unter denen der Token gespeichert wird. Nur ändern, wenn Ihre Organisation bestimmte Namen vorgibt.</value>
+• Windows Credential Manager: Name (Target) und Benutzername, unter denen der Token gespeichert wird. Nur ändern, wenn Ihre Organisation bestimmte Namen vorgibt.
+• Automatisch nach Updates suchen: tägliche Prüfung auf eine neue Version, siehe Updates.</value>
   </data>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Installation und Updates</value>
@@ -482,5 +483,65 @@ Der API Token wurde nicht geprüft, weil kein Token eingegeben ist.</value>
     <value>Der Zabbix Server ist erreichbar (Zabbix Version: {0}), aber der API Token funktioniert nicht:
 
 {1}</value>
+  </data>
+  <data name="Tray_UpdateAvailable" xml:space="preserve">
+    <value>Update verfügbar: {0}...</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>{0} - Update</value>
+  </data>
+  <data name="Update_Heading" xml:space="preserve">
+    <value>Eine neue Version von Zabbix Monitor ist verfügbar.</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Installierte Version</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Neue Version</value>
+  </data>
+  <data name="Update_Description" xml:space="preserve">
+    <value>Herunterladen öffnet die Release-Seite mit den Änderungen und den Installationsdateien. Zum Aktualisieren den Installer von dort ausführen; Einstellungen und API Token bleiben erhalten. Es wird nichts automatisch heruntergeladen oder installiert.</value>
+  </data>
+  <data name="Update_Download" xml:space="preserve">
+    <value>Herunterladen</value>
+  </data>
+  <data name="Update_Skip" xml:space="preserve">
+    <value>Diese Version überspringen</value>
+  </data>
+  <data name="Update_Later" xml:space="preserve">
+    <value>Später</value>
+  </data>
+  <data name="Update_BalloonTitle" xml:space="preserve">
+    <value>Update verfügbar</value>
+  </data>
+  <data name="Update_BalloonText" xml:space="preserve">
+    <value>{0} {1} ist verfügbar. Für Details hier klicken.</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Sie verwenden die neueste Version ({0}).</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Die Suche nach Updates ist fehlgeschlagen:
+
+{0}</value>
+  </data>
+  <data name="Update_Check" xml:space="preserve">
+    <value>Nach Updates suchen</value>
+  </data>
+  <data name="Settings_CheckForUpdates" xml:space="preserve">
+    <value>Automatisch nach Updates suchen</value>
+  </data>
+  <data name="Settings_CheckForUpdatesPolicy" xml:space="preserve">
+    <value>Vom Administrator deaktiviert (Richtlinie DisableUpdateCheck).</value>
+  </data>
+  <data name="Help_Updates_Title" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="Help_Updates_Text" xml:space="preserve">
+    <value>• Einmal am Tag prüft die Anwendung auf GitHub, ob eine neue Version veröffentlicht wurde. Wenn ja, erscheint eine Benachrichtigung am Tray-Icon und das Tray-Menü zeigt "Update verfügbar".
+• Das Update-Fenster zeigt die installierte und die neue Version. Herunterladen öffnet die Release-Seite; zum Aktualisieren den Installer von dort ausführen. Diese Version überspringen blendet den Hinweis aus, bis eine noch neuere Version erscheint. Später erinnert bei der nächsten Prüfung erneut.
+• Es wird nichts automatisch heruntergeladen oder installiert. Von GitHub (api.github.com) wird nur die Nummer der neuesten Version abgefragt.
+• Info &gt; Nach Updates suchen prüft sofort.
+• Die automatische Prüfung kann in den Einstellungen abgeschaltet werden. Administratoren können sie für alle Benutzer mit dem Registry-Wert DisableUpdateCheck = 1 (DWORD) unter HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor abschalten.</value>
   </data>
 </root>

@@ -466,6 +466,26 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • Once a day the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows &quot;Update available&quot;.
+        ///• The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
+        ///• Nothing is downloaded or installed automatically. Only the number of t [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Help_Updates_Text {
+            get {
+                return ResourceManager.GetString("Help_Updates_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string Help_Updates_Title {
+            get {
+                return ResourceManager.GetString("Help_Updates_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config: {0}.
         /// </summary>
         public static string Info_Config {
@@ -702,6 +722,24 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Settings_CertificateWarningCaption {
             get {
                 return ResourceManager.GetString("Settings_CertificateWarningCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates automatically.
+        /// </summary>
+        public static string Settings_CheckForUpdates {
+            get {
+                return ResourceManager.GetString("Settings_CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turned off by your administrator (policy DisableUpdateCheck)..
+        /// </summary>
+        public static string Settings_CheckForUpdatesPolicy {
+            get {
+                return ResourceManager.GetString("Settings_CheckForUpdatesPolicy", resourceCulture);
             }
         }
         
@@ -1311,6 +1349,134 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Tray_ShowProblems {
             get {
                 return ResourceManager.GetString("Tray_ShowProblems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available: {0}....
+        /// </summary>
+        public static string Tray_UpdateAvailable {
+            get {
+                return ResourceManager.GetString("Tray_UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} is available. Click here for details..
+        /// </summary>
+        public static string Update_BalloonText {
+            get {
+                return ResourceManager.GetString("Update_BalloonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        public static string Update_BalloonTitle {
+            get {
+                return ResourceManager.GetString("Update_BalloonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates.
+        /// </summary>
+        public static string Update_Check {
+            get {
+                return ResourceManager.GetString("Update_Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not check for updates:
+        ///
+        ///{0}.
+        /// </summary>
+        public static string Update_CheckFailed {
+            get {
+                return ResourceManager.GetString("Update_CheckFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed version.
+        /// </summary>
+        public static string Update_CurrentVersion {
+            get {
+                return ResourceManager.GetString("Update_CurrentVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download opens the release page with the changes and the installation files. Run the installer from there to update; your settings and the API token are kept. Nothing is downloaded or installed automatically..
+        /// </summary>
+        public static string Update_Description {
+            get {
+                return ResourceManager.GetString("Update_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Update_Download {
+            get {
+                return ResourceManager.GetString("Update_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version of Zabbix Monitor is available..
+        /// </summary>
+        public static string Update_Heading {
+            get {
+                return ResourceManager.GetString("Update_Heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Later.
+        /// </summary>
+        public static string Update_Later {
+            get {
+                return ResourceManager.GetString("Update_Later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version.
+        /// </summary>
+        public static string Update_NewVersion {
+            get {
+                return ResourceManager.GetString("Update_NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip this version.
+        /// </summary>
+        public static string Update_Skip {
+            get {
+                return ResourceManager.GetString("Update_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Update.
+        /// </summary>
+        public static string Update_Title {
+            get {
+                return ResourceManager.GetString("Update_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are using the latest version ({0})..
+        /// </summary>
+        public static string Update_UpToDate {
+            get {
+                return ResourceManager.GetString("Update_UpToDate", resourceCulture);
             }
         }
     }

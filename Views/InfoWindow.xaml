@@ -98,6 +98,12 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0,12,0,0">
+            <Button x:Name="CheckForUpdatesButton"
+                    Content="{x:Static res:Strings.Update_Check}"
+                    MinWidth="90"
+                    Padding="10,2"
+                    Margin="0,0,8,0"
+                    Click="CheckForUpdates_Click" />
             <Button Content="{x:Static res:Strings.Tray_Help}"
                     MinWidth="90"
                     Click="Help_Click" />

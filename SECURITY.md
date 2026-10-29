@@ -40,6 +40,7 @@ Out of scope:
 
 - The Zabbix API token is stored in the Windows Credential Manager for the current Windows user, never in `config.json`.
 - The token is only sent to the configured Zabbix URL as a bearer token. Use `https://`; the application asks for confirmation before saving an `http://` URL.
+- Besides the Zabbix server, the application only connects to `api.github.com` once a day to check for a new version. It sends no token and no data from Zabbix, and it never downloads or runs installers by itself. The check can be turned off in the settings or for all users by policy, see [Deployment](docs/deployment.md#update-notification).
 - Certificate validation is on by default. `IgnoreCertificateErrors` turns it off and should only be used for testing.
 - Use a dedicated Zabbix user for the token with as few permissions as possible: read access to the monitored host groups and, if alarm handling is used, permission to acknowledge and suppress problems.
 

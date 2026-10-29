@@ -111,6 +111,15 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu Style="{StaticResource TrayContextMenuStyle}">
                     <!-- Header der Menüeinträge werden in MainWindow.ApplyLocalizedTexts gesetzt, damit ein Sprachwechsel sofort greift -->
+                    <!-- Hinweis auf eine neue Version, nur sichtbar wenn eine verfügbar ist (MainWindow.UpdateTrayUpdateMenuItem) -->
+                    <MenuItem x:Name="TrayUpdateMenuItem"
+                              Style="{StaticResource TrayMenuItemStyle}"
+                              FontWeight="Bold"
+                              Visibility="Collapsed"
+                              Click="TrayIcon_Update_Click" />
+                    <Separator x:Name="TrayUpdateSeparator"
+                               Style="{StaticResource TrayMenuSeparatorStyle}"
+                               Visibility="Collapsed" />
                     <MenuItem x:Name="TrayRefreshMenuItem"
                               Style="{StaticResource TrayMenuItemStyle}"
                               Click="TrayIcon_Refresh_Click" />

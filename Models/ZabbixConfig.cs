@@ -25,6 +25,12 @@ namespace ZabbixTrayMonitor.Models
         public bool IgnoreCertificateErrors { get; set; } = false; // Ignoriert SSL Fehler zB. bei self-signed Zertifikaten
         public bool UseDarkMode { get; set; } = true;
 
+        // Täglich auf GitHub prüfen, ob eine neue Version verfügbar ist (nur Hinweis, keine automatische Installation)
+        public bool CheckForUpdates { get; set; } = true;
+
+        // Version, deren Hinweis mit "Diese Version überspringen" ausgeblendet wurde (zB. "v1.3.5")
+        public string SkippedUpdateVersion { get; set; } = "";
+
         // Sprache der Oberfläche: "" = Systemsprache (Standard), "en", "de" oder "cs"
         public string Language { get; set; } = LocalizationService.DefaultLanguage;
 

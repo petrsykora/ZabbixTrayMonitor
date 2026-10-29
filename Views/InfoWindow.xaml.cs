@@ -159,6 +159,24 @@ namespace ZabbixTrayMonitor.Views
             HelpWindow.ShowHelp();
         }
 
+        // Prüfung läuft im MainWindow, damit Menüeintrag und Update-Fenster dort aktualisiert werden
+        private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow is not MainWindow mainWindow)
+                return;
+
+            CheckForUpdatesButton.IsEnabled = false;
+
+            try
+            {
+                await mainWindow.CheckForUpdatesAsync(interactive: true);
+            }
+            finally
+            {
+                CheckForUpdatesButton.IsEnabled = true;
+            }
+        }
+
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();

@@ -38,6 +38,7 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 - The message can be overridden per action directly in the context menu
 - Suppressed problems can optionally still be shown
 - Optional automatic refresh after an alarm action, including a delayed follow-up refresh
+- Notification when a new version is available, with the choice to download it, skip this version or be reminded later; nothing is installed automatically
 
 ## Download
 
@@ -151,6 +152,8 @@ Example:
   "TrayToolTipDelayMilliseconds": 250,
   "IgnoreCertificateErrors": false,
   "UseDarkMode": true,
+  "CheckForUpdates": true,
+  "SkippedUpdateVersion": "",
   "Language": "",
   "ShowSuppressedProblems": false,
   "RefreshAfterProblemAction": true,

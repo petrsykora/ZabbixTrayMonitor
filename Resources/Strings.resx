@@ -426,7 +426,8 @@ Ignore certificate errors anyway?</value>
 • Keep showing suppressed problems: also list problems that are suppressed in Zabbix.
 • Refresh automatically after acknowledging/suppressing: reload the list after an alarm action.
 • Default message: text prefilled in the alarm menu.
-• Windows Credential Manager: name (target) and user name under which the token is stored. Change them only if your organization requires specific names.</value>
+• Windows Credential Manager: name (target) and user name under which the token is stored. Change them only if your organization requires specific names.
+• Check for updates automatically: daily check for a new version, see Updates.</value>
   </data>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Installation and updates</value>
@@ -482,5 +483,65 @@ The API token was not checked because no token is entered.</value>
     <value>The Zabbix server can be reached (Zabbix version: {0}), but the API token does not work:
 
 {1}</value>
+  </data>
+  <data name="Tray_UpdateAvailable" xml:space="preserve">
+    <value>Update available: {0}...</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>{0} - Update</value>
+  </data>
+  <data name="Update_Heading" xml:space="preserve">
+    <value>A new version of Zabbix Monitor is available.</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Installed version</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>New version</value>
+  </data>
+  <data name="Update_Description" xml:space="preserve">
+    <value>Download opens the release page with the changes and the installation files. Run the installer from there to update; your settings and the API token are kept. Nothing is downloaded or installed automatically.</value>
+  </data>
+  <data name="Update_Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Update_Skip" xml:space="preserve">
+    <value>Skip this version</value>
+  </data>
+  <data name="Update_Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Update_BalloonTitle" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="Update_BalloonText" xml:space="preserve">
+    <value>{0} {1} is available. Click here for details.</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>You are using the latest version ({0}).</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Could not check for updates:
+
+{0}</value>
+  </data>
+  <data name="Update_Check" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="Settings_CheckForUpdates" xml:space="preserve">
+    <value>Check for updates automatically</value>
+  </data>
+  <data name="Settings_CheckForUpdatesPolicy" xml:space="preserve">
+    <value>Turned off by your administrator (policy DisableUpdateCheck).</value>
+  </data>
+  <data name="Help_Updates_Title" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="Help_Updates_Text" xml:space="preserve">
+    <value>• Once a day the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows "Update available".
+• The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
+• Nothing is downloaded or installed automatically. Only the number of the latest version is requested from GitHub (api.github.com).
+• About &gt; Check for updates checks right away.
+• The automatic check can be turned off in Settings. Administrators can turn it off for all users with the registry value DisableUpdateCheck = 1 (DWORD) under HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor.</value>
   </data>
 </root>

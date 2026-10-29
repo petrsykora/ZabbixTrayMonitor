@@ -59,6 +59,27 @@ msiexec /i ZabbixTrayMonitor-v1.3.4-win-x64.msi /qn AUTOSTART=0
 
 Install the new version the same way as the first one. The old version is removed automatically (major upgrade) and a running instance is closed first. Downgrades are refused.
 
+### Update notification
+
+Once a day (first one minute after the start) the application asks GitHub for the latest release (`https://api.github.com/repos/petrsykora/ZabbixTrayMonitor/releases/latest`). If it is newer, a notification appears next to the tray icon and the tray menu shows **Update available**. The update window offers **Download** (opens the release page in the browser), **Skip this version** and **Later**. Nothing is downloaded or installed automatically, and no data besides the request itself is sent.
+
+Users can turn the check off under **Settings → Check for updates automatically**; **About → Check for updates** always checks right away.
+
+On managed computers, where new versions are distributed by Group Policy or Intune and users have no administrator rights, turn the automatic check off for all users with this registry value:
+
+| Key | Value | Type | Data |
+|---|---|---|---|
+| `HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor` | `DisableUpdateCheck` | `REG_DWORD` | `1` |
+
+With Group Policy: **Computer Configuration → Preferences → Windows Settings → Registry → New → Registry Item**, or in a script:
+
+```powershell
+New-Item -Path "HKLM:\Software\Policies\ZabbixTrayMonitor" -Force | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\ZabbixTrayMonitor" -Name DisableUpdateCheck -Value 1 -Type DWord
+```
+
+The setting in the settings window is then turned off and locked. A manual check from the About window is still possible.
+
 ## Uninstall
 
 Interactively: **Settings → Apps → Installed apps → Zabbix Monitor → Uninstall**.

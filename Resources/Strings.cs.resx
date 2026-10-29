@@ -426,7 +426,8 @@ Přesto ignorovat chyby certifikátu?</value>
 • Zobrazovat i potlačené problémy: vypisovat i problémy potlačené v Zabbixu.
 • Po potvrzení/potlačení automaticky obnovit: po akci s alarmem znovu načíst seznam.
 • Výchozí zpráva: text předvyplněný v menu alarmu.
-• Windows Credential Manager: název (target) a uživatelské jméno, pod kterými je token uložený. Měňte je jen tehdy, když vaše organizace vyžaduje konkrétní názvy.</value>
+• Windows Credential Manager: název (target) a uživatelské jméno, pod kterými je token uložený. Měňte je jen tehdy, když vaše organizace vyžaduje konkrétní názvy.
+• Automaticky kontrolovat aktualizace: denní kontrola nové verze, viz Aktualizace.</value>
   </data>
   <data name="Help_Install_Title" xml:space="preserve">
     <value>Instalace a aktualizace</value>
@@ -482,5 +483,65 @@ API token nebyl ověřen, protože není zadaný.</value>
     <value>Server Zabbix je dostupný (verze Zabbixu: {0}), ale API token nefunguje:
 
 {1}</value>
+  </data>
+  <data name="Tray_UpdateAvailable" xml:space="preserve">
+    <value>Dostupná aktualizace: {0}...</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>{0} - Aktualizace</value>
+  </data>
+  <data name="Update_Heading" xml:space="preserve">
+    <value>Je k dispozici nová verze Zabbix Monitoru.</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>Nainstalovaná verze</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>Nová verze</value>
+  </data>
+  <data name="Update_Description" xml:space="preserve">
+    <value>Tlačítko Stáhnout otevře stránku vydání se změnami a instalačními soubory. Pro aktualizaci spusťte instalátor odtud; nastavení i API token zůstanou zachovány. Nic se nestahuje ani neinstaluje automaticky.</value>
+  </data>
+  <data name="Update_Download" xml:space="preserve">
+    <value>Stáhnout</value>
+  </data>
+  <data name="Update_Skip" xml:space="preserve">
+    <value>Přeskočit tuto verzi</value>
+  </data>
+  <data name="Update_Later" xml:space="preserve">
+    <value>Později</value>
+  </data>
+  <data name="Update_BalloonTitle" xml:space="preserve">
+    <value>Dostupná aktualizace</value>
+  </data>
+  <data name="Update_BalloonText" xml:space="preserve">
+    <value>Je k dispozici {0} {1}. Klikněte sem pro podrobnosti.</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Používáte nejnovější verzi ({0}).</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Dostupnost aktualizace se nepodařilo zjistit:
+
+{0}</value>
+  </data>
+  <data name="Update_Check" xml:space="preserve">
+    <value>Zkontrolovat aktualizace</value>
+  </data>
+  <data name="Settings_CheckForUpdates" xml:space="preserve">
+    <value>Automaticky kontrolovat aktualizace</value>
+  </data>
+  <data name="Settings_CheckForUpdatesPolicy" xml:space="preserve">
+    <value>Vypnuto správcem (zásada DisableUpdateCheck).</value>
+  </data>
+  <data name="Help_Updates_Title" xml:space="preserve">
+    <value>Aktualizace</value>
+  </data>
+  <data name="Help_Updates_Text" xml:space="preserve">
+    <value>• Jednou denně aplikace zkontroluje na GitHubu, jestli nevyšla nová verze. Pokud ano, zobrazí se u ikony v trayi oznámení a v menu položka "Dostupná aktualizace".
+• Okno aktualizace ukazuje nainstalovanou a novou verzi. Stáhnout otevře stránku vydání; pro aktualizaci spusťte instalátor odtud. Přeskočit tuto verzi skryje upozornění, dokud nevyjde ještě novější verze. Později připomene aktualizaci při příští kontrole.
+• Nic se nestahuje ani neinstaluje automaticky. Z GitHubu (api.github.com) se zjišťuje jen číslo nejnovější verze.
+• O aplikaci &gt; Zkontrolovat aktualizace zkontroluje hned.
+• Automatickou kontrolu lze vypnout v Nastavení. Správci ji mohou vypnout pro všechny uživatele hodnotou registru DisableUpdateCheck = 1 (DWORD) v HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor.</value>
   </data>
 </root>

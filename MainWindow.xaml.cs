@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Hardcodet.Wpf.TaskbarNotification;
 using ZabbixTrayMonitor.Services;
 using ZabbixTrayMonitor.Models;
 using ZabbixTrayMonitor.Resources;
@@ -20,7 +21,14 @@ namespace ZabbixTrayMonitor
         private readonly ConfigService _configService = new();
         private readonly DispatcherTimer _refreshTimer = new();
         private readonly DispatcherTimer _trayToolTipDelayTimer = new();
+        private readonly DispatcherTimer _updateCheckTimer = new();
         private List<ZabbixProblem> _currentProblems = new();
+        private UpdateInfo? _availableUpdate;
+        private bool _isCheckingForUpdates = false;
+
+        // Erste Update-Prüfung kurz nach dem Start (nicht gleichzeitig mit dem ersten Abruf der Probleme), danach täglich
+        private static readonly TimeSpan FirstUpdateCheckDelay = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan UpdateCheckInterval = TimeSpan.FromHours(24);
         private ProblemsWindow? _problemsWindow;
         private string? _lastRefreshError;
         private bool _isRefreshing = false;
@@ -56,9 +64,127 @@ namespace ZabbixTrayMonitor
 
             Title = ZabbixConfig.AppDisplayName;
 
-            // RefreshTimer starten 
+            // RefreshTimer starten
             StartRefreshTimer();
             _ = RefreshProblemsAsync();
+
+            // Update-Prüfung: nur Hinweis per Sprechblase und Menüeintrag, Klick öffnet das Update-Fenster
+            TrayIcon.TrayBalloonTipClicked += (_, _) => ShowUpdateWindow();
+
+            _updateCheckTimer.Tick += async (_, _) =>
+            {
+                _updateCheckTimer.Interval = UpdateCheckInterval;
+                await CheckForUpdatesAsync(interactive: false);
+            };
+            _updateCheckTimer.Interval = FirstUpdateCheckDelay;
+            _updateCheckTimer.Start();
+        }
+
+        // interactive = vom Benutzer ausgelöst (Info-Fenster): Ergebnis und Fehler immer anzeigen, auch wenn die
+        // automatische Prüfung abgeschaltet oder die Version übersprungen ist
+        public async Task CheckForUpdatesAsync(bool interactive)
+        {
+            if (_isCheckingForUpdates)
+                return;
+
+            var config = _configService.Load();
+
+            if (!interactive && (!config.CheckForUpdates || UpdateService.IsDisabledByPolicy()))
+                return;
+
+            _isCheckingForUpdates = true;
+
+            try
+            {
+                var update = await UpdateService.GetNewerReleaseAsync();
+
+                _availableUpdate = update;
+                UpdateTrayUpdateMenuItem();
+
+                if (update == null)
+                {
+                    if (interactive)
+                    {
+                        MessageBox.Show(
+                            string.Format(Strings.Update_UpToDate, UpdateService.FormatVersion(UpdateService.CurrentVersion)),
+                            string.Format(Strings.Update_Title, ZabbixConfig.AppDisplayName),
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+
+                    return;
+                }
+
+                if (interactive)
+                {
+                    ShowUpdateWindow();
+                    return;
+                }
+
+                if (IsSkipped(update))
+                    return;
+
+                TrayIcon.ShowBalloonTip(
+                    Strings.Update_BalloonTitle,
+                    string.Format(Strings.Update_BalloonText, ZabbixConfig.AppDisplayName, UpdateService.FormatVersion(update.Version)),
+                    BalloonIcon.Info);
+            }
+            catch (Exception ex)
+            {
+                // Automatische Prüfung still, zB. ohne Internet oder bei gesperrtem GitHub
+                if (interactive)
+                {
+                    MessageBox.Show(
+                        string.Format(Strings.Update_CheckFailed, ex.Message),
+                        string.Format(Strings.Update_Title, ZabbixConfig.AppDisplayName),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+            }
+            finally
+            {
+                _isCheckingForUpdates = false;
+            }
+        }
+
+        private bool IsSkipped(UpdateInfo update)
+        {
+            return string.Equals(_configService.Load().SkippedUpdateVersion, update.TagName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void UpdateTrayUpdateMenuItem()
+        {
+            var visible = _availableUpdate != null && !IsSkipped(_availableUpdate);
+
+            if (_availableUpdate != null)
+                TrayUpdateMenuItem.Header = string.Format(Strings.Tray_UpdateAvailable, UpdateService.FormatVersion(_availableUpdate.Version));
+
+            TrayUpdateMenuItem.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            TrayUpdateSeparator.Visibility = TrayUpdateMenuItem.Visibility;
+        }
+
+        private void ShowUpdateWindow()
+        {
+            if (_availableUpdate == null)
+                return;
+
+            var existing = Application.Current.Windows.OfType<UpdateWindow>().FirstOrDefault();
+            if (existing != null)
+            {
+                existing.Activate();
+                return;
+            }
+
+            new UpdateWindow(_availableUpdate).ShowDialog();
+
+            // "Diese Version überspringen" blendet den Menüeintrag aus
+            UpdateTrayUpdateMenuItem();
+        }
+
+        private void TrayIcon_Update_Click(object sender, RoutedEventArgs e)
+        {
+            HideTrayToolTip();
+            ShowUpdateWindow();
         }
 
         // öffnet Einstellungsfenster und aktualisiert nach Schließen/Speichern die App
@@ -119,6 +245,7 @@ namespace ZabbixTrayMonitor
             TrayHelpMenuItem.Header = Strings.Tray_Help;
             TrayInfoMenuItem.Header = Strings.Tray_Info;
             TrayExitMenuItem.Header = Strings.Tray_Exit;
+            UpdateTrayUpdateMenuItem();
         }
 
         private void OnLanguageChanged()

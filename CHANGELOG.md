@@ -2,6 +2,13 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
+## Unreleased
+
+### Added
+
+- Notification when a new version is available: once a day the application checks the latest release on GitHub. The update window offers **Download** (release page), **Skip this version** and **Later**; nothing is installed automatically.
+- **About → Check for updates** and the setting **Check for updates automatically**. Administrators can turn the check off with the registry policy `HKLM\Software\Policies\ZabbixTrayMonitor`, `DisableUpdateCheck = 1`, see [Deployment](docs/deployment.md#update-notification).
+
 ## 1.3.4 – 2026-10-29
 
 ### Fixed
