@@ -28,6 +28,7 @@ namespace ZabbixTrayMonitor
         // Zeit und Ergebnis der letzten Update-Prüfung für das Info-Fenster (null = noch keine Prüfung)
         public string? LastUpdateCheckStatus { get; private set; }
         private bool _isCheckingForUpdates = false;
+        private bool _isInstallingUpdate = false;
 
         // Erste Update-Prüfung kurz nach dem Start (nicht gleichzeitig mit dem ersten Abruf der Probleme), danach alle 6 Stunden
         private static readonly TimeSpan FirstUpdateCheckDelay = TimeSpan.FromMinutes(1);
@@ -134,6 +135,14 @@ namespace ZabbixTrayMonitor
                 if (IsSkipped(update))
                     return;
 
+                // Automatische Installation nur für die installierte Anwendung und nicht bei Richtlinie DisableUpdateCheck
+                // (dann läuft die automatische Prüfung ohnehin nicht)
+                if (config.InstallUpdatesAutomatically && UpdateInstaller.CanInstall)
+                {
+                    await InstallUpdateAsync(update, interactive: false);
+                    return;
+                }
+
                 TrayIcon.ShowBalloonTip(
                     Strings.Update_BalloonTitle,
                     string.Format(Strings.Update_BalloonText, ZabbixConfig.AppDisplayName, UpdateService.FormatVersion(update.Version)),
@@ -156,6 +165,65 @@ namespace ZabbixTrayMonitor
             finally
             {
                 _isCheckingForUpdates = false;
+            }
+        }
+
+        // Lädt den Installer herunter, prüft Prüfsumme und Signatur und startet die Installation (Rückfrage der
+        // Benutzerkontensteuerung). Der Installer beendet die Anwendung und startet danach die neue Version.
+        // interactive = über das Update-Fenster ausgelöst: Fehler als Meldung, sonst als Sprechblase
+        public async Task<bool> InstallUpdateAsync(UpdateInfo update, bool interactive)
+        {
+            if (_isInstallingUpdate)
+                return false;
+
+            _isInstallingUpdate = true;
+            var version = UpdateService.FormatVersion(update.Version);
+
+            try
+            {
+                LastUpdateCheckStatus = string.Format(Strings.Update_StatusDownloading, DateTime.Now, version);
+
+                var installerPath = await UpdateInstaller.DownloadAndVerifyAsync(update);
+
+                if (!interactive)
+                {
+                    TrayIcon.ShowBalloonTip(
+                        Strings.Update_BalloonTitle,
+                        string.Format(Strings.Update_BalloonInstalling, ZabbixConfig.AppDisplayName, version),
+                        BalloonIcon.Info);
+                }
+
+                UpdateInstaller.StartInstall(installerPath);
+
+                LastUpdateCheckStatus = string.Format(Strings.Update_StatusInstalling, DateTime.Now, version);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LastUpdateCheckStatus = string.Format(Strings.Update_StatusInstallFailed, DateTime.Now, version, ex.Message);
+
+                if (interactive)
+                {
+                    MessageBox.Show(
+                        string.Format(Strings.Update_InstallFailed, ex.Message),
+                        string.Format(Strings.Update_Title, ZabbixConfig.AppDisplayName),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+                else
+                {
+                    // Klick auf die Sprechblase öffnet das Update-Fenster (Herunterladen von Hand)
+                    TrayIcon.ShowBalloonTip(
+                        Strings.Update_BalloonTitle,
+                        string.Format(Strings.Update_BalloonInstallFailed, ZabbixConfig.AppDisplayName, version),
+                        BalloonIcon.Warning);
+                }
+
+                return false;
+            }
+            finally
+            {
+                _isInstallingUpdate = false;
             }
         }
 

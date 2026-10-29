@@ -73,6 +73,12 @@ Get-AuthenticodeSignature "C:\Program Files\ZabbixTrayMonitor\ZabbixTrayMonitor.
 
 Before the certificate expires, create a new one (step 1), distribute the new `.cer` file (step 3) and then replace the secrets (step 2). Files signed with the old certificate stay valid thanks to the timestamp.
 
+The application only installs updates signed with a known certificate (see [Installing updates from the application](deployment.md#installing-updates-from-the-application)). Before the new certificate signs the first release, add its SHA-1 thumbprint to `TrustedSignerThumbprints` in `Services/UpdateInstaller.cs` and publish a release that is still signed with the old certificate. Otherwise installed versions refuse the new releases and have to be updated manually once. The thumbprint of a certificate file:
+
+```powershell
+(Get-PfxCertificate C:\Signing\ZabbixTrayMonitor-CodeSigning.cer).Thumbprint
+```
+
 ## Note on SmartScreen
 
 SmartScreen mainly checks files downloaded from the internet with a browser (Mark of the Web). Your own certificate has no reputation with Microsoft, so a file downloaded directly from GitHub can still trigger a warning. To distribute without a warning, roll the application out internally (GPO software deployment, Intune, a network share in the intranet zone), or unblock a downloaded file before using it:

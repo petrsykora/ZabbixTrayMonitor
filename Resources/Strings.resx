@@ -541,7 +541,8 @@ The API token was not checked because no token is entered.</value>
   <data name="Help_Updates_Text" xml:space="preserve">
     <value>• Every 6 hours (and one minute after the start) the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows "Update available".
 • The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
-• Nothing is downloaded or installed automatically. Only the number of the latest version is requested from GitHub (api.github.com).
+• With &quot;Install updates automatically&quot; in the settings, a new version is downloaded, checked and installed after a confirmation by Windows; otherwise it is only shown. Install in the update window does the same at once. The installer must have the correct checksum and be signed with the certificate of the project, otherwise it is not installed. The portable ZIP version is only notified.
+• Without this setting, nothing is downloaded or installed automatically. Only the number of the latest version is requested from GitHub (api.github.com).
 • About &gt; Check for updates checks right away. The About window also shows the time and the result of the last check, including errors of the automatic check.
 • The automatic check can be turned off in Settings. Administrators can turn it off for all users with the registry value DisableUpdateCheck = 1 (DWORD) under HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor.</value>
   </data>
@@ -562,5 +563,55 @@ The API token was not checked because no token is entered.</value>
   </data>
   <data name="Update_StatusFailed" xml:space="preserve">
     <value>{0:g} – failed: {1}</value>
+  </data>
+  <data name="Update_Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="Update_DescriptionInstall" xml:space="preserve">
+    <value>Install downloads the installer, checks its checksum and signature and installs the new version. Windows asks for administrator confirmation. The application is closed during the installation and started again afterwards; settings and the API token are kept. Download only opens the release page.</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Downloading and checking the installer...</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>The update could not be installed:
+
+{0}</value>
+  </data>
+  <data name="Update_InstallerNotFound" xml:space="preserve">
+    <value>The release does not contain the installer {0}.</value>
+  </data>
+  <data name="Update_ChecksumMissing" xml:space="preserve">
+    <value>GitHub does not provide a checksum for {0}, so it cannot be checked.</value>
+  </data>
+  <data name="Update_ChecksumMismatch" xml:space="preserve">
+    <value>The checksum of the downloaded file {0} does not match. The file was not installed.</value>
+  </data>
+  <data name="Update_SignatureInvalid" xml:space="preserve">
+    <value>{0} is not signed with the certificate of the project or was changed. The file was not installed.</value>
+  </data>
+  <data name="Update_StatusDownloading" xml:space="preserve">
+    <value>{0:g} – downloading version {1}</value>
+  </data>
+  <data name="Update_StatusInstalling" xml:space="preserve">
+    <value>{0:g} – installation of version {1} started</value>
+  </data>
+  <data name="Update_StatusInstallFailed" xml:space="preserve">
+    <value>{0:g} – installation of version {1} failed: {2}</value>
+  </data>
+  <data name="Update_BalloonInstalling" xml:space="preserve">
+    <value>{0} {1} was downloaded and checked. Confirm the installation in the following prompt.</value>
+  </data>
+  <data name="Update_BalloonInstallFailed" xml:space="preserve">
+    <value>{0} {1} could not be installed automatically. Click here for details.</value>
+  </data>
+  <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve">
+    <value>Install updates automatically</value>
+  </data>
+  <data name="Settings_InstallUpdatesAutomaticallyToolTip" xml:space="preserve">
+    <value>Downloads a new version, checks its checksum and signature and installs it. Windows asks for administrator confirmation.</value>
+  </data>
+  <data name="Settings_InstallUpdatesPortable" xml:space="preserve">
+    <value>Only for the installed application, not for the portable ZIP version.</value>
   </data>
 </root>

@@ -61,9 +61,20 @@ Install the new version the same way as the first one. The old version is remove
 
 ### Update notification
 
-Every 6 hours (first one minute after the start) the application asks GitHub for the latest release (`https://api.github.com/repos/petrsykora/ZabbixTrayMonitor/releases/latest`). If it is newer, a notification appears next to the tray icon and the tray menu shows **Update available**. The update window offers **Download** (opens the release page in the browser), **Skip this version** and **Later**. Nothing is downloaded or installed automatically, and no data besides the request itself is sent.
+Every 6 hours (first one minute after the start) the application asks GitHub for the latest release (`https://api.github.com/repos/petrsykora/ZabbixTrayMonitor/releases/latest`). If it is newer, a notification appears next to the tray icon and the tray menu shows **Update available**. The update window offers **Install**, **Download** (opens the release page in the browser), **Skip this version** and **Later**. No data besides the request itself is sent.
 
 Users can turn the check off under **Settings → Check for updates automatically**; **About → Check for updates** always checks right away.
+
+### Installing updates from the application
+
+**Install** in the update window, or the setting **Settings → Install updates automatically** (off by default), installs a new version without a manual download:
+
+1. The application downloads the installer of the same variant: `…-win-x64.msi` for the installation with the included .NET runtime, `…-win-x64-setup.exe` otherwise.
+2. It checks the SHA-256 checksum that GitHub publishes for the file and the Authenticode signature: the file must be unchanged and signed with the code signing certificate of the project (the thumbprint is built into the application, so it also works on computers that do not trust the certificate). Otherwise nothing is installed.
+3. It starts the installer with a progress bar and without further questions. Windows asks for administrator confirmation (UAC), because the application is installed for all users; users without administrator rights cannot install updates this way.
+4. The installer closes the application, replaces it and the application is started again. The autostart setting of an MSI installation (`AUTOSTART`) is kept.
+
+The portable ZIP versions are only notified. Downloads and the installation log are in `%TEMP%\ZabbixTrayMonitor\Updates`.
 
 On managed computers, where new versions are distributed by Group Policy or Intune and users have no administrator rights, turn the automatic check off for all users with this registry value:
 
@@ -78,7 +89,7 @@ New-Item -Path "HKLM:\Software\Policies\ZabbixTrayMonitor" -Force | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\ZabbixTrayMonitor" -Name DisableUpdateCheck -Value 1 -Type DWord
 ```
 
-The setting in the settings window is then turned off and locked. A manual check from the About window is still possible.
+The settings in the settings window (check and automatic installation) are then turned off and locked. A manual check from the About window is still possible.
 
 ## Uninstall
 

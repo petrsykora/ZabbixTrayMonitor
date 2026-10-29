@@ -541,7 +541,8 @@ Der API Token wurde nicht geprüft, weil kein Token eingegeben ist.</value>
   <data name="Help_Updates_Text" xml:space="preserve">
     <value>• Alle 6 Stunden (und eine Minute nach dem Start) prüft die Anwendung auf GitHub, ob eine neue Version veröffentlicht wurde. Wenn ja, erscheint eine Benachrichtigung am Tray-Icon und das Tray-Menü zeigt "Update verfügbar".
 • Das Update-Fenster zeigt die installierte und die neue Version. Herunterladen öffnet die Release-Seite; zum Aktualisieren den Installer von dort ausführen. Diese Version überspringen blendet den Hinweis aus, bis eine noch neuere Version erscheint. Später erinnert bei der nächsten Prüfung erneut.
-• Es wird nichts automatisch heruntergeladen oder installiert. Von GitHub (api.github.com) wird nur die Nummer der neuesten Version abgefragt.
+• Mit &quot;Updates automatisch installieren&quot; in den Einstellungen wird eine neue Version heruntergeladen, geprüft und nach einer Bestätigung von Windows installiert, sonst nur angezeigt. Installieren im Update-Fenster macht das sofort. Der Installer muss die richtige Prüfsumme haben und mit dem Zertifikat des Projekts signiert sein, sonst wird er nicht installiert. Die portable ZIP-Version wird nur benachrichtigt.
+• Ohne diese Einstellung wird nichts automatisch heruntergeladen oder installiert. Von GitHub (api.github.com) wird nur die Nummer der neuesten Version abgefragt.
 • Info &gt; Nach Updates suchen prüft sofort. Das Info-Fenster zeigt auch Zeit und Ergebnis der letzten Prüfung, einschließlich Fehlern der automatischen Prüfung.
 • Die automatische Prüfung kann in den Einstellungen abgeschaltet werden. Administratoren können sie für alle Benutzer mit dem Registry-Wert DisableUpdateCheck = 1 (DWORD) unter HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor abschalten.</value>
   </data>
@@ -562,5 +563,55 @@ Der API Token wurde nicht geprüft, weil kein Token eingegeben ist.</value>
   </data>
   <data name="Update_StatusFailed" xml:space="preserve">
     <value>{0:g} – fehlgeschlagen: {1}</value>
+  </data>
+  <data name="Update_Install" xml:space="preserve">
+    <value>Installieren</value>
+  </data>
+  <data name="Update_DescriptionInstall" xml:space="preserve">
+    <value>Installieren lädt den Installer herunter, prüft Prüfsumme und Signatur und installiert die neue Version. Windows fragt nach der Bestätigung eines Administrators. Die Anwendung wird während der Installation beendet und danach wieder gestartet; Einstellungen und API Token bleiben erhalten. Herunterladen öffnet nur die Release-Seite.</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Installer wird heruntergeladen und geprüft...</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>Das Update konnte nicht installiert werden:
+
+{0}</value>
+  </data>
+  <data name="Update_InstallerNotFound" xml:space="preserve">
+    <value>Das Release enthält den Installer {0} nicht.</value>
+  </data>
+  <data name="Update_ChecksumMissing" xml:space="preserve">
+    <value>GitHub liefert keine Prüfsumme für {0}, die Datei kann deshalb nicht geprüft werden.</value>
+  </data>
+  <data name="Update_ChecksumMismatch" xml:space="preserve">
+    <value>Die Prüfsumme der heruntergeladenen Datei {0} stimmt nicht. Die Datei wurde nicht installiert.</value>
+  </data>
+  <data name="Update_SignatureInvalid" xml:space="preserve">
+    <value>{0} ist nicht mit dem Zertifikat des Projekts signiert oder wurde verändert. Die Datei wurde nicht installiert.</value>
+  </data>
+  <data name="Update_StatusDownloading" xml:space="preserve">
+    <value>{0:g} – Version {1} wird heruntergeladen</value>
+  </data>
+  <data name="Update_StatusInstalling" xml:space="preserve">
+    <value>{0:g} – Installation von Version {1} gestartet</value>
+  </data>
+  <data name="Update_StatusInstallFailed" xml:space="preserve">
+    <value>{0:g} – Installation von Version {1} fehlgeschlagen: {2}</value>
+  </data>
+  <data name="Update_BalloonInstalling" xml:space="preserve">
+    <value>{0} {1} wurde heruntergeladen und geprüft. Bestätigen Sie die Installation in der folgenden Abfrage.</value>
+  </data>
+  <data name="Update_BalloonInstallFailed" xml:space="preserve">
+    <value>{0} {1} konnte nicht automatisch installiert werden. Für Details hier klicken.</value>
+  </data>
+  <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve">
+    <value>Updates automatisch installieren</value>
+  </data>
+  <data name="Settings_InstallUpdatesAutomaticallyToolTip" xml:space="preserve">
+    <value>Lädt eine neue Version herunter, prüft Prüfsumme und Signatur und installiert sie. Windows fragt nach der Bestätigung eines Administrators.</value>
+  </data>
+  <data name="Settings_InstallUpdatesPortable" xml:space="preserve">
+    <value>Nur für die installierte Anwendung, nicht für die portable ZIP-Version.</value>
   </data>
 </root>

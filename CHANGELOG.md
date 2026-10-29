@@ -2,6 +2,12 @@
 
 All notable changes to this project. Versions up to 1.2.1 were released by Darano94 in the [original project](https://github.com/Darano94/ZabbixTrayMonitor).
 
+## Unreleased
+
+### Added
+
+- Updates can be installed from the application: **Install** in the update window, or **Settings → Install updates automatically** (off by default). The installer of the installed variant is downloaded from the GitHub release, its SHA-256 checksum and its signature with the project's certificate are verified, and it is installed after the administrator confirmation of Windows. The application is closed and started again; the autostart setting is kept. The portable ZIP versions are only notified.
+
 ## 1.3.9 – 2026-10-29
 
 ### Added

@@ -133,6 +133,10 @@ namespace ZabbixTrayMonitor
             {
                 CheckForUpdatesCheckBox.IsChecked = config.CheckForUpdates;
             }
+
+            InstallUpdatesAutomaticallyCheckBox.IsChecked = config.InstallUpdatesAutomatically && CanInstallUpdates;
+            ToolTipService.SetShowOnDisabled(InstallUpdatesAutomaticallyCheckBox, true);
+            UpdateInstallUpdatesCheckBoxState();
             InitializeLanguageComboBox(config.Language);
             PollIntervalSecondsTextBox.Text = config.PollIntervalSeconds.ToString();
             TrayToolTipDelayMillisecondsTextBox.Text = config.TrayToolTipDelayMilliseconds.ToString();
@@ -230,6 +234,9 @@ namespace ZabbixTrayMonitor
             // Gesperrte Checkbox (Richtlinie) nicht speichern, damit die eigene Einstellung erhalten bleibt
             if (CheckForUpdatesCheckBox.IsEnabled)
                 existingConfig.CheckForUpdates = CheckForUpdatesCheckBox.IsChecked == true;
+
+            if (CanInstallUpdates)
+                existingConfig.InstallUpdatesAutomatically = InstallUpdatesAutomaticallyCheckBox.IsChecked == true;
             existingConfig.Language = LanguageComboBox.SelectedValue as string ?? LocalizationService.DefaultLanguage;
             existingConfig.WarningSeverityThreshold = warningThreshold;
             existingConfig.ErrorSeverityThreshold = errorThreshold;
@@ -651,6 +658,27 @@ namespace ZabbixTrayMonitor
             catch { }
 
             return null;
+        }
+
+        // Automatische Installation nur für die installierte Anwendung (nicht die ZIP-Version) und ohne Richtlinie DisableUpdateCheck
+        private static bool CanInstallUpdates => UpdateInstaller.CanInstall && !UpdateService.IsDisabledByPolicy();
+
+        private void CheckForUpdatesCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            UpdateInstallUpdatesCheckBoxState();
+        }
+
+        private void UpdateInstallUpdatesCheckBoxState()
+        {
+            if (InstallUpdatesAutomaticallyCheckBox == null)
+                return;
+
+            InstallUpdatesAutomaticallyCheckBox.IsEnabled = CanInstallUpdates && CheckForUpdatesCheckBox.IsChecked == true;
+
+            if (!UpdateInstaller.CanInstall)
+                InstallUpdatesAutomaticallyCheckBox.ToolTip = Strings.Settings_InstallUpdatesPortable;
+            else if (UpdateService.IsDisabledByPolicy())
+                InstallUpdatesAutomaticallyCheckBox.ToolTip = Strings.Settings_CheckForUpdatesPolicy;
         }
 
         private static string NormalizeCredentialSuffix(string value)

@@ -39,7 +39,7 @@ The tray icon shows at a glance whether everything is fine, there are warnings o
 - The message can be overridden per action directly in the context menu
 - Suppressed problems can optionally still be shown
 - Optional automatic refresh after an alarm action, including a delayed follow-up refresh
-- Notification when a new version is available, with the choice to download it, skip this version or be reminded later; nothing is installed automatically
+- Notification when a new version is available; it can be installed from the application with one click or automatically (checksum and signature are verified, Windows asks for administrator confirmation)
 
 ## Download
 
@@ -252,7 +252,7 @@ To check that the files are genuine:
 This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. It only connects to:
 
 - **The Zabbix server** configured by the user in the settings, to read and handle problems with the API token entered by the user.
-- **GitHub** (`api.github.com`), every 6 hours, to check whether a new version has been released. Only the number of the latest version is requested; no token, no data from Zabbix and no personal data is sent. The check can be turned off under **Settings → Check for updates automatically**, or for all users by an administrator (see [Deployment](docs/deployment.md#update-notification)). New versions are never downloaded or installed automatically.
+- **GitHub** (`api.github.com`), every 6 hours, to check whether a new version has been released. Only the number of the latest version is requested; no token, no data from Zabbix and no personal data is sent. The check can be turned off under **Settings → Check for updates automatically**, or for all users by an administrator (see [Deployment](docs/deployment.md#update-notification)). A new version is only downloaded and installed when the user clicks **Install** or turns on **Settings → Install updates automatically**; the installer is downloaded from the releases of this repository and must have the published checksum and the project's signature.
 
 The settings and the API token are stored only on the local computer (`%AppData%\ZabbixTrayMonitor\config.json` and the Windows Credential Manager).
 

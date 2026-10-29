@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -9,11 +10,15 @@ using ZabbixTrayMonitor.Models;
 using ZabbixTrayMonitor.Resources;
 
 // Prüft auf GitHub, ob eine neuere Version veröffentlicht wurde.
-// Nur Hinweis mit Link auf die Release-Seite, es wird nichts heruntergeladen oder installiert.
+// Herunterladen und Installieren übernimmt UpdateInstaller (nur auf Wunsch des Benutzers oder bei eingeschalteter
+// automatischer Installation).
 
 namespace ZabbixTrayMonitor.Services
 {
-    public record UpdateInfo(Version Version, string TagName, string ReleaseUrl);
+    // Datei eines Releases; Sha256 aus dem Feld "digest" der GitHub API (Kleinbuchstaben, ohne "sha256:"), null wenn nicht vorhanden
+    public record UpdateAsset(string Name, string DownloadUrl, string? Sha256);
+
+    public record UpdateInfo(Version Version, string TagName, string ReleaseUrl, IReadOnlyList<UpdateAsset> Assets);
 
     public static class UpdateService
     {
@@ -88,8 +93,36 @@ namespace ZabbixTrayMonitor.Services
             }
 
             return latestVersion > CurrentVersion
-                ? new UpdateInfo(latestVersion, tagName, releaseUrl)
+                ? new UpdateInfo(latestVersion, tagName, releaseUrl, ReadAssets(root))
                 : null;
+        }
+
+        private static List<UpdateAsset> ReadAssets(JsonElement release)
+        {
+            var assets = new List<UpdateAsset>();
+
+            if (!release.TryGetProperty("assets", out var assetsElement) || assetsElement.ValueKind != JsonValueKind.Array)
+                return assets;
+
+            foreach (var asset in assetsElement.EnumerateArray())
+            {
+                var name = asset.TryGetProperty("name", out var nameElement) ? nameElement.GetString() : null;
+                var url = asset.TryGetProperty("browser_download_url", out var urlElement) ? urlElement.GetString() : null;
+                var digest = asset.TryGetProperty("digest", out var digestElement) && digestElement.ValueKind == JsonValueKind.String
+                    ? digestElement.GetString()
+                    : null;
+
+                if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(url))
+                    continue;
+
+                var sha256 = digest != null && digest.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase)
+                    ? digest.Substring("sha256:".Length).ToLowerInvariant()
+                    : null;
+
+                assets.Add(new UpdateAsset(name, url, sha256));
+            }
+
+            return assets;
         }
 
         // "v1.3.5" -> 1.3.5.0

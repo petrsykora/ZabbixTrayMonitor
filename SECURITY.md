@@ -27,7 +27,7 @@ In scope are problems in this application and its release packages, for example:
 
 - leaking or exposing the Zabbix API token
 - sending the token to an unexpected host or over an unprotected connection
-- weaknesses in the MSI installer or the release workflow
+- weaknesses in the MSI installer, the installation of updates from the application or the release workflow
 - deleting or changing data that does not belong to the application (for example other entries in the Windows Credential Manager)
 
 Out of scope:
@@ -40,7 +40,7 @@ Out of scope:
 
 - The Zabbix API token is stored in the Windows Credential Manager for the current Windows user, never in `config.json`.
 - The token is only sent to the configured Zabbix URL as a bearer token. Use `https://`; the application asks for confirmation before saving an `http://` URL.
-- Besides the Zabbix server, the application only connects to `api.github.com` every 6 hours to check for a new version. It sends no token and no data from Zabbix, and it never downloads or runs installers by itself. The check can be turned off in the settings or for all users by policy, see [Deployment](docs/deployment.md#update-notification).
+- Besides the Zabbix server, the application only connects to `api.github.com` every 6 hours to check for a new version. It sends no token and no data from Zabbix. It only downloads and runs an installer when the user clicks **Install** or turns on automatic installation; the installer must match the SHA-256 checksum published by GitHub and be signed with the project's certificate (thumbprint built into the application), and Windows asks for administrator confirmation. The check can be turned off in the settings or for all users by policy, see [Deployment](docs/deployment.md#update-notification).
 - Certificate validation is on by default. `IgnoreCertificateErrors` turns it off and should only be used for testing.
 - Use a dedicated Zabbix user for the token with as few permissions as possible: read access to the monitored host groups and, if alarm handling is used, permission to acknowledge and suppress problems.
 

@@ -14,7 +14,8 @@
         FontSize="{DynamicResource AppFontSize}"
         KeyDown="Window_KeyDown">
 
-    <!-- Hinweis auf eine neue Version: Herunterladen (Release-Seite im Browser), Version überspringen oder später erinnern -->
+    <!-- Hinweis auf eine neue Version: Installieren (herunterladen, prüfen, installieren), Herunterladen (Release-Seite im
+         Browser), Version überspringen oder später erinnern -->
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -68,26 +69,42 @@
                        FontWeight="Bold" />
         </Grid>
 
-        <TextBlock Grid.Row="2"
-                   Text="{x:Static res:Strings.Update_Description}"
-                   Foreground="{DynamicResource PrimaryTextBrush}"
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,14" />
+        <!-- Text hängt davon ab, ob die Anwendung selbst installieren kann (installierte Version) oder nur die ZIP-Version ist -->
+        <StackPanel Grid.Row="2"
+                    Margin="0,0,0,14">
+            <TextBlock x:Name="DescriptionText"
+                       Foreground="{DynamicResource PrimaryTextBrush}"
+                       TextWrapping="Wrap" />
+            <TextBlock x:Name="ProgressText"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap"
+                       Margin="0,8,0,0"
+                       Visibility="Collapsed" />
+        </StackPanel>
 
         <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
-            <Button Content="{x:Static res:Strings.Update_Download}"
+            <!-- Herunterladen, prüfen und installieren; nur sichtbar für die installierte Anwendung -->
+            <Button x:Name="InstallButton"
+                    Content="{x:Static res:Strings.Update_Install}"
                     MinWidth="90"
                     Padding="10,2"
-                    IsDefault="True"
+                    Margin="0,0,8,0"
+                    Click="Install_Click" />
+            <Button x:Name="DownloadButton"
+                    Content="{x:Static res:Strings.Update_Download}"
+                    MinWidth="90"
+                    Padding="10,2"
                     Click="Download_Click" />
-            <Button Content="{x:Static res:Strings.Update_Skip}"
+            <Button x:Name="SkipButton"
+                    Content="{x:Static res:Strings.Update_Skip}"
                     MinWidth="90"
                     Padding="10,2"
                     Margin="8,0,0,0"
                     Click="Skip_Click" />
-            <Button Content="{x:Static res:Strings.Update_Later}"
+            <Button x:Name="LaterButton"
+                    Content="{x:Static res:Strings.Update_Later}"
                     MinWidth="90"
                     Padding="10,2"
                     Margin="8,0,0,0"

@@ -541,7 +541,8 @@ API token nebyl ověřen, protože není zadaný.</value>
   <data name="Help_Updates_Text" xml:space="preserve">
     <value>• Každých 6 hodin (a minutu po spuštění) aplikace zkontroluje na GitHubu, jestli nevyšla nová verze. Pokud ano, zobrazí se u ikony v trayi oznámení a v menu položka "Dostupná aktualizace".
 • Okno aktualizace ukazuje nainstalovanou a novou verzi. Stáhnout otevře stránku vydání; pro aktualizaci spusťte instalátor odtud. Přeskočit tuto verzi skryje upozornění, dokud nevyjde ještě novější verze. Později připomene aktualizaci při příští kontrole.
-• Nic se nestahuje ani neinstaluje automaticky. Z GitHubu (api.github.com) se zjišťuje jen číslo nejnovější verze.
+• S volbou &quot;Instalovat aktualizace automaticky&quot; v nastavení se nová verze stáhne, ověří a po potvrzení ve Windows nainstaluje, jinak se jen oznámí. Tlačítko Nainstalovat v okně aktualizace udělá totéž hned. Instalátor musí mít správný kontrolní součet a být podepsaný certifikátem projektu, jinak se nenainstaluje. U přenosné verze ZIP se jen oznamuje.
+• Bez této volby se nic nestahuje ani neinstaluje automaticky. Z GitHubu (api.github.com) se zjišťuje jen číslo nejnovější verze.
 • O aplikaci &gt; Zkontrolovat aktualizace zkontroluje hned. Okno O aplikaci ukazuje také čas a výsledek poslední kontroly, včetně chyb automatické kontroly.
 • Automatickou kontrolu lze vypnout v Nastavení. Správci ji mohou vypnout pro všechny uživatele hodnotou registru DisableUpdateCheck = 1 (DWORD) v HKEY_LOCAL_MACHINE\Software\Policies\ZabbixTrayMonitor.</value>
   </data>
@@ -562,5 +563,55 @@ API token nebyl ověřen, protože není zadaný.</value>
   </data>
   <data name="Update_StatusFailed" xml:space="preserve">
     <value>{0:g} – selhala: {1}</value>
+  </data>
+  <data name="Update_Install" xml:space="preserve">
+    <value>Nainstalovat</value>
+  </data>
+  <data name="Update_DescriptionInstall" xml:space="preserve">
+    <value>Tlačítko Nainstalovat stáhne instalátor, ověří jeho kontrolní součet a podpis a nainstaluje novou verzi. Windows si vyžádají potvrzení správce. Aplikace se během instalace ukončí a potom znovu spustí; nastavení i API token zůstanou zachovány. Tlačítko Stáhnout jen otevře stránku vydání.</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Stahuji a ověřuji instalátor...</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>Aktualizaci se nepodařilo nainstalovat:
+
+{0}</value>
+  </data>
+  <data name="Update_InstallerNotFound" xml:space="preserve">
+    <value>Vydání neobsahuje instalátor {0}.</value>
+  </data>
+  <data name="Update_ChecksumMissing" xml:space="preserve">
+    <value>GitHub pro {0} neuvádí kontrolní součet, soubor proto nelze ověřit.</value>
+  </data>
+  <data name="Update_ChecksumMismatch" xml:space="preserve">
+    <value>Kontrolní součet staženého souboru {0} nesouhlasí. Soubor nebyl nainstalován.</value>
+  </data>
+  <data name="Update_SignatureInvalid" xml:space="preserve">
+    <value>{0} není podepsaný certifikátem projektu nebo byl změněn. Soubor nebyl nainstalován.</value>
+  </data>
+  <data name="Update_StatusDownloading" xml:space="preserve">
+    <value>{0:g} – stahuji verzi {1}</value>
+  </data>
+  <data name="Update_StatusInstalling" xml:space="preserve">
+    <value>{0:g} – spuštěna instalace verze {1}</value>
+  </data>
+  <data name="Update_StatusInstallFailed" xml:space="preserve">
+    <value>{0:g} – instalace verze {1} selhala: {2}</value>
+  </data>
+  <data name="Update_BalloonInstalling" xml:space="preserve">
+    <value>{0} {1} je stažený a ověřený. Potvrďte instalaci v následujícím dotazu.</value>
+  </data>
+  <data name="Update_BalloonInstallFailed" xml:space="preserve">
+    <value>{0} {1} se nepodařilo nainstalovat automaticky. Klikněte sem pro podrobnosti.</value>
+  </data>
+  <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve">
+    <value>Instalovat aktualizace automaticky</value>
+  </data>
+  <data name="Settings_InstallUpdatesAutomaticallyToolTip" xml:space="preserve">
+    <value>Stáhne novou verzi, ověří její kontrolní součet a podpis a nainstaluje ji. Windows si vyžádají potvrzení správce.</value>
+  </data>
+  <data name="Settings_InstallUpdatesPortable" xml:space="preserve">
+    <value>Jen pro nainstalovanou aplikaci, ne pro přenosnou verzi ZIP.</value>
   </data>
 </root>

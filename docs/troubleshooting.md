@@ -93,6 +93,17 @@ The automatic check runs one minute after the start and then every 6 hours. Open
 
 **About → Check for updates** always checks right away and shows errors.
 
+### Installing an update from the application fails
+
+The row **Update check** in the About window and the message show the reason:
+
+- **The checksum … does not match** or **… is not signed with the certificate of the project**: the download was damaged or changed on the way (for example by a proxy that alters downloads). Nothing was installed. Try again later or download the installer manually.
+- **GitHub does not provide a checksum** or **the release does not contain the installer**: the release is incomplete; download the installer manually from the release page.
+- **Nothing happens after the confirmation prompt was declined**: the installation was cancelled and the application keeps running. Users without administrator rights cannot install updates; ask an administrator or use the deployment of your organization.
+- **The installation started but failed**: the log is in `%TEMP%\ZabbixTrayMonitor\Updates\install.log`. The application is started again in any case.
+
+The **Install** button and the automatic installation are not available for the portable ZIP versions.
+
 ## Settings
 
 ### Reset all settings

@@ -28,6 +28,10 @@ namespace ZabbixTrayMonitor.Models
         // Alle 6 Stunden auf GitHub prüfen, ob eine neue Version verfügbar ist (nur Hinweis, keine automatische Installation)
         public bool CheckForUpdates { get; set; } = true;
 
+        // Neue Version automatisch herunterladen, prüfen und installieren (Bestätigung der Benutzerkontensteuerung nötig).
+        // Nur für die installierte Anwendung, nicht für die ZIP-Version
+        public bool InstallUpdatesAutomatically { get; set; } = false;
+
         // Version, deren Hinweis mit "Diese Version überspringen" ausgeblendet wurde (zB. "v1.3.5")
         public string SkippedUpdateVersion { get; set; } = "";
 

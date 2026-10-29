@@ -278,7 +278,7 @@ namespace ZabbixTrayMonitor.Resources {
         ///• Suppress for 5 minutes to 1 day, or until a chosen time: acknowledges the problem and hides it until then.
         ///• The message field at the top of the menu is prefilled with the default message from the settings and can be changed for each action.
         ///• Suppressed problems are hidden unless &quot;Keep showing suppressed problems&quot; is enabled in the settings.
-        ///• The Zabbix user of the API token needs permission to acknowledge and suppres [rest of string was truncated]&quot;;.
+        ///• The Zabbix user of the API token needs permission to acknowledge and sup [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Alarms_Text {
             get {
@@ -320,7 +320,7 @@ namespace ZabbixTrayMonitor.Resources {
         ///   Looks up a localized string similar to The application needs the .NET 10 Desktop Runtime (x64). Every release contains:
         ///• ...-setup.exe (recommended): checks whether the runtime is installed, downloads and installs it from Microsoft only if it is missing, then installs the application.
         ///• ...-runtime-dependent.msi: small installer for scripts, Intune or Group Policy where the runtime is deployed separately. It does not install without the runtime.
-        ///• ...-win-x64.msi: larger installer with the runtime included, also for computers without internet a [rest of string was truncated]&quot;;.
+        ///• ...-win-x64.msi: larger installer with the runtime included, also for computers without interne [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Install_Text {
             get {
@@ -360,7 +360,7 @@ namespace ZabbixTrayMonitor.Resources {
         /// <summary>
         ///   Looks up a localized string similar to • The API token is sent with every request. Use https:// for the Zabbix URL; for http:// the application asks for confirmation when saving, because the token would be readable on the network.
         ///• Ignore SSL certificate errors turns off the check of the server certificate. An attacker on the network could then pretend to be your Zabbix server and steal the token. Instead, import the server certificate or your own certification authority into the trusted certificates of Windows.
-        ///• Use a dedicated Zabbix user fo [rest of string was truncated]&quot;;.
+        ///• Use a dedicated Zabbix user  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Security_Text {
             get {
@@ -382,7 +382,7 @@ namespace ZabbixTrayMonitor.Resources {
         ///• Dashboard URL: page opened by ⌂ and by clicking a problem. If empty, the Zabbix URL is used.
         ///• API token: stored in the Windows Credential Manager, never in the configuration file. When a token is stored, the field shows asterisks; enter a new token only to replace it.
         ///• Ignore SSL certificate errors: only for testing, see Security.
-        ///• Dark mode: dark or light c [rest of string was truncated]&quot;;.
+        ///• Dark mode: dark or lig [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Settings_Text {
             get {
@@ -457,7 +457,7 @@ namespace ZabbixTrayMonitor.Resources {
         ///   Looks up a localized string similar to • The tray icon is red and the tooltip shows an error: open Settings and check the Zabbix URL and the API token with Test.
         ///• Error mentioning a certificate or SSL: Windows does not trust the server certificate, see Security.
         ///• &quot;Not authorized&quot; or a permission error: the token has expired, was deleted in Zabbix, or its user lacks permissions. Create a new token and enter it in Settings.
-        ///• A problem from Zabbix is missing: check the warning threshold and whether the problem is suppressed. Problems of disabled [rest of string was truncated]&quot;;.
+        ///• A problem from Zabbix is missing: check the warning threshold and whether the problem is suppressed. Problems of disab [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Troubleshooting_Text {
             get {
@@ -477,7 +477,7 @@ namespace ZabbixTrayMonitor.Resources {
         /// <summary>
         ///   Looks up a localized string similar to • Every 6 hours (and one minute after the start) the application checks on GitHub whether a new version has been released. If there is one, a notification appears next to the tray icon and the tray menu shows &quot;Update available&quot;.
         ///• The update window shows the installed and the new version. Download opens the release page; run the installer from there to update. Skip this version hides the notice until an even newer version is released. Later reminds you at the next check.
-        ///• Nothing is downloaded or installed [rest of string was truncated]&quot;;.
+        ///• With &quot;Install updates automatica [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Help_Updates_Text {
             get {
@@ -939,6 +939,33 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Install updates automatically.
+        /// </summary>
+        public static string Settings_InstallUpdatesAutomatically {
+            get {
+                return ResourceManager.GetString("Settings_InstallUpdatesAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads a new version, checks its checksum and signature and installs it. Windows asks for administrator confirmation..
+        /// </summary>
+        public static string Settings_InstallUpdatesAutomaticallyToolTip {
+            get {
+                return ResourceManager.GetString("Settings_InstallUpdatesAutomaticallyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only for the installed application, not for the portable ZIP version..
+        /// </summary>
+        public static string Settings_InstallUpdatesPortable {
+            get {
+                return ResourceManager.GetString("Settings_InstallUpdatesPortable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Settings_Language {
@@ -1371,6 +1398,24 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} {1} could not be installed automatically. Click here for details..
+        /// </summary>
+        public static string Update_BalloonInstallFailed {
+            get {
+                return ResourceManager.GetString("Update_BalloonInstallFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} was downloaded and checked. Confirm the installation in the following prompt..
+        /// </summary>
+        public static string Update_BalloonInstalling {
+            get {
+                return ResourceManager.GetString("Update_BalloonInstalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} {1} is available. Click here for details..
         /// </summary>
         public static string Update_BalloonText {
@@ -1409,6 +1454,24 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The checksum of the downloaded file {0} does not match. The file was not installed..
+        /// </summary>
+        public static string Update_ChecksumMismatch {
+            get {
+                return ResourceManager.GetString("Update_ChecksumMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GitHub does not provide a checksum for {0}, so it cannot be checked..
+        /// </summary>
+        public static string Update_ChecksumMissing {
+            get {
+                return ResourceManager.GetString("Update_ChecksumMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed version.
         /// </summary>
         public static string Update_CurrentVersion {
@@ -1427,6 +1490,15 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Install downloads the installer, checks its checksum and signature and installs the new version. Windows asks for administrator confirmation. The application is closed during the installation and started again afterwards; settings and the API token are kept. Download only opens the release page..
+        /// </summary>
+        public static string Update_DescriptionInstall {
+            get {
+                return ResourceManager.GetString("Update_DescriptionInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string Update_Download {
@@ -1436,11 +1508,49 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading and checking the installer....
+        /// </summary>
+        public static string Update_Downloading {
+            get {
+                return ResourceManager.GetString("Update_Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A new version of Zabbix Monitor is available..
         /// </summary>
         public static string Update_Heading {
             get {
                 return ResourceManager.GetString("Update_Heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install.
+        /// </summary>
+        public static string Update_Install {
+            get {
+                return ResourceManager.GetString("Update_Install", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The release does not contain the installer {0}..
+        /// </summary>
+        public static string Update_InstallerNotFound {
+            get {
+                return ResourceManager.GetString("Update_InstallerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The update could not be installed:
+        ///
+        ///{0}.
+        /// </summary>
+        public static string Update_InstallFailed {
+            get {
+                return ResourceManager.GetString("Update_InstallFailed", resourceCulture);
             }
         }
         
@@ -1459,6 +1569,15 @@ namespace ZabbixTrayMonitor.Resources {
         public static string Update_NewVersion {
             get {
                 return ResourceManager.GetString("Update_NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not signed with the certificate of the project or was changed. The file was not installed..
+        /// </summary>
+        public static string Update_SignatureInvalid {
+            get {
+                return ResourceManager.GetString("Update_SignatureInvalid", resourceCulture);
             }
         }
         
@@ -1490,11 +1609,38 @@ namespace ZabbixTrayMonitor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0:g} – downloading version {1}.
+        /// </summary>
+        public static string Update_StatusDownloading {
+            get {
+                return ResourceManager.GetString("Update_StatusDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:g} – failed: {1}.
         /// </summary>
         public static string Update_StatusFailed {
             get {
                 return ResourceManager.GetString("Update_StatusFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:g} – installation of version {1} failed: {2}.
+        /// </summary>
+        public static string Update_StatusInstallFailed {
+            get {
+                return ResourceManager.GetString("Update_StatusInstallFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:g} – installation of version {1} started.
+        /// </summary>
+        public static string Update_StatusInstalling {
+            get {
+                return ResourceManager.GetString("Update_StatusInstalling", resourceCulture);
             }
         }
         

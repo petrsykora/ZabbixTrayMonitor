@@ -180,7 +180,16 @@
                 <CheckBox x:Name="CheckForUpdatesCheckBox"
                           Content="{x:Static res:Strings.Settings_CheckForUpdates}"
                           Foreground="{DynamicResource PrimaryTextBrush}"
-                          Margin="0,2,0,0" />
+                          Margin="0,2,0,2"
+                          Checked="CheckForUpdatesCheckBox_Changed"
+                          Unchecked="CheckForUpdatesCheckBox_Changed" />
+
+                <!-- Nur für die installierte Anwendung und bei eingeschalteter Prüfung (ZabbixConfigWindow.xaml.cs) -->
+                <CheckBox x:Name="InstallUpdatesAutomaticallyCheckBox"
+                          Content="{x:Static res:Strings.Settings_InstallUpdatesAutomatically}"
+                          ToolTip="{x:Static res:Strings.Settings_InstallUpdatesAutomaticallyToolTip}"
+                          Foreground="{DynamicResource PrimaryTextBrush}"
+                          Margin="20,2,0,0" />
             </StackPanel>
 
             <!-- Sprache: Einträge werden in ZabbixConfigWindow.xaml.cs gefüllt (Sprachnamen in der jeweiligen Sprache) -->
