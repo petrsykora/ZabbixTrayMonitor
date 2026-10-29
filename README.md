@@ -239,13 +239,13 @@ To report a security vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Code signing
 
-The release files are currently not signed, so Windows SmartScreen may warn when they are downloaded and started. To check that the files are genuine:
+Since version 1.3.7, the application files, both MSI installers and `setup.exe` are signed with the project's own code signing certificate (publisher **Petr Sýkora**) and an RFC 3161 timestamp. The certificate is self-signed: Windows trusts the signature only on computers that receive the certificate, for example via Group Policy, see [Code signing](docs/code-signing.md). On other computers the files behave like unsigned ones and SmartScreen may warn when they are downloaded and started.
+
+To check that the files are genuine:
 
 - They are built from this repository by the [release workflow](.github/workflows/release.yml) on GitHub-hosted runners; the build log of every release is public under [Actions](https://github.com/petrsykora/ZabbixTrayMonitor/actions).
 - Every release is checked with VirusTotal; the result and links to the reports are in the release notes.
 - GitHub shows the SHA-256 checksum of every file on the release page.
-
-To sign the files with your own certificate for computers in your organization, see [Code signing](docs/code-signing.md).
 
 ## Privacy policy
 
